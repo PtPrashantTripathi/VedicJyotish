@@ -1,0 +1,27 @@
+Panchang Calculation for: 2025-08-13 05:30:00 IST
+Location: Lon 80.37 E, Lat 22.60 N
+
+--- Sunrise, Sunset, Moonrise, Moonset ---
+Sunrise:  2025-08-13 05:44:31 IST
+Sunset:   2025-08-13 18:41:58 IST
+Moonrise: 2025-08-13 21:24:10 IST
+Moonset:  2025-08-14 10:25:51 IST
+
+--- Celestial Positions ---
+Sun:  Rasi 4 (Karka (Cancer)) - 26.30°
+Moon: Rasi 12 (Meena (Pisces)) - 13.69°
+
+--- Panchang Details ---
+Vara:      Wednesday
+Tithi:     Krishna Chaturthi
+           Starts: 2025-08-12 08:41:21 IST
+           Ends:   2025-08-13 06:36:36 IST
+Nakshatra: Uttara Bhadrapada
+           Starts: 2025-08-12 11:52:13 IST
+           Ends:   2025-08-13 10:32:40 IST
+Yoga:      Dhriti
+           Starts: 2025-08-12 18:53:45 IST
+           Ends:   2025-08-13 16:05:29 IST
+Karana:    Kaulava
+           Starts: 2025-08-12 19:40:11 IST
+           Ends:   2025-08-13 06:36:36 IST

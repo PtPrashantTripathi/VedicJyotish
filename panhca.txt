@@ -1,0 +1,42 @@
+Location: Latitude 22.60°, Longitude 80.37°
+
+╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                                                 Monthly Panchang - 2025 August                                                  ║
+╠════════╤═══════════╤═════════════════════╤══════════╤═══════════════════╤══════════╤═══════════╤══════════╤══════════╤══════════╣
+║ Date   │ Day       │ Tithi               │ End      │ Nakshatra         │ End      │ Moon Rashi│ End      │ Sunrise  │ Sunset   ║
+╠════════╪═══════════╪═════════════════════╪══════════╪═══════════════════╪══════════╪═══════════╪══════════╪══════════╪══════════╣
+║  1     │ Friday    │ Shukla Ashtami      │ next day │ Swati             │ 03:40    │ Tula      │ next day │ 05:39    │ 18:49    ║
+║  2     │ Saturday  │ Shukla Ashtami      │ 07:23    │ Vishakha          │ next day │ Tula      │ 23:52    │ 05:40    │ 18:49    ║
+║  3     │ Sunday    │ Shukla Navami       │ 09:42    │ Vishakha          │ 06:35    │ Vrischika │ next day │ 05:40    │ 18:48    ║
+║  4     │ Monday    │ Shukla Dashami      │ 11:42    │ Anuradha          │ 09:12    │ Vrischika │ next day │ 05:41    │ 18:48    ║
+║  5     │ Tuesday   │ Shukla Ekadashi     │ 13:12    │ Jyeshtha          │ 11:23    │ Vrischika │ 11:23    │ 05:41    │ 18:47    ║
+║  6     │ Wednesday │ Shukla Dwadashi     │ 14:08    │ Mula              │ 13:00    │ Dhanu     │ next day │ 05:41    │ 18:46    ║
+║  7     │ Thursday  │ Shukla Trayodashi   │ 14:28    │ Purva Ashadha     │ 14:01    │ Dhanu     │ 20:11    │ 05:42    │ 18:46    ║
+║  8     │ Friday    │ Shukla Chaturdashi  │ 14:12    │ Uttara Ashadha    │ 14:28    │ Makara    │ next day │ 05:42    │ 18:45    ║
+║  9     │ Saturday  │ Purnima             │ 13:25    │ Shravana          │ 14:23    │ Makara    │ 02:11    │ 05:43    │ 18:44    ║
+║ 10     │ Sunday    │ Krishna Pratipada   │ 12:10    │ Dhanishtha        │ 13:52    │ Kumbha    │ next day │ 05:43    │ 18:44    ║
+║ 11     │ Monday    │ Krishna Dwitiya     │ 10:34    │ Shatabhisha       │ 13:00    │ Kumbha    │ next day │ 05:43    │ 18:43    ║
+║ 12     │ Tuesday   │ Krishna Tritiya     │ 08:41    │ Purva Bhadrapada  │ 11:52    │ Kumbha    │ 06:10    │ 05:44    │ 18:42    ║
+║ 13     │ Wednesday │ Krishna Chaturthi   │ 06:36    │ Uttara Bhadrapada │ 10:32    │ Meena     │ next day │ 05:44    │ 18:41    ║
+║ 14     │ Thursday  │ Krishna Shashti     │ 02:07    │ Revati            │ 09:06    │ Meena     │ 09:06    │ 05:44    │ 18:41    ║
+║ 15     │ Friday    │ Krishna Saptami     │ 23:50    │ Ashwini           │ 07:36    │ Mesha     │ next day │ 05:45    │ 18:40    ║
+║ 16     │ Saturday  │ Krishna Ashtami     │ 21:35    │ Bharani           │ 06:06    │ Mesha     │ 11:43    │ 05:45    │ 18:39    ║
+║ 17     │ Sunday    │ Krishna Navami      │ 19:24    │ Rohini            │ 03:17    │ Vrishabha │ next day │ 05:45    │ 18:38    ║
+║ 18     │ Monday    │ Krishna Dashami     │ 17:23    │ Mrigashirsha      │ 02:06    │ Vrishabha │ 14:40    │ 05:46    │ 18:38    ║
+║ 19     │ Tuesday   │ Krishna Ekadashi    │ 15:33    │ Ardra             │ 01:07    │ Mithuna   │ next day │ 05:46    │ 18:37    ║
+║ 20     │ Wednesday │ Krishna Dwadashi    │ 13:59    │ Punarvasu         │ 00:27    │ Mithuna   │ 18:35    │ 05:47    │ 18:36    ║
+║ 21     │ Thursday  │ Krishna Trayodashi  │ 12:45    │ Pushya            │ 00:08    │ Karka     │ next day │ 05:47    │ 18:35    ║
+║ 22     │ Friday    │ Krishna Chaturdashi │ 11:56    │ Ashlesha          │ 00:16    │ Karka     │ 00:16    │ 05:47    │ 18:34    ║
+║ 23     │ Saturday  │ Amavasya            │ 11:36    │ Magha             │ 00:55    │ Simha     │ next day │ 05:48    │ 18:33    ║
+║ 24     │ Sunday    │ Shukla Pratipada    │ 11:48    │ Purva Phalguni    │ 02:05    │ Simha     │ next day │ 05:48    │ 18:33    ║
+║ 25     │ Monday    │ Shukla Dwitiya      │ 12:35    │ Uttara Phalguni   │ 03:49    │ Simha     │ 08:28    │ 05:48    │ 18:32    ║
+║ 26     │ Tuesday   │ Shukla Tritiya      │ 13:55    │ Hasta             │ next day │ Kanya     │ next day │ 05:49    │ 18:31    ║
+║ 27     │ Wednesday │ Shukla Chaturthi    │ 15:44    │ Hasta             │ 06:04    │ Kanya     │ 19:21    │ 05:49    │ 18:30    ║
+║ 28     │ Thursday  │ Shukla Panchami     │ 17:57    │ Chitra            │ 08:43    │ Tula      │ next day │ 05:49    │ 18:29    ║
+║ 29     │ Friday    │ Shukla Shashti      │ 20:22    │ Swati             │ 11:38    │ Tula      │ next day │ 05:50    │ 18:28    ║
+║ 30     │ Saturday  │ Shukla Saptami      │ 22:47    │ Vishakha          │ 14:37    │ Tula      │ 07:53    │ 05:50    │ 18:27    ║
+║ 31     │ Sunday    │ Shukla Ashtami      │ 00:58    │ Anuradha          │ 17:27    │ Vrischika │ next day │ 05:50    │ 18:26    ║
+╚════════╧═══════════╧═════════════════════╧══════════╧═══════════════════╧══════════╧═══════════╧══════════╧══════════╧══════════╝
+
+Note: Time is given in IST (Indian Standard Time)
+'Next day' means that the date/nakshatra will end on the following day
