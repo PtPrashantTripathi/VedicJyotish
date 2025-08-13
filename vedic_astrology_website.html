@@ -1,1179 +1,1979 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vedic Jyotish - Complete Astrology Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Devanagari:wght@400;600;700&display=swap');
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .panchang-bg {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-        }
-        
-        .card-shadow {
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-        
-        .glow-text {
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-        }
-        
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
-        }
-        
-        .page-hidden {
-            display: none;
-        }
-        
-        .page-active {
-            display: block;
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="gradient-bg text-white shadow-lg fixed w-full top-0 z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-om text-2xl text-yellow-300"></i>
-                    <h1 class="text-2xl font-bold glow-text">Vedic Jyotish</h1>
-                </div>
-                <div class="hidden md:flex space-x-6">
-                    <button onclick="showPage('home')" class="nav-btn hover:text-yellow-300 transition-colors">Home</button>
-                    <button onclick="showPage('panchang-calendar')" class="nav-btn hover:text-yellow-300 transition-colors">Panchang</button>
-                    <button onclick="showPage('settings')" class="nav-btn hover:text-yellow-300 transition-colors">Settings</button>
-                </div>
-                <button class="md:hidden" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars text-xl"></i>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vedic Jyotish - Complete Astrology Portal</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Devanagari:wght@400;600;700&display=swap");
+
+            .gradient-bg {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+
+            .panchang-bg {
+                background: linear-gradient(
+                    135deg,
+                    #ff9a9e 0%,
+                    #fecfef 50%,
+                    #fecfef 100%
+                );
+            }
+
+            .card-shadow {
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            }
+
+            .feature-card {
+                transition: all 0.3s ease;
+            }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            .glow-text {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+
+            .calendar-grid {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                gap: 1px;
+            }
+
+            .page-hidden {
+                display: none;
+            }
+
+            .page-active {
+                display: block;
+            }
+
+            .pulse-animation {
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+
+                50% {
+                    opacity: 0.7;
+                }
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-50">
+        <!-- Top bar -->
+        <nav class="border-b border-gray-200 bg-gray-50">
+            <div
+                class="max-w-screen-xl flex items-center justify-between mx-auto p-4">
+                <a
+                    href="#"
+                    class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <img
+                        src="https://flowbite.com/docs/images/logo.svg"
+                        class="h-8"
+                        alt="Flowbite Logo" />
+                    <span
+                        class="self-center text-2xl font-semibold whitespace-nowrap"
+                        >Flowbite</span
+                    >
+                </a>
+
+                <!-- Hamburger -->
+                <button
+                    id="openDrawerBtn"
+                    type="button"
+                    class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                    aria-expanded="false"
+                    aria-controls="drawer"
+                    aria-label="Open main menu">
+                    <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 17 14">
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
                 </button>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="fixed top-16 left-0 w-full bg-purple-800 text-white z-40 hidden">
-        <div class="p-4 space-y-3">
-            <button onclick="showPage('home')" class="block w-full text-left p-2 hover:bg-purple-700 rounded">Home</button>
-            <button onclick="showPage('panchang-calendar')" class="block w-full text-left p-2 hover:bg-purple-700 rounded">Panchang</button>
-            <button onclick="showPage('settings')" class="block w-full text-left p-2 hover:bg-purple-700 rounded">Settings</button>
-        </div>
-    </div>
+        <!-- Overlay -->
+        <div
+            id="drawerOverlay"
+            class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 
-    <!-- Main Content -->
-    <div class="pt-20">
-        <!-- HOME PAGE -->
-        <div id="home-page" class="page-active">
-            <!-- Current Panchang Header -->
-            <div class="panchang-bg text-gray-800 py-8">
-                <div class="container mx-auto px-4">
-                    <div class="text-center mb-8">
-                        <h2 class="text-3xl font-bold mb-2">आज का पंचांग</h2>
-                        <p class="text-lg opacity-80">Today's Panchang</p>
+        <!-- Drawer -->
+        <aside
+            id="drawer"
+            class="fixed inset-y-0 left-0 w-72 max-w-[80vw] bg-white shadow-xl transform -translate-x-full transition-transform duration-300 z-50">
+            <div
+                class="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <img
+                        src="https://flowbite.com/docs/images/logo.svg"
+                        class="h-8"
+                        alt="Flowbite Logo" />
+                    <span class="text-xl font-semibold">Menu</span>
+                </div>
+                <button
+                    id="closeDrawerBtn"
+                    class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                    aria-label="Close menu">
+                    <svg
+                        class="w-5 h-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true">
+                        <path
+                            d="M6 6l12 12M18 6L6 18"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="p-3">
+                <ul class="flex flex-col font-medium rounded-lg">
+                    <li>
+                        <a
+                            onclick="showPage('home')"
+                            class="block py-2 px-3 text-white bg-blue-700 rounded-sm cursor-pointer"
+                            aria-current="page"
+                            >Home</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            onclick="showPage('panchang-calendar')"
+                            class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 cursor-pointer"
+                            >Panchang</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            onclick="showPage('settings')"
+                            class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 cursor-pointer"
+                            >Settings</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100"
+                            >Contact</a
+                        >
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <!-- HOME PAGE -->
+            <div id="home-page" class="page-active">
+                <!-- Current Panchang Header -->
+                <div class="panchang-bg text-gray-800 py-8">
+                    <div class="container mx-auto px-4">
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-bold mb-2">
+                                आज का पंचांग
+                            </h2>
+                            <p class="text-lg opacity-80">Today's Panchang</p>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <!-- Date & Time -->
+                            <div class="bg-white rounded-xl p-6 card-shadow">
+                                <h3
+                                    class="font-semibold text-lg mb-4 text-purple-700">
+                                    Date & Time
+                                </h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span>Date:</span>
+                                        <span
+                                            id="current-date"
+                                            class="font-semibold"
+                                            >09 Aug 2025</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Day:</span>
+                                        <span
+                                            id="current-day"
+                                            class="font-semibold"
+                                            >Saturday</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Time:</span>
+                                        <span
+                                            id="current-time"
+                                            class="font-semibold pulse-animation"
+                                            >--:--:--</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Location:</span>
+                                        <span class="font-semibold text-sm"
+                                            >Azamgarh, UP</span
+                                        >
+                                    </div>
+                                    <div
+                                        class="flex justify-between text-xs text-gray-600">
+                                        <span>Lat: 26.0685°N</span>
+                                        <span>Long: 83.1840°E</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Panchang Elements -->
+                            <div class="bg-white rounded-xl p-6 card-shadow">
+                                <h3
+                                    class="font-semibold text-lg mb-4 text-purple-700">
+                                    Panchang Elements
+                                </h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span>Tithi:</span>
+                                        <span
+                                            class="font-semibold text-orange-600"
+                                            >Chaturthi</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Nakshatra:</span>
+                                        <span
+                                            class="font-semibold text-green-600"
+                                            >Rohini</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Yoga:</span>
+                                        <span
+                                            class="font-semibold text-blue-600"
+                                            >Siddha</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Karana:</span>
+                                        <span class="font-semibold text-red-600"
+                                            >Vanija</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Rashi:</span>
+                                        <span
+                                            class="font-semibold text-purple-600"
+                                            >Vrishabha</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gati Pal -->
+                            <div class="bg-white rounded-xl p-6 card-shadow">
+                                <h3
+                                    class="font-semibold text-lg mb-4 text-purple-700">
+                                    Muhurat & Timings
+                                </h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span>Sunrise:</span>
+                                        <span
+                                            class="font-semibold text-yellow-600"
+                                            >05:42 AM</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Sunset:</span>
+                                        <span
+                                            class="font-semibold text-orange-600"
+                                            >06:48 PM</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Moonrise:</span>
+                                        <span
+                                            class="font-semibold text-blue-400"
+                                            >09:23 AM</span
+                                        >
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Moonset:</span>
+                                        <span
+                                            class="font-semibold text-indigo-600"
+                                            >10:45 PM</span
+                                        >
+                                    </div>
+                                    <div
+                                        class="mt-4 p-3 bg-green-100 rounded-lg">
+                                        <div
+                                            class="flex justify-between text-sm">
+                                            <span>Shubh Muhurat:</span>
+                                            <span
+                                                class="font-semibold text-green-700"
+                                                >10:30-11:45</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <!-- Date & Time -->
+                </div>
+
+                <!-- Feature Buttons -->
+                <div class="py-12 bg-gray-50">
+                    <div class="container mx-auto px-4">
+                        <h2
+                            class="text-3xl font-bold text-center mb-8 text-gray-800">
+                            Astrology Services
+                        </h2>
+
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Kundli Creation -->
+                            <div
+                                class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer"
+                                onclick="showPage('kundli-form')">
+                                <div class="text-center">
+                                    <div
+                                        class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                        <i
+                                            class="fas fa-chart-pie text-white text-2xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3">
+                                        Kundli Creation
+                                    </h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Generate your complete birth chart with
+                                        detailed planetary positions
+                                    </p>
+                                    <button
+                                        class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors">
+                                        Create Kundli
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Kundli Matching -->
+                            <div
+                                class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer"
+                                onclick="showPage('matching-form')">
+                                <div class="text-center">
+                                    <div
+                                        class="bg-gradient-to-br from-red-500 to-pink-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                        <i
+                                            class="fas fa-heart text-white text-2xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3">
+                                        Kundli Matching
+                                    </h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Check compatibility between partners for
+                                        marriage
+                                    </p>
+                                    <button
+                                        class="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 transition-colors">
+                                        Check Matching
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Dasha Analysis -->
+                            <div
+                                class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer"
+                                onclick="showPage('dasha-page')">
+                                <div class="text-center">
+                                    <div
+                                        class="bg-gradient-to-br from-blue-500 to-teal-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                        <i
+                                            class="fas fa-clock text-white text-2xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3">
+                                        Dasha Analysis
+                                    </h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Vimshottari Dasha periods and their
+                                        effects
+                                    </p>
+                                    <button
+                                        class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors">
+                                        View Dasha
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Phaladesh -->
+                            <div
+                                class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer"
+                                onclick="showPage('phaladesh-page')">
+                                <div class="text-center">
+                                    <div
+                                        class="bg-gradient-to-br from-green-500 to-emerald-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                        <i
+                                            class="fas fa-scroll text-white text-2xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3">
+                                        Phaladesh
+                                    </h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Detailed predictions based on your birth
+                                        chart
+                                    </p>
+                                    <button
+                                        class="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-colors">
+                                        Get Predictions
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Panchang Calendar -->
+                            <div
+                                class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer"
+                                onclick="showPage('panchang-calendar')">
+                                <div class="text-center">
+                                    <div
+                                        class="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                        <i
+                                            class="fas fa-calendar-alt text-white text-2xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3">
+                                        Panchang Calendar
+                                    </h3>
+                                    <p class="text-gray-600 mb-4">
+                                        View detailed panchang for any date
+                                    </p>
+                                    <button
+                                        class="bg-yellow-600 text-white px-6 py-2 rounded-full hover:bg-yellow-700 transition-colors">
+                                        View Calendar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Settings -->
+                            <div
+                                class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer"
+                                onclick="showPage('settings')">
+                                <div class="text-center">
+                                    <div
+                                        class="bg-gradient-to-br from-gray-500 to-gray-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                        <i
+                                            class="fas fa-cog text-white text-2xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3">
+                                        Settings
+                                    </h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Configure location, language and
+                                        preferences
+                                    </p>
+                                    <button
+                                        class="bg-gray-600 text-white px-6 py-2 rounded-full hover:bg-gray-700 transition-colors">
+                                        Open Settings
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KUNDLI FORM PAGE -->
+            <div id="kundli-form" class="page-hidden">
+                <div class="container mx-auto px-4 py-8">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="bg-white rounded-xl p-8 card-shadow">
+                            <div class="flex items-center mb-6">
+                                <button
+                                    onclick="showPage('home')"
+                                    class="mr-4 text-purple-600 hover:text-purple-800">
+                                    <i class="fas fa-arrow-left text-xl"></i>
+                                </button>
+                                <h2 class="text-2xl font-bold text-gray-800">
+                                    Create Kundli
+                                </h2>
+                            </div>
+
+                            <form class="space-y-6">
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        >Full Name</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                                        placeholder="Enter your full name" />
+                                </div>
+
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-2"
+                                            >Date of Birth</label
+                                        >
+                                        <input
+                                            type="date"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" />
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-2"
+                                            >Time of Birth</label
+                                        >
+                                        <input
+                                            type="time"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        >Place of Birth</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                                        placeholder="City, State, Country" />
+                                </div>
+
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-2"
+                                            >Latitude</label
+                                        >
+                                        <input
+                                            type="number"
+                                            step="0.0001"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                                            placeholder="26.0685" />
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-2"
+                                            >Longitude</label
+                                        >
+                                        <input
+                                            type="number"
+                                            step="0.0001"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                                            placeholder="83.1840" />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        >Gender</label
+                                    >
+                                    <select
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </select>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold">
+                                    Generate Kundli
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MATCHING FORM PAGE -->
+            <div id="matching-form" class="page-hidden">
+                <div class="container mx-auto px-4 py-8">
+                    <div class="max-w-4xl mx-auto">
+                        <div class="bg-white rounded-xl p-8 card-shadow">
+                            <div class="flex items-center mb-6">
+                                <button
+                                    onclick="showPage('home')"
+                                    class="mr-4 text-red-600 hover:text-red-800">
+                                    <i class="fas fa-arrow-left text-xl"></i>
+                                </button>
+                                <h2 class="text-2xl font-bold text-gray-800">
+                                    Kundli Matching
+                                </h2>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <!-- Male Details -->
+                                <div>
+                                    <h3
+                                        class="text-lg font-semibold mb-4 text-blue-600">
+                                        Male Details
+                                    </h3>
+                                    <div class="space-y-4">
+                                        <input
+                                            type="text"
+                                            class="w-full p-3 border border-gray-300 rounded-lg"
+                                            placeholder="Full Name" />
+                                        <input
+                                            type="date"
+                                            class="w-full p-3 border border-gray-300 rounded-lg" />
+                                        <input
+                                            type="time"
+                                            class="w-full p-3 border border-gray-300 rounded-lg" />
+                                        <input
+                                            type="text"
+                                            class="w-full p-3 border border-gray-300 rounded-lg"
+                                            placeholder="Birth Place" />
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <input
+                                                type="number"
+                                                step="0.0001"
+                                                class="w-full p-3 border border-gray-300 rounded-lg"
+                                                placeholder="Latitude" />
+                                            <input
+                                                type="number"
+                                                step="0.0001"
+                                                class="w-full p-3 border border-gray-300 rounded-lg"
+                                                placeholder="Longitude" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Female Details -->
+                                <div>
+                                    <h3
+                                        class="text-lg font-semibold mb-4 text-pink-600">
+                                        Female Details
+                                    </h3>
+                                    <div class="space-y-4">
+                                        <input
+                                            type="text"
+                                            class="w-full p-3 border border-gray-300 rounded-lg"
+                                            placeholder="Full Name" />
+                                        <input
+                                            type="date"
+                                            class="w-full p-3 border border-gray-300 rounded-lg" />
+                                        <input
+                                            type="time"
+                                            class="w-full p-3 border border-gray-300 rounded-lg" />
+                                        <input
+                                            type="text"
+                                            class="w-full p-3 border border-gray-300 rounded-lg"
+                                            placeholder="Birth Place" />
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <input
+                                                type="number"
+                                                step="0.0001"
+                                                class="w-full p-3 border border-gray-300 rounded-lg"
+                                                placeholder="Latitude" />
+                                            <input
+                                                type="number"
+                                                step="0.0001"
+                                                class="w-full p-3 border border-gray-300 rounded-lg"
+                                                placeholder="Longitude" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 text-center">
+                                <button
+                                    type="button"
+                                    class="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold">
+                                    Check Compatibility
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DASHA PAGE -->
+            <div id="dasha-page" class="page-hidden">
+                <div class="container mx-auto px-4 py-8">
+                    <div class="flex items-center mb-6">
+                        <button
+                            onclick="showPage('home')"
+                            class="mr-4 text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-arrow-left text-xl"></i>
+                        </button>
+                        <h2 class="text-2xl font-bold text-gray-800">
+                            Vimshottari Dasha
+                        </h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 card-shadow">
+                        <div class="overflow-x-auto">
+                            <table class="w-full table-auto">
+                                <thead class="bg-blue-50">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left text-sm font-semibold text-blue-800">
+                                            Mahadasha
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-left text-sm font-semibold text-blue-800">
+                                            Start Date
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-left text-sm font-semibold text-blue-800">
+                                            End Date
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-left text-sm font-semibold text-blue-800">
+                                            Duration
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-left text-sm font-semibold text-blue-800">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td
+                                            class="px-4 py-3 font-medium text-purple-600">
+                                            Jupiter (Guru)
+                                        </td>
+                                        <td class="px-4 py-3">15 Mar 2024</td>
+                                        <td class="px-4 py-3">15 Mar 2040</td>
+                                        <td class="px-4 py-3">16 Years</td>
+                                        <td class="px-4 py-3">
+                                            <button
+                                                onclick="showDashaDetails('jupiter')"
+                                                class="text-blue-600 hover:text-blue-800">
+                                                <i class="fas fa-eye"></i> View
+                                                Details
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td
+                                            class="px-4 py-3 font-medium text-red-600">
+                                            Saturn (Shani)
+                                        </td>
+                                        <td class="px-4 py-3">15 Mar 2040</td>
+                                        <td class="px-4 py-3">15 Mar 2059</td>
+                                        <td class="px-4 py-3">19 Years</td>
+                                        <td class="px-4 py-3">
+                                            <button
+                                                onclick="showDashaDetails('saturn')"
+                                                class="text-blue-600 hover:text-blue-800">
+                                                <i class="fas fa-eye"></i> View
+                                                Details
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td
+                                            class="px-4 py-3 font-medium text-green-600">
+                                            Mercury (Budh)
+                                        </td>
+                                        <td class="px-4 py-3">15 Mar 2059</td>
+                                        <td class="px-4 py-3">15 Mar 2076</td>
+                                        <td class="px-4 py-3">17 Years</td>
+                                        <td class="px-4 py-3">
+                                            <button
+                                                onclick="showDashaDetails('mercury')"
+                                                class="text-blue-600 hover:text-blue-800">
+                                                <i class="fas fa-eye"></i> View
+                                                Details
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-8 p-6 bg-blue-50 rounded-lg">
+                            <h3
+                                class="text-lg font-semibold text-blue-800 mb-3">
+                                Current Running Dasha
+                            </h3>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600">
+                                        Mahadasha
+                                    </p>
+                                    <p class="font-semibold text-purple-600">
+                                        Jupiter
+                                    </p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600">
+                                        Antardasha
+                                    </p>
+                                    <p class="font-semibold text-orange-600">
+                                        Venus
+                                    </p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600">
+                                        Pratyantardasha
+                                    </p>
+                                    <p class="font-semibold text-green-600">
+                                        Mars
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHALADESH PAGE -->
+            <div id="phaladesh-page" class="page-hidden">
+                <div class="container mx-auto px-4 py-8">
+                    <div class="flex items-center mb-6">
+                        <button
+                            onclick="showPage('home')"
+                            class="mr-4 text-green-600 hover:text-green-800">
+                            <i class="fas fa-arrow-left text-xl"></i>
+                        </button>
+                        <h2 class="text-2xl font-bold text-gray-800">
+                            Phaladesh (Predictions)
+                        </h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- General Predictions -->
                         <div class="bg-white rounded-xl p-6 card-shadow">
-                            <h3 class="font-semibold text-lg mb-4 text-purple-700">Date & Time</h3>
+                            <h3
+                                class="text-xl font-semibold mb-4 text-purple-600">
+                                General Life Predictions
+                            </h3>
+                            <div class="prose max-w-none">
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Your 10th house Mars suggests careers in
+                                    engineering, technology, defense, or
+                                    management. You have natural leadership
+                                    qualities and will excel in positions of
+                                    authority.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Financial stability will come after the age
+                                    of 30. Multiple income sources are
+                                    indicated. Investments in property and
+                                    stocks will prove beneficial during
+                                    Jupiter's transit.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Avoid partnerships in business during
+                                    Saturn's transit. Focus on skill development
+                                    and higher education for better career
+                                    prospects.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Career Predictions -->
+                        <div class="bg-white rounded-xl p-6 card-shadow">
+                            <h3
+                                class="text-xl font-semibold mb-4 text-blue-600">
+                                Career & Finance
+                            </h3>
+                            <div class="prose max-w-none">
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Your birth chart indicates a strong Jupiter
+                                    in the 1st house, which blesses you with
+                                    wisdom, knowledge, and spiritual
+                                    inclinations. This placement suggests that
+                                    you are naturally optimistic and have a
+                                    philosophical approach to life.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Mars in the 10th house indicates strong
+                                    career prospects and leadership abilities.
+                                    You are likely to achieve success through
+                                    your own efforts and determination. Your
+                                    professional life will see significant
+                                    growth between the ages of 28-35.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Venus in the 7th house suggests a harmonious
+                                    married life and good relationships with
+                                    partners. You may attract a spouse who is
+                                    artistic or involved in creative fields.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Health Predictions -->
+                        <div class="bg-white rounded-xl p-6 card-shadow">
+                            <h3 class="text-xl font-semibold mb-4 text-red-600">
+                                Health & Well-being
+                            </h3>
+                            <div class="prose max-w-none">
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Sun in the 6th house indicates good vitality
+                                    and resistance to diseases. However, you
+                                    should be cautious about digestive issues
+                                    and maintain a balanced diet.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Regular exercise and yoga practice will keep
+                                    you healthy. Avoid stress-related activities
+                                    during Mercury's unfavorable transit.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Wearing a yellow sapphire during Jupiter's
+                                    mahadasha will enhance your immunity and
+                                    overall well-being.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Marriage & Family -->
+                        <div class="bg-white rounded-xl p-6 card-shadow">
+                            <h3
+                                class="text-xl font-semibold mb-4 text-pink-600">
+                                Marriage & Family
+                            </h3>
+                            <div class="prose max-w-none">
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Venus in the 7th house indicates a loving
+                                    and supportive spouse. Marriage is likely to
+                                    happen between ages 25-28. Your life partner
+                                    will be understanding and contribute to your
+                                    success.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Children will be a source of joy and pride.
+                                    Your first child is likely to be
+                                    academically inclined and may pursue higher
+                                    studies abroad.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Family relationships will be harmonious.
+                                    Parents will be supportive of your decisions
+                                    and contribute to your growth.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANCHANG CALENDAR PAGE -->
+            <div id="panchang-calendar" class="page-hidden">
+                <div class="container mx-auto px-4 py-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center">
+                            <button
+                                onclick="showPage('home')"
+                                class="mr-4 text-yellow-600 hover:text-yellow-800">
+                                <i class="fas fa-arrow-left text-xl"></i>
+                            </button>
+                            <h2 class="text-2xl font-bold text-gray-800">
+                                Panchang Calendar
+                            </h2>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <button
+                                onclick="changeMonth(-1)"
+                                class="p-2 text-gray-600 hover:text-gray-800">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <h3
+                                id="calendar-month-year"
+                                class="text-lg font-semibold">
+                                August 2025
+                            </h3>
+                            <button
+                                onclick="changeMonth(1)"
+                                class="p-2 text-gray-600 hover:text-gray-800">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 card-shadow">
+                        <!-- Calendar Header -->
+                        <div class="calendar-grid mb-2">
+                            <div
+                                class="text-center font-semibold text-red-600 p-3">
+                                Sun
+                            </div>
+                            <div
+                                class="text-center font-semibold text-gray-700 p-3">
+                                Mon
+                            </div>
+                            <div
+                                class="text-center font-semibold text-gray-700 p-3">
+                                Tue
+                            </div>
+                            <div
+                                class="text-center font-semibold text-gray-700 p-3">
+                                Wed
+                            </div>
+                            <div
+                                class="text-center font-semibold text-gray-700 p-3">
+                                Thu
+                            </div>
+                            <div
+                                class="text-center font-semibold text-gray-700 p-3">
+                                Fri
+                            </div>
+                            <div
+                                class="text-center font-semibold text-blue-600 p-3">
+                                Sat
+                            </div>
+                        </div>
+
+                        <!-- Calendar Days -->
+                        <div class="calendar-grid bg-gray-100 rounded-lg">
+                            <!-- Week 1 -->
+                            <div class="bg-gray-100 p-3"></div>
+                            <div class="bg-gray-100 p-3"></div>
+                            <div class="bg-gray-100 p-3"></div>
+                            <div class="bg-gray-100 p-3"></div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-01')">
+                                <div class="font-semibold">1</div>
+                                <div class="text-xs text-purple-600">
+                                    Purnima
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-02')">
+                                <div class="font-semibold">2</div>
+                                <div class="text-xs text-orange-600">
+                                    Pratipada
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-03')">
+                                <div class="font-semibold">3</div>
+                                <div class="text-xs text-green-600">
+                                    Dwitiya
+                                </div>
+                            </div>
+
+                            <!-- Week 2 -->
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-04')">
+                                <div class="font-semibold text-red-600">4</div>
+                                <div class="text-xs text-blue-600">Tritiya</div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-05')">
+                                <div class="font-semibold">5</div>
+                                <div class="text-xs text-purple-600">
+                                    Chaturthi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-06')">
+                                <div class="font-semibold">6</div>
+                                <div class="text-xs text-orange-600">
+                                    Panchami
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-07')">
+                                <div class="font-semibold">7</div>
+                                <div class="text-xs text-green-600">
+                                    Shashthi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-08')">
+                                <div class="font-semibold">8</div>
+                                <div class="text-xs text-red-600">Saptami</div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-09')">
+                                <div class="font-semibold">9</div>
+                                <div class="text-xs text-blue-600">Ashtami</div>
+                            </div>
+                            <div
+                                class="calendar-day bg-blue-100 border p-3 hover:bg-blue-200 cursor-pointer"
+                                onclick="showDateDetails('2025-08-09')">
+                                <div class="font-semibold text-blue-700">9</div>
+                                <div class="text-xs text-blue-700">Today</div>
+                            </div>
+
+                            <!-- Week 3 -->
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-11')">
+                                <div class="font-semibold text-red-600">11</div>
+                                <div class="text-xs text-orange-600">
+                                    Dashami
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-12')">
+                                <div class="font-semibold">12</div>
+                                <div class="text-xs text-green-600">
+                                    Ekadashi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-13')">
+                                <div class="font-semibold">13</div>
+                                <div class="text-xs text-purple-600">
+                                    Dwadashi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-14')">
+                                <div class="font-semibold">14</div>
+                                <div class="text-xs text-red-600">
+                                    Trayodashi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-15')">
+                                <div class="font-semibold">15</div>
+                                <div class="text-xs text-orange-600">
+                                    Chaturdashi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-16')">
+                                <div class="font-semibold">16</div>
+                                <div class="text-xs text-green-600">
+                                    Amavasya
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-17')">
+                                <div class="font-semibold text-blue-600">
+                                    17
+                                </div>
+                                <div class="text-xs text-blue-600">
+                                    Pratipada
+                                </div>
+                            </div>
+
+                            <!-- Week 4 -->
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-18')">
+                                <div class="font-semibold text-red-600">18</div>
+                                <div class="text-xs text-purple-600">
+                                    Dwitiya
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-19')">
+                                <div class="font-semibold">19</div>
+                                <div class="text-xs text-orange-600">
+                                    Tritiya
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-20')">
+                                <div class="font-semibold">20</div>
+                                <div class="text-xs text-green-600">
+                                    Chaturthi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-21')">
+                                <div class="font-semibold">21</div>
+                                <div class="text-xs text-red-600">Panchami</div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-22')">
+                                <div class="font-semibold">22</div>
+                                <div class="text-xs text-blue-600">
+                                    Shashthi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-23')">
+                                <div class="font-semibold">23</div>
+                                <div class="text-xs text-purple-600">
+                                    Saptami
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-24')">
+                                <div class="font-semibold text-blue-600">
+                                    24
+                                </div>
+                                <div class="text-xs text-orange-600">
+                                    Ashtami
+                                </div>
+                            </div>
+
+                            <!-- Week 5 -->
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-25')">
+                                <div class="font-semibold text-red-600">25</div>
+                                <div class="text-xs text-green-600">Navami</div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-26')">
+                                <div class="font-semibold">26</div>
+                                <div class="text-xs text-red-600">Dashami</div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-27')">
+                                <div class="font-semibold">27</div>
+                                <div class="text-xs text-blue-600">
+                                    Ekadashi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-28')">
+                                <div class="font-semibold">28</div>
+                                <div class="text-xs text-purple-600">
+                                    Dwadashi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-29')">
+                                <div class="font-semibold">29</div>
+                                <div class="text-xs text-orange-600">
+                                    Trayodashi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-30')">
+                                <div class="font-semibold">30</div>
+                                <div class="text-xs text-green-600">
+                                    Chaturdashi
+                                </div>
+                            </div>
+                            <div
+                                class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                                onclick="showDateDetails('2025-08-31')">
+                                <div class="font-semibold text-blue-600">
+                                    31
+                                </div>
+                                <div class="text-xs text-red-600">Purnima</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="mt-6 bg-white rounded-xl p-4 card-shadow">
+                        <h3 class="font-semibold mb-3">Legend</h3>
+                        <div class="grid md:grid-cols-4 gap-4 text-sm">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-4 h-4 bg-purple-600 rounded mr-2"></div>
+                                <span>Purnima/Amavasya</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div
+                                    class="w-4 h-4 bg-orange-600 rounded mr-2"></div>
+                                <span>Special Tithi</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div
+                                    class="w-4 h-4 bg-green-600 rounded mr-2"></div>
+                                <span>Auspicious Day</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div
+                                    class="w-4 h-4 bg-red-600 rounded mr-2"></div>
+                                <span>Festival</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATE DETAILS PAGE -->
+            <div id="date-details" class="page-hidden">
+                <div class="container mx-auto px-4 py-8">
+                    <div class="flex items-center mb-6">
+                        <button
+                            onclick="showPage('panchang-calendar')"
+                            class="mr-4 text-yellow-600 hover:text-yellow-800">
+                            <i class="fas fa-arrow-left text-xl"></i>
+                        </button>
+                        <h2 class="text-2xl font-bold text-gray-800">
+                            Panchang Details
+                        </h2>
+                    </div>
+
+                    <div class="grid lg:grid-cols-2 gap-6">
+                        <!-- Date Info -->
+                        <div class="bg-white rounded-xl p-6 card-shadow">
+                            <h3
+                                class="text-xl font-semibold mb-4 text-purple-600">
+                                Date Information
+                            </h3>
                             <div class="space-y-3">
                                 <div class="flex justify-between">
                                     <span>Date:</span>
-                                    <span id="current-date" class="font-semibold">09 Aug 2025</span>
+                                    <span id="detail-date" class="font-semibold"
+                                        >09 August 2025</span
+                                    >
                                 </div>
                                 <div class="flex justify-between">
                                     <span>Day:</span>
-                                    <span id="current-day" class="font-semibold">Saturday</span>
+                                    <span class="font-semibold">Saturday</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span>Time:</span>
-                                    <span id="current-time" class="font-semibold pulse-animation">--:--:--</span>
+                                    <span>Hindu Month:</span>
+                                    <span class="font-semibold">Shravan</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span>Location:</span>
-                                    <span class="font-semibold text-sm">Azamgarh, UP</span>
+                                    <span>Paksha:</span>
+                                    <span class="font-semibold">Krishna</span>
                                 </div>
-                                <div class="flex justify-between text-xs text-gray-600">
-                                    <span>Lat: 26.0685°N</span>
-                                    <span>Long: 83.1840°E</span>
+                                <div class="flex justify-between">
+                                    <span>Season:</span>
+                                    <span class="font-semibold">Varsha</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Panchang Elements -->
                         <div class="bg-white rounded-xl p-6 card-shadow">
-                            <h3 class="font-semibold text-lg mb-4 text-purple-700">Panchang Elements</h3>
-                            <div class="space-y-3">
-                                <div class="flex justify-between">
+                            <h3
+                                class="text-xl font-semibold mb-4 text-blue-600">
+                                Panchang Elements
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
                                     <span>Tithi:</span>
-                                    <span class="font-semibold text-orange-600">Chaturthi</span>
+                                    <div class="text-right">
+                                        <div
+                                            class="font-semibold text-orange-600">
+                                            Chaturthi
+                                        </div>
+                                        <div class="text-xs text-gray-500">
+                                            Till 14:23
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="flex justify-between">
+                                <div class="flex justify-between items-center">
                                     <span>Nakshatra:</span>
-                                    <span class="font-semibold text-green-600">Rohini</span>
+                                    <div class="text-right">
+                                        <div
+                                            class="font-semibold text-green-600">
+                                            Rohini
+                                        </div>
+                                        <div class="text-xs text-gray-500">
+                                            Till 18:45
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="flex justify-between">
+                                <div class="flex justify-between items-center">
                                     <span>Yoga:</span>
-                                    <span class="font-semibold text-blue-600">Siddha</span>
+                                    <div class="text-right">
+                                        <div
+                                            class="font-semibold text-blue-600">
+                                            Siddha
+                                        </div>
+                                        <div class="text-xs text-gray-500">
+                                            Till 12:30
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="flex justify-between">
+                                <div class="flex justify-between items-center">
                                     <span>Karana:</span>
-                                    <span class="font-semibold text-red-600">Vanija</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span>Rashi:</span>
-                                    <span class="font-semibold text-purple-600">Vrishabha</span>
+                                    <div class="text-right">
+                                        <div class="font-semibold text-red-600">
+                                            Vanija
+                                        </div>
+                                        <div class="text-xs text-gray-500">
+                                            Till 14:23
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Gati Pal -->
+                        <!-- Sun & Moon Times -->
                         <div class="bg-white rounded-xl p-6 card-shadow">
-                            <h3 class="font-semibold text-lg mb-4 text-purple-700">Muhurat & Timings</h3>
+                            <h3
+                                class="text-xl font-semibold mb-4 text-yellow-600">
+                                Sun & Moon Timings
+                            </h3>
                             <div class="space-y-3">
                                 <div class="flex justify-between">
                                     <span>Sunrise:</span>
-                                    <span class="font-semibold text-yellow-600">05:42 AM</span>
+                                    <span class="font-semibold text-yellow-600"
+                                        >05:42 AM</span
+                                    >
                                 </div>
                                 <div class="flex justify-between">
                                     <span>Sunset:</span>
-                                    <span class="font-semibold text-orange-600">06:48 PM</span>
+                                    <span class="font-semibold text-orange-600"
+                                        >06:48 PM</span
+                                    >
                                 </div>
                                 <div class="flex justify-between">
                                     <span>Moonrise:</span>
-                                    <span class="font-semibold text-blue-400">09:23 AM</span>
+                                    <span class="font-semibold text-blue-400"
+                                        >09:23 AM</span
+                                    >
                                 </div>
                                 <div class="flex justify-between">
                                     <span>Moonset:</span>
-                                    <span class="font-semibold text-indigo-600">10:45 PM</span>
+                                    <span class="font-semibold text-indigo-600"
+                                        >10:45 PM</span
+                                    >
                                 </div>
-                                <div class="mt-4 p-3 bg-green-100 rounded-lg">
-                                    <div class="flex justify-between text-sm">
-                                        <span>Shubh Muhurat:</span>
-                                        <span class="font-semibold text-green-700">10:30-11:45</span>
+                                <div class="flex justify-between">
+                                    <span>Day Duration:</span>
+                                    <span class="font-semibold">13h 06m</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Night Duration:</span>
+                                    <span class="font-semibold">10h 54m</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Muhurat -->
+                        <div class="bg-white rounded-xl p-6 card-shadow">
+                            <h3
+                                class="text-xl font-semibold mb-4 text-green-600">
+                                Auspicious Timings
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="p-3 bg-green-100 rounded-lg">
+                                    <div
+                                        class="flex justify-between items-center">
+                                        <span
+                                            class="font-semibold text-green-700"
+                                            >Abhijit Muhurat</span
+                                        >
+                                        <span class="text-green-700"
+                                            >11:54 - 12:48</span
+                                        >
                                     </div>
+                                    <p class="text-sm text-green-600 mt-1">
+                                        Best time for important work
+                                    </p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feature Buttons -->
-            <div class="py-12 bg-gray-50">
-                <div class="container mx-auto px-4">
-                    <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Astrology Services</h2>
-                    
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Kundli Creation -->
-                        <div class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer" onclick="showPage('kundli-form')">
-                            <div class="text-center">
-                                <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                    <i class="fas fa-chart-pie text-white text-2xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold mb-3">Kundli Creation</h3>
-                                <p class="text-gray-600 mb-4">Generate your complete birth chart with detailed planetary positions</p>
-                                <button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors">
-                                    Create Kundli
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Kundli Matching -->
-                        <div class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer" onclick="showPage('matching-form')">
-                            <div class="text-center">
-                                <div class="bg-gradient-to-br from-red-500 to-pink-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                    <i class="fas fa-heart text-white text-2xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold mb-3">Kundli Matching</h3>
-                                <p class="text-gray-600 mb-4">Check compatibility between partners for marriage</p>
-                                <button class="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 transition-colors">
-                                    Check Matching
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Dasha Analysis -->
-                        <div class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer" onclick="showPage('dasha-page')">
-                            <div class="text-center">
-                                <div class="bg-gradient-to-br from-blue-500 to-teal-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                    <i class="fas fa-clock text-white text-2xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold mb-3">Dasha Analysis</h3>
-                                <p class="text-gray-600 mb-4">Vimshottari Dasha periods and their effects</p>
-                                <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors">
-                                    View Dasha
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Phaladesh -->
-                        <div class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer" onclick="showPage('phaladesh-page')">
-                            <div class="text-center">
-                                <div class="bg-gradient-to-br from-green-500 to-emerald-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                    <i class="fas fa-scroll text-white text-2xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold mb-3">Phaladesh</h3>
-                                <p class="text-gray-600 mb-4">Detailed predictions based on your birth chart</p>
-                                <button class="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-colors">
-                                    Get Predictions
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Panchang Calendar -->
-                        <div class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer" onclick="showPage('panchang-calendar')">
-                            <div class="text-center">
-                                <div class="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                    <i class="fas fa-calendar-alt text-white text-2xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold mb-3">Panchang Calendar</h3>
-                                <p class="text-gray-600 mb-4">View detailed panchang for any date</p>
-                                <button class="bg-yellow-600 text-white px-6 py-2 rounded-full hover:bg-yellow-700 transition-colors">
-                                    View Calendar
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Settings -->
-                        <div class="feature-card bg-white rounded-xl p-6 card-shadow cursor-pointer" onclick="showPage('settings')">
-                            <div class="text-center">
-                                <div class="bg-gradient-to-br from-gray-500 to-gray-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                    <i class="fas fa-cog text-white text-2xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold mb-3">Settings</h3>
-                                <p class="text-gray-600 mb-4">Configure location, language and preferences</p>
-                                <button class="bg-gray-600 text-white px-6 py-2 rounded-full hover:bg-gray-700 transition-colors">
-                                    Open Settings
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- KUNDLI FORM PAGE -->
-        <div id="kundli-form" class="page-hidden">
-            <div class="container mx-auto px-4 py-8">
-                <div class="max-w-2xl mx-auto">
-                    <div class="bg-white rounded-xl p-8 card-shadow">
-                        <div class="flex items-center mb-6">
-                            <button onclick="showPage('home')" class="mr-4 text-purple-600 hover:text-purple-800">
-                                <i class="fas fa-arrow-left text-xl"></i>
-                            </button>
-                            <h2 class="text-2xl font-bold text-gray-800">Create Kundli</h2>
-                        </div>
-
-                        <form class="space-y-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                                <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" placeholder="Enter your full name">
-                            </div>
-
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
-                                    <input type="date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Time of Birth</label>
-                                    <input type="time" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Place of Birth</label>
-                                <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" placeholder="City, State, Country">
-                            </div>
-
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
-                                    <input type="number" step="0.0001" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" placeholder="26.0685">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
-                                    <input type="number" step="0.0001" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" placeholder="83.1840">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
-                                <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                </select>
-                            </div>
-
-                            <button type="button" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold">
-                                Generate Kundli
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- MATCHING FORM PAGE -->
-        <div id="matching-form" class="page-hidden">
-            <div class="container mx-auto px-4 py-8">
-                <div class="max-w-4xl mx-auto">
-                    <div class="bg-white rounded-xl p-8 card-shadow">
-                        <div class="flex items-center mb-6">
-                            <button onclick="showPage('home')" class="mr-4 text-red-600 hover:text-red-800">
-                                <i class="fas fa-arrow-left text-xl"></i>
-                            </button>
-                            <h2 class="text-2xl font-bold text-gray-800">Kundli Matching</h2>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <!-- Male Details -->
-                            <div>
-                                <h3 class="text-lg font-semibold mb-4 text-blue-600">Male Details</h3>
-                                <div class="space-y-4">
-                                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Full Name">
-                                    <input type="date" class="w-full p-3 border border-gray-300 rounded-lg">
-                                    <input type="time" class="w-full p-3 border border-gray-300 rounded-lg">
-                                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Birth Place">
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <input type="number" step="0.0001" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Latitude">
-                                        <input type="number" step="0.0001" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Longitude">
+                                <div class="p-3 bg-blue-100 rounded-lg">
+                                    <div
+                                        class="flex justify-between items-center">
+                                        <span
+                                            class="font-semibold text-blue-700"
+                                            >Vijaya Muhurat</span
+                                        >
+                                        <span class="text-blue-700"
+                                            >14:24 - 15:18</span
+                                        >
                                     </div>
+                                    <p class="text-sm text-blue-600 mt-1">
+                                        Time for victory and success
+                                    </p>
                                 </div>
-                            </div>
-
-                            <!-- Female Details -->
-                            <div>
-                                <h3 class="text-lg font-semibold mb-4 text-pink-600">Female Details</h3>
-                                <div class="space-y-4">
-                                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Full Name">
-                                    <input type="date" class="w-full p-3 border border-gray-300 rounded-lg">
-                                    <input type="time" class="w-full p-3 border border-gray-300 rounded-lg">
-                                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Birth Place">
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <input type="number" step="0.0001" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Latitude">
-                                        <input type="number" step="0.0001" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Longitude">
+                                <div class="p-3 bg-yellow-100 rounded-lg">
+                                    <div
+                                        class="flex justify-between items-center">
+                                        <span
+                                            class="font-semibold text-yellow-700"
+                                            >Godhuli Muhurat</span
+                                        >
+                                        <span class="text-yellow-700"
+                                            >18:30 - 19:15</span
+                                        >
                                     </div>
+                                    <p class="text-sm text-yellow-600 mt-1">
+                                        Evening prayers time
+                                    </p>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="mt-8 text-center">
-                            <button type="button" class="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold">
-                                Check Compatibility
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DASHA PAGE -->
-        <div id="dasha-page" class="page-hidden">
-            <div class="container mx-auto px-4 py-8">
-                <div class="flex items-center mb-6">
-                    <button onclick="showPage('home')" class="mr-4 text-blue-600 hover:text-blue-800">
-                        <i class="fas fa-arrow-left text-xl"></i>
-                    </button>
-                    <h2 class="text-2xl font-bold text-gray-800">Vimshottari Dasha</h2>
-                </div>
-
-                <div class="bg-white rounded-xl p-8 card-shadow">
-                    <div class="overflow-x-auto">
-                        <table class="w-full table-auto">
-                            <thead class="bg-blue-50">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-blue-800">Mahadasha</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-blue-800">Start Date</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-blue-800">End Date</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-blue-800">Duration</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-blue-800">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-4 py-3 font-medium text-purple-600">Jupiter (Guru)</td>
-                                    <td class="px-4 py-3">15 Mar 2024</td>
-                                    <td class="px-4 py-3">15 Mar 2040</td>
-                                    <td class="px-4 py-3">16 Years</td>
-                                    <td class="px-4 py-3">
-                                        <button onclick="showDashaDetails('jupiter')" class="text-blue-600 hover:text-blue-800">
-                                            <i class="fas fa-eye"></i> View Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-4 py-3 font-medium text-red-600">Saturn (Shani)</td>
-                                    <td class="px-4 py-3">15 Mar 2040</td>
-                                    <td class="px-4 py-3">15 Mar 2059</td>
-                                    <td class="px-4 py-3">19 Years</td>
-                                    <td class="px-4 py-3">
-                                        <button onclick="showDashaDetails('saturn')" class="text-blue-600 hover:text-blue-800">
-                                            <i class="fas fa-eye"></i> View Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-4 py-3 font-medium text-green-600">Mercury (Budh)</td>
-                                    <td class="px-4 py-3">15 Mar 2059</td>
-                                    <td class="px-4 py-3">15 Mar 2076</td>
-                                    <td class="px-4 py-3">17 Years</td>
-                                    <td class="px-4 py-3">
-                                        <button onclick="showDashaDetails('mercury')" class="text-blue-600 hover:text-blue-800">
-                                            <i class="fas fa-eye"></i> View Details
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
 
-                    <div class="mt-8 p-6 bg-blue-50 rounded-lg">
-                        <h3 class="text-lg font-semibold text-blue-800 mb-3">Current Running Dasha</h3>
+                    <!-- Inauspicious Times -->
+                    <div class="mt-6 bg-white rounded-xl p-6 card-shadow">
+                        <h3 class="text-xl font-semibold mb-4 text-red-600">
+                            Inauspicious Timings (Avoid)
+                        </h3>
                         <div class="grid md:grid-cols-3 gap-4">
-                            <div class="text-center">
-                                <p class="text-sm text-gray-600">Mahadasha</p>
-                                <p class="font-semibold text-purple-600">Jupiter</p>
+                            <div class="p-3 bg-red-100 rounded-lg text-center">
+                                <div class="font-semibold text-red-700">
+                                    Rahu Kalam
+                                </div>
+                                <div class="text-red-700">09:00 - 10:30</div>
                             </div>
-                            <div class="text-center">
-                                <p class="text-sm text-gray-600">Antardasha</p>
-                                <p class="font-semibold text-orange-600">Venus</p>
+                            <div
+                                class="p-3 bg-orange-100 rounded-lg text-center">
+                                <div class="font-semibold text-orange-700">
+                                    Yamaganda
+                                </div>
+                                <div class="text-orange-700">13:30 - 15:00</div>
                             </div>
-                            <div class="text-center">
-                                <p class="text-sm text-gray-600">Pratyantardasha</p>
-                                <p class="font-semibold text-green-600">Mars</p>
+                            <div class="p-3 bg-gray-100 rounded-lg text-center">
+                                <div class="font-semibold text-gray-700">
+                                    Gulika Kalam
+                                </div>
+                                <div class="text-gray-700">16:30 - 18:00</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- PHALADESH PAGE -->
-        <div id="phaladesh-page" class="page-hidden">
-            <div class="container mx-auto px-4 py-8">
-                <div class="flex items-center mb-6">
-                    <button onclick="showPage('home')" class="mr-4 text-green-600 hover:text-green-800">
-                        <i class="fas fa-arrow-left text-xl"></i>
-                    </button>
-                    <h2 class="text-2xl font-bold text-gray-800">Phaladesh (Predictions)</h2>
-                </div>
-
-                <div class="space-y-6">
-                    <!-- General Predictions -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-purple-600">General Life Predictions</h3>
-                        <div class="prose max-w-none">
-                            <p class="text-gray-700 leading-relaxed mb-4">
-                                Your 10th house Mars suggests careers in engineering, technology, defense, or management. You have natural leadership qualities and will excel in positions of authority.
-                            </p>
-                            <p class="text-gray-700 leading-relaxed mb-4">
-                                Financial stability will come after the age of 30. Multiple income sources are indicated. Investments in property and stocks will prove beneficial during Jupiter's transit.
-                            </p>
-                            <p class="text-gray-700 leading-relaxed">
-                                Avoid partnerships in business during Saturn's transit. Focus on skill development and higher education for better career prospects.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Health Predictions -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-red-600">Health & Well-being</h3>
-                        <div class="prose max-w-none">
-                            <p class="text-gray-700 leading-relaxed mb-4">
-                                Sun in the 6th house indicates good vitality and resistance to diseases. However, you should be cautious about digestive issues and maintain a balanced diet.
-                            </p>
-                            <p class="text-gray-700 leading-relaxed mb-4">
-                                Regular exercise and yoga practice will keep you healthy. Avoid stress-related activities during Mercury's unfavorable transit.
-                            </p>
-                            <p class="text-gray-700 leading-relaxed">
-                                Wearing a yellow sapphire during Jupiter's mahadasha will enhance your immunity and overall well-being.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Marriage & Family -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-pink-600">Marriage & Family</h3>
-                        <div class="prose max-w-none">
-                            <p class="text-gray-700 leading-relaxed mb-4">
-                                Venus in the 7th house indicates a loving and supportive spouse. Marriage is likely to happen between ages 25-28. Your life partner will be understanding and contribute to your success.
-                            </p>
-                            <p class="text-gray-700 leading-relaxed mb-4">
-                                Children will be a source of joy and pride. Your first child is likely to be academically inclined and may pursue higher studies abroad.
-                            </p>
-                            <p class="text-gray-700 leading-relaxed">
-                                Family relationships will be harmonious. Parents will be supportive of your decisions and contribute to your growth.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PANCHANG CALENDAR PAGE -->
-        <div id="panchang-calendar" class="page-hidden">
-            <div class="container mx-auto px-4 py-8">
-                <div class="flex items-center justify-between mb-6">
-                    <div class="flex items-center">
-                        <button onclick="showPage('home')" class="mr-4 text-yellow-600 hover:text-yellow-800">
+            <!-- SETTINGS PAGE -->
+            <div id="settings" class="page-hidden">
+                <div class="container mx-auto px-4 py-8">
+                    <div class="flex items-center mb-6">
+                        <button
+                            onclick="showPage('home')"
+                            class="mr-4 text-gray-600 hover:text-gray-800">
                             <i class="fas fa-arrow-left text-xl"></i>
                         </button>
-                        <h2 class="text-2xl font-bold text-gray-800">Panchang Calendar</h2>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <button onclick="changeMonth(-1)" class="p-2 text-gray-600 hover:text-gray-800">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <h3 id="calendar-month-year" class="text-lg font-semibold">August 2025</h3>
-                        <button onclick="changeMonth(1)" class="p-2 text-gray-600 hover:text-gray-800">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl p-6 card-shadow">
-                    <!-- Calendar Header -->
-                    <div class="calendar-grid mb-2">
-                        <div class="text-center font-semibold text-red-600 p-3">Sun</div>
-                        <div class="text-center font-semibold text-gray-700 p-3">Mon</div>
-                        <div class="text-center font-semibold text-gray-700 p-3">Tue</div>
-                        <div class="text-center font-semibold text-gray-700 p-3">Wed</div>
-                        <div class="text-center font-semibold text-gray-700 p-3">Thu</div>
-                        <div class="text-center font-semibold text-gray-700 p-3">Fri</div>
-                        <div class="text-center font-semibold text-blue-600 p-3">Sat</div>
+                        <h2 class="text-2xl font-bold text-gray-800">
+                            Settings
+                        </h2>
                     </div>
 
-                    <!-- Calendar Days -->
-                    <div class="calendar-grid bg-gray-100 rounded-lg">
-                        <!-- Week 1 -->
-                        <div class="bg-gray-100 p-3"></div>
-                        <div class="bg-gray-100 p-3"></div>
-                        <div class="bg-gray-100 p-3"></div>
-                        <div class="bg-gray-100 p-3"></div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-01')">
-                            <div class="font-semibold">1</div>
-                            <div class="text-xs text-purple-600">Purnima</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-02')">
-                            <div class="font-semibold">2</div>
-                            <div class="text-xs text-orange-600">Pratipada</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-03')">
-                            <div class="font-semibold">3</div>
-                            <div class="text-xs text-green-600">Dwitiya</div>
-                        </div>
-
-                        <!-- Week 2 -->
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-04')">
-                            <div class="font-semibold text-red-600">4</div>
-                            <div class="text-xs text-blue-600">Tritiya</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-05')">
-                            <div class="font-semibold">5</div>
-                            <div class="text-xs text-purple-600">Chaturthi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-06')">
-                            <div class="font-semibold">6</div>
-                            <div class="text-xs text-orange-600">Panchami</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-07')">
-                            <div class="font-semibold">7</div>
-                            <div class="text-xs text-green-600">Shashthi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-08')">
-                            <div class="font-semibold">8</div>
-                            <div class="text-xs text-red-600">Saptami</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-09')">
-                            <div class="font-semibold">9</div>
-                            <div class="text-xs text-blue-600">Ashtami</div>
-                        </div>
-                        <div class="calendar-day bg-blue-100 border p-3 hover:bg-blue-200 cursor-pointer" onclick="showDateDetails('2025-08-09')">
-                            <div class="font-semibold text-blue-700">9</div>
-                            <div class="text-xs text-blue-700">Today</div>
-                        </div>
-
-                        <!-- Week 3 -->
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-11')">
-                            <div class="font-semibold text-red-600">11</div>
-                            <div class="text-xs text-orange-600">Dashami</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-12')">
-                            <div class="font-semibold">12</div>
-                            <div class="text-xs text-green-600">Ekadashi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-13')">
-                            <div class="font-semibold">13</div>
-                            <div class="text-xs text-purple-600">Dwadashi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-14')">
-                            <div class="font-semibold">14</div>
-                            <div class="text-xs text-red-600">Trayodashi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-15')">
-                            <div class="font-semibold">15</div>
-                            <div class="text-xs text-orange-600">Chaturdashi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-16')">
-                            <div class="font-semibold">16</div>
-                            <div class="text-xs text-green-600">Amavasya</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-17')">
-                            <div class="font-semibold text-blue-600">17</div>
-                            <div class="text-xs text-blue-600">Pratipada</div>
-                        </div>
-
-                        <!-- Week 4 -->
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-18')">
-                            <div class="font-semibold text-red-600">18</div>
-                            <div class="text-xs text-purple-600">Dwitiya</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-19')">
-                            <div class="font-semibold">19</div>
-                            <div class="text-xs text-orange-600">Tritiya</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-20')">
-                            <div class="font-semibold">20</div>
-                            <div class="text-xs text-green-600">Chaturthi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-21')">
-                            <div class="font-semibold">21</div>
-                            <div class="text-xs text-red-600">Panchami</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-22')">
-                            <div class="font-semibold">22</div>
-                            <div class="text-xs text-blue-600">Shashthi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-23')">
-                            <div class="font-semibold">23</div>
-                            <div class="text-xs text-purple-600">Saptami</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-24')">
-                            <div class="font-semibold text-blue-600">24</div>
-                            <div class="text-xs text-orange-600">Ashtami</div>
-                        </div>
-
-                        <!-- Week 5 -->
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-25')">
-                            <div class="font-semibold text-red-600">25</div>
-                            <div class="text-xs text-green-600">Navami</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-26')">
-                            <div class="font-semibold">26</div>
-                            <div class="text-xs text-red-600">Dashami</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-27')">
-                            <div class="font-semibold">27</div>
-                            <div class="text-xs text-blue-600">Ekadashi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-28')">
-                            <div class="font-semibold">28</div>
-                            <div class="text-xs text-purple-600">Dwadashi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-29')">
-                            <div class="font-semibold">29</div>
-                            <div class="text-xs text-orange-600">Trayodashi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-30')">
-                            <div class="font-semibold">30</div>
-                            <div class="text-xs text-green-600">Chaturdashi</div>
-                        </div>
-                        <div class="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer" onclick="showDateDetails('2025-08-31')">
-                            <div class="font-semibold text-blue-600">31</div>
-                            <div class="text-xs text-red-600">Purnima</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Legend -->
-                <div class="mt-6 bg-white rounded-xl p-4 card-shadow">
-                    <h3 class="font-semibold mb-3">Legend</h3>
-                    <div class="grid md:grid-cols-4 gap-4 text-sm">
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 bg-purple-600 rounded mr-2"></div>
-                            <span>Purnima/Amavasya</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 bg-orange-600 rounded mr-2"></div>
-                            <span>Special Tithi</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 bg-green-600 rounded mr-2"></div>
-                            <span>Auspicious Day</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 bg-red-600 rounded mr-2"></div>
-                            <span>Festival</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DATE DETAILS PAGE -->
-        <div id="date-details" class="page-hidden">
-            <div class="container mx-auto px-4 py-8">
-                <div class="flex items-center mb-6">
-                    <button onclick="showPage('panchang-calendar')" class="mr-4 text-yellow-600 hover:text-yellow-800">
-                        <i class="fas fa-arrow-left text-xl"></i>
-                    </button>
-                    <h2 class="text-2xl font-bold text-gray-800">Panchang Details</h2>
-                </div>
-
-                <div class="grid lg:grid-cols-2 gap-6">
-                    <!-- Date Info -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-purple-600">Date Information</h3>
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <span>Date:</span>
-                                <span id="detail-date" class="font-semibold">09 August 2025</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Day:</span>
-                                <span class="font-semibold">Saturday</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Hindu Month:</span>
-                                <span class="font-semibold">Shravan</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Paksha:</span>
-                                <span class="font-semibold">Krishna</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Season:</span>
-                                <span class="font-semibold">Varsha</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Panchang Elements -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-600">Panchang Elements</h3>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center">
-                                <span>Tithi:</span>
-                                <div class="text-right">
-                                    <div class="font-semibold text-orange-600">Chaturthi</div>
-                                    <div class="text-xs text-gray-500">Till 14:23</div>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span>Nakshatra:</span>
-                                <div class="text-right">
-                                    <div class="font-semibold text-green-600">Rohini</div>
-                                    <div class="text-xs text-gray-500">Till 18:45</div>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span>Yoga:</span>
-                                <div class="text-right">
-                                    <div class="font-semibold text-blue-600">Siddha</div>
-                                    <div class="text-xs text-gray-500">Till 12:30</div>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span>Karana:</span>
-                                <div class="text-right">
-                                    <div class="font-semibold text-red-600">Vanija</div>
-                                    <div class="text-xs text-gray-500">Till 14:23</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sun & Moon Times -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-yellow-600">Sun & Moon Timings</h3>
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <span>Sunrise:</span>
-                                <span class="font-semibold text-yellow-600">05:42 AM</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Sunset:</span>
-                                <span class="font-semibold text-orange-600">06:48 PM</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Moonrise:</span>
-                                <span class="font-semibold text-blue-400">09:23 AM</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Moonset:</span>
-                                <span class="font-semibold text-indigo-600">10:45 PM</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Day Duration:</span>
-                                <span class="font-semibold">13h 06m</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Night Duration:</span>
-                                <span class="font-semibold">10h 54m</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Muhurat -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-green-600">Auspicious Timings</h3>
-                        <div class="space-y-4">
-                            <div class="p-3 bg-green-100 rounded-lg">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-semibold text-green-700">Abhijit Muhurat</span>
-                                    <span class="text-green-700">11:54 - 12:48</span>
-                                </div>
-                                <p class="text-sm text-green-600 mt-1">Best time for important work</p>
-                            </div>
-                            <div class="p-3 bg-blue-100 rounded-lg">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-semibold text-blue-700">Vijaya Muhurat</span>
-                                    <span class="text-blue-700">14:24 - 15:18</span>
-                                </div>
-                                <p class="text-sm text-blue-600 mt-1">Time for victory and success</p>
-                            </div>
-                            <div class="p-3 bg-yellow-100 rounded-lg">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-semibold text-yellow-700">Godhuli Muhurat</span>
-                                    <span class="text-yellow-700">18:30 - 19:15</span>
-                                </div>
-                                <p class="text-sm text-yellow-600 mt-1">Evening prayers time</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Inauspicious Times -->
-                <div class="mt-6 bg-white rounded-xl p-6 card-shadow">
-                    <h3 class="text-xl font-semibold mb-4 text-red-600">Inauspicious Timings (Avoid)</h3>
-                    <div class="grid md:grid-cols-3 gap-4">
-                        <div class="p-3 bg-red-100 rounded-lg text-center">
-                            <div class="font-semibold text-red-700">Rahu Kalam</div>
-                            <div class="text-red-700">09:00 - 10:30</div>
-                        </div>
-                        <div class="p-3 bg-orange-100 rounded-lg text-center">
-                            <div class="font-semibold text-orange-700">Yamaganda</div>
-                            <div class="text-orange-700">13:30 - 15:00</div>
-                        </div>
-                        <div class="p-3 bg-gray-100 rounded-lg text-center">
-                            <div class="font-semibold text-gray-700">Gulika Kalam</div>
-                            <div class="text-gray-700">16:30 - 18:00</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SETTINGS PAGE -->
-        <div id="settings" class="page-hidden">
-            <div class="container mx-auto px-4 py-8">
-                <div class="flex items-center mb-6">
-                    <button onclick="showPage('home')" class="mr-4 text-gray-600 hover:text-gray-800">
-                        <i class="fas fa-arrow-left text-xl"></i>
-                    </button>
-                    <h2 class="text-2xl font-bold text-gray-800">Settings</h2>
-                </div>
-
-                <div class="max-w-2xl mx-auto space-y-6">
-                    <!-- Location Settings -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-purple-600">Location Settings</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
-                                <input type="text" value="Azamgarh" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                            </div>
-                            <div class="grid md:grid-cols-2 gap-4">
+                    <div class="max-w-2xl mx-auto space-y-6">
+                        <!-- Location Settings -->
+                        <div class="bg-white rounded-xl p-6 card-shadow">
+                            <h3
+                                class="text-xl font-semibold mb-4 text-purple-600">
+                                Location Settings
+                            </h3>
+                            <div class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
-                                    <input type="number" value="26.0685" step="0.0001" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        >City</label
+                                    >
+                                    <input
+                                        type="text"
+                                        value="Azamgarh"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" />
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-2"
+                                            >Latitude</label
+                                        >
+                                        <input
+                                            type="number"
+                                            value="26.0685"
+                                            step="0.0001"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" />
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-2"
+                                            >Longitude</label
+                                        >
+                                        <input
+                                            type="number"
+                                            value="83.1840"
+                                            step="0.0001"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" />
+                                    </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
-                                    <input type="number" value="83.1840" step="0.0001" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        >Timezone</label
+                                    >
+                                    <select
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                                        <option>IST (UTC +5:30)</option>
+                                        <option>EST (UTC -5:00)</option>
+                                        <option>PST (UTC -8:00)</option>
+                                        <option>GMT (UTC +0:00)</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
-                                <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                                    <option>IST (UTC +5:30)</option>
-                                    <option>EST (UTC -5:00)</option>
-                                    <option>PST (UTC -8:00)</option>
-                                    <option>GMT (UTC +0:00)</option>
-                                </select>
+                        </div>
+
+                        <!-- Language & Display -->
+                        <div class="bg-white rounded-xl p-6 card-shadow">
+                            <h3
+                                class="text-xl font-semibold mb-4 text-blue-600">
+                                Language & Display
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        >Language</label
+                                    >
+                                    <select
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        <option>English</option>
+                                        <option>हिंदी (Hindi)</option>
+                                        <option>বাংলা (Bengali)</option>
+                                        <option>தமிழ் (Tamil)</option>
+                                        <option>తెలుగు (Telugu)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        >Calendar System</label
+                                    >
+                                    <select
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                        <option>Gregorian + Hindu</option>
+                                        <option>Hindu Only</option>
+                                        <option>Gregorian Only</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-700"
+                                        >Show Hindu Months</span
+                                    >
+                                    <label
+                                        class="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked
+                                            class="sr-only peer" />
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-700"
+                                        >24-Hour Time Format</span
+                                    >
+                                    <label
+                                        class="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            class="sr-only peer" />
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Language & Display -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-600">Language & Display</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
-                                <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                    <option>English</option>
-                                    <option>हिंदी (Hindi)</option>
-                                    <option>বাংলা (Bengali)</option>
-                                    <option>தமிழ் (Tamil)</option>
-                                    <option>తెలుగు (Telugu)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Calendar System</label>
-                                <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                    <option>Gregorian + Hindu</option>
-                                    <option>Hindu Only</option>
-                                    <option>Gregorian Only</option>
-                                </select>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-700">Show Hindu Months</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" checked class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                </label>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-700">24-Hour Time Format</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                </label>
+                        <!-- Calculation Settings -->
+                        <div class="bg-white rounded-xl p-6 card-shadow">
+                            <h3
+                                class="text-xl font-semibold mb-4 text-green-600">
+                                Calculation Settings
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        >Ayanamsha</label
+                                    >
+                                    <select
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                                        <option>Lahiri (Chitrapaksha)</option>
+                                        <option>Raman</option>
+                                        <option>Krishnamurti</option>
+                                        <option>True Chitrapaksha</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        >House System</label
+                                    >
+                                    <select
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                                        <option>Placidus</option>
+                                        <option>Koch</option>
+                                        <option>Equal House</option>
+                                        <option>Whole Sign</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-700"
+                                        >Use True Node (Rahu/Ketu)</span
+                                    >
+                                    <label
+                                        class="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked
+                                            class="sr-only peer" />
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Calculation Settings -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-green-600">Calculation Settings</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Ayanamsha</label>
-                                <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
-                                    <option>Lahiri (Chitrapaksha)</option>
-                                    <option>Raman</option>
-                                    <option>Krishnamurti</option>
-                                    <option>True Chitrapaksha</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">House System</label>
-                                <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
-                                    <option>Placidus</option>
-                                    <option>Koch</option>
-                                    <option>Equal House</option>
-                                    <option>Whole Sign</option>
-                                </select>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-700">Use True Node (Rahu/Ketu)</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" checked class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-                                </label>
+                        <!-- Notifications -->
+                        <div class="bg-white rounded-xl p-6 card-shadow">
+                            <h3
+                                class="text-xl font-semibold mb-4 text-orange-600">
+                                Notifications
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-700"
+                                        >Daily Panchang Reminder</span
+                                    >
+                                    <label
+                                        class="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked
+                                            class="sr-only peer" />
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-700"
+                                        >Festival Alerts</span
+                                    >
+                                    <label
+                                        class="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked
+                                            class="sr-only peer" />
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-sm font-medium text-gray-700"
+                                        >Muhurat Reminders</span
+                                    >
+                                    <label
+                                        class="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            class="sr-only peer" />
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Notifications -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-orange-600">Notifications</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-700">Daily Panchang Reminder</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" checked class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
-                                </label>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-700">Festival Alerts</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" checked class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
-                                </label>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-700">Muhurat Reminders</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
-                                </label>
-                            </div>
+                        <!-- Save Button -->
+                        <div class="text-center">
+                            <button
+                                class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold">
+                                <i class="fas fa-save mr-2"></i>
+                                Save Settings
+                            </button>
                         </div>
-                    </div>
-
-                    <!-- Save Button -->
-                    <div class="text-center">
-                        <button class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold">
-                            <i class="fas fa-save mr-2"></i>
-                            Save Settings
-                        </button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </main>
 
-    <!-- Footer -->
-    <footer class="gradient-bg text-white py-8 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <div class="flex items-center justify-center mb-4">
-                <i class="fas fa-om text-2xl text-yellow-300 mr-3"></i>
-                <h3 class="text-xl font-bold">Vedic Jyotish</h3>
+        <!-- Footer -->
+        <footer class="gradient-bg text-white py-2 mt-12">
+            <div class="container mx-auto text-center">
+                <p class="text-xs text-white opacity-60">
+                    © 2025 Vedic Jyotish. All rights reserved.
+                </p>
             </div>
-            <p class="text-white opacity-80 mb-4">Complete Vedic Astrology Portal</p>
-            <div class="flex justify-center space-x-6 text-sm">
-                <a href="#" class="hover:text-yellow-300 transition-colors">Privacy Policy</a>
-                <a href="#" class="hover:text-yellow-300 transition-colors">Terms of Service</a>
-                <a href="#" class="hover:text-yellow-300 transition-colors">Contact Us</a>
-            </div>
-            <p class="text-xs text-white opacity-60 mt-4">© 2025 Vedic Jyotish. All rights reserved.</p>
-        </div>
-    </footer>
+        </footer>
 
-    <script>
-        // Current time and date updates
-        function updateDateTime() {
-            const now = new Date();
-            const timeElement = document.getElementById('current-time');
-            if (timeElement) {
-                timeElement.textContent = now.toLocaleTimeString();
-            }
-        }
-        
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
+        <script>
+            const drawer = document.getElementById("drawer");
+            const overlay = document.getElementById("drawerOverlay");
+            const openBtn = document.getElementById("openDrawerBtn");
+            const closeBtn = document.getElementById("closeDrawerBtn");
 
-        // Page navigation
-        function showPage(pageId) {
-            // Hide all pages
-            const pages = document.querySelectorAll('[id$="-page"], #kundli-form, #matching-form, #dasha-page, #phaladesh-page, #panchang-calendar, #date-details, #settings');
-            pages.forEach(page => {
-                page.classList.remove('page-active');
-                page.classList.add('page-hidden');
+            const openDrawer = () => {
+                drawer.classList.remove("-translate-x-full");
+                overlay.classList.remove("pointer-events-none");
+                overlay.classList.add("opacity-100");
+                document.body.classList.add("overflow-hidden");
+                openBtn.setAttribute("aria-expanded", "true");
+            };
+
+            const closeDrawer = () => {
+                drawer.classList.add("-translate-x-full");
+                overlay.classList.add("pointer-events-none");
+                overlay.classList.remove("opacity-100");
+                document.body.classList.remove("overflow-hidden");
+                openBtn.setAttribute("aria-expanded", "false");
+            };
+
+            openBtn.addEventListener("click", openDrawer);
+            closeBtn.addEventListener("click", closeDrawer);
+            overlay.addEventListener("click", closeDrawer);
+
+            // Close on ESC
+            document.addEventListener("keydown", e => {
+                if (e.key === "Escape") closeDrawer();
             });
-            
-            // Show selected page
-            let targetPage;
-            if (pageId === 'home') {
-                targetPage = document.getElementById('home-page');
-            } else {
-                targetPage = document.getElementById(pageId);
+
+            // demo placeholder to match your existing onclicks
+            window.showPage = id => {
+                console.log("showPage:", id);
+                closeDrawer();
+            };
+
+            // Current time and date updates
+            function updateDateTime() {
+                const now = new Date();
+                const timeElement = document.getElementById("current-time");
+                if (timeElement) {
+                    timeElement.textContent = now.toLocaleTimeString();
+                }
             }
-            
-            if (targetPage) {
-                targetPage.classList.remove('page-hidden');
-                targetPage.classList.add('page-active');
-            }
-            
-            // Close mobile menu
-            document.getElementById('mobileMenu').classList.add('hidden');
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
 
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Calendar navigation
-        let currentMonth = 7; // August (0-based)
-        let currentYear = 2025;
-        
-        function changeMonth(direction) {
-            currentMonth += direction;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            } else if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            }
-            
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            document.getElementById('calendar-month-year').textContent = `${months[currentMonth]} ${currentYear}`;
-        }
-
-        // Show date details
-        function showDateDetails(date) {
-            const [year, month, day] = date.split('-');
-            const dateObj = new Date(year, month - 1, day);
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('detail-date').textContent = dateObj.toLocaleDateString('en-US', options);
-            showPage('date-details');
-        }
-
-        // Show dasha details (placeholder for future implementation)
-        function showDashaDetails(planet) {
-            alert(`Showing detailed ${planet} dasha information. This will be implemented with your backend integration.`);
-        }
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const mobileMenu = document.getElementById('mobileMenu');
-            const menuButton = event.target.closest('button');
-            
-            if (!mobileMenu.contains(event.target) && (!menuButton || !menuButton.onclick?.toString().includes('toggleMobileMenu'))) {
-                mobileMenu.classList.add('hidden');
-            }
-        });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
+            setInterval(updateDateTime, 1000);
             updateDateTime();
-            showPage('home');
-        });
-    </script>
-</body>
-</html> max-w-none">
-                            <p class="text-gray-700 leading-relaxed mb-4">
-                                Your birth chart indicates a strong Jupiter in the 1st house, which blesses you with wisdom, knowledge, and spiritual inclinations. This placement suggests that you are naturally optimistic and have a philosophical approach to life.
-                            </p>
-                            <p class="text-gray-700 leading-relaxed mb-4">
-                                Mars in the 10th house indicates strong career prospects and leadership abilities. You are likely to achieve success through your own efforts and determination. Your professional life will see significant growth between the ages of 28-35.
-                            </p>
-                            <p class="text-gray-700 leading-relaxed">
-                                Venus in the 7th house suggests a harmonious married life and good relationships with partners. You may attract a spouse who is artistic or involved in creative fields.
-                            </p>
-                        </div>
-                    </div>
 
-                    <!-- Career Predictions -->
-                    <div class="bg-white rounded-xl p-6 card-shadow">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-600">Career & Finance</h3>
-                        <div class="prose
+            // Page navigation
+            function showPage(pageId) {
+                // Hide all pages
+                const pages = document.querySelectorAll(
+                    '[id$="-page"], #kundli-form, #matching-form, #dasha-page, #phaladesh-page, #panchang-calendar, #date-details, #settings'
+                );
+                pages.forEach(page => {
+                    page.classList.remove("page-active");
+                    page.classList.add("page-hidden");
+                });
+
+                // Show selected page
+                let targetPage;
+                if (pageId === "home") {
+                    targetPage = document.getElementById("home-page");
+                } else {
+                    targetPage = document.getElementById(pageId);
+                }
+
+                if (targetPage) {
+                    targetPage.classList.remove("page-hidden");
+                    targetPage.classList.add("page-active");
+                }
+
+                // Close mobile menu
+                document
+                    .getElementById("navbar-hamburger")
+                    .classList.add("hidden");
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+            }
+
+            // Calendar navigation
+            let currentMonth = 7; // August (0-based)
+            let currentYear = 2025;
+
+            function changeMonth(direction) {
+                currentMonth += direction;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                } else if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+
+                const months = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+                document.getElementById("calendar-month-year").textContent =
+                    `${months[currentMonth]} ${currentYear}`;
+            }
+
+            // Show date details
+            function showDateDetails(date) {
+                const [year, month, day] = date.split("-");
+                const dateObj = new Date(year, month - 1, day);
+                const options = {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                };
+                document.getElementById("detail-date").textContent =
+                    dateObj.toLocaleDateString("en-US", options);
+                showPage("date-details");
+            }
+
+            // Show dasha details (placeholder for future implementation)
+            function showDashaDetails(planet) {
+                alert(
+                    `Showing detailed ${planet} dasha information. This will be implemented with your backend integration.`
+                );
+            }
+
+            // Close mobile menu when clicking outside
+            document.addEventListener("click", function (event) {
+                const navbarHamburger =
+                    document.getElementById("navbar-hamburger");
+                const menuButton = event.target.closest("button");
+
+                if (
+                    !navbarHamburger.contains(event.target) &&
+                    (!menuButton ||
+                        !menuButton.onclick?.toString().includes("navbar"))
+                ) {
+                    navbarHamburger.classList.add("hidden");
+                }
+            });
+
+            // Initialize
+            document.addEventListener("DOMContentLoaded", function () {
+                updateDateTime();
+                showPage("home");
+            });
+        </script>
+    </body>
+</html>
