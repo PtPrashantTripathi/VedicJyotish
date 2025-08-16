@@ -13,7 +13,7 @@ export function calcSunRiseSunSet(
     sunset: number;
 } {
     const flag = swe.SE_BIT_DISC_CENTER | swe.SE_BIT_NO_REFRACTION;
-    const rsmi = toFixedLengthArray([longitude, latitude, 0], 3);
+    const geopos = toFixedLengthArray([longitude, latitude, 0], 3);
 
     // Get Sun's position at JD
     const r = swe.swe_calc(jd, swe.SE_SUN, 0);
@@ -53,7 +53,7 @@ export function calcSunRiseSunSet(
             null,
             0,
             swe.SE_CALC_RISE | flag,
-            rsmi,
+            geopos,
             0,
             0
         ),
@@ -64,7 +64,7 @@ export function calcSunRiseSunSet(
             null,
             0,
             swe.SE_CALC_SET | flag,
-            rsmi,
+            geopos,
             0,
             0
         ),

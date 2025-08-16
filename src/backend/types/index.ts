@@ -101,34 +101,6 @@ export interface PlanetDetail {
     color: string;
 }
 
-export type RasiEn =
-    | "Aries"
-    | "Taurus"
-    | "Gemini"
-    | "Cancer"
-    | "Leo"
-    | "Virgo"
-    | "Libra"
-    | "Scorpio"
-    | "Sagittarius"
-    | "Capricorn"
-    | "Aquarius"
-    | "Pisces";
-
-export type RasiHi =
-    | "मेष"
-    | "वृषभ"
-    | "मिथुन"
-    | "कर्क"
-    | "सिंह"
-    | "कन्या"
-    | "तुला"
-    | "वृश्चिक"
-    | "धनु"
-    | "मकर"
-    | "कुंभ"
-    | "मीन";
-
 export type ChoghadiyaEn =
     | "Udveg"
     | "Amrit"
@@ -222,37 +194,13 @@ export type SamvatsaraEn =
 
 export type EffectEn = "Good" | "Bad";
 
-/* Classical elements */
-export type ElementEn = "Fire" | "Earth" | "Air" | "Water";
-
-/* Gender of Rasi */
-export type GenderEn = "M" | "F";
-
-/* Nature of sign */
-export type NatureEn = "Movable" | "Fixed" | "Dual";
-
-/* Zodiac index (1–12) */
-export type RasiNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-
-export type HouseNumber = RasiNumber;
+export type HouseNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 export type LanguageTypes = "english" | "hindi";
 
 export interface Translation<EnglishType, HindiType> {
     english: EnglishType;
     hindi: HindiType;
-}
-
-/* Zodiac Sign Details */
-export interface RasiDetail {
-    rasi_num: RasiNumber;
-    name: Translation<RasiEn, RasiHi>;
-    lord: SaptagrahaEn;
-    element: ElementEn;
-    gender: GenderEn;
-    nature: NatureEn;
-    symbol: string;
-    color: string;
 }
 
 /* RangeType of degrees */
@@ -267,9 +215,6 @@ export interface CalculatedDetail {
     range: RangeType;
 }
 
-/* Computed Rasi/Nakshatra details */
-export type Rasi = RasiDetail & CalculatedDetail;
-
 export interface ChoghadiyaDetail {
     name: Translation<ChoghadiyaEn, string>;
     lord: SaptagrahaEn;
@@ -277,32 +222,7 @@ export interface ChoghadiyaDetail {
     effect: EffectEn;
 }
 
-export interface IDMS {
-    degree: number;
-    minute: number;
-    second: number;
-    toDegree: () => number;
-    toString: () => string;
-}
-
 /* Date and Time structure */
-export interface HMS {
-    hour: number;
-    minute: number;
-    second: number;
-}
-
-export interface DateType {
-    year: number;
-    month: number;
-    day: number;
-}
-
-export interface DateTimeType extends DateType, HMS {
-    millisecond: number;
-    timezone_offset: number;
-}
-
 export interface HouseDetail {
     num: HouseNumber;
     name: Translation<string, string>;
