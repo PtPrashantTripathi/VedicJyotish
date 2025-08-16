@@ -67,10 +67,12 @@ class SwissephBuildTools:
     def __init__(
         self,
         env: str = "dev",
+        node: bool = False,
         verbose: bool = False,
         download_source_files: bool = False,
     ):
         self.env = env
+        self.node = node
         self.verbose = verbose
         self.check_emcc()
         shutil.rmtree(self.wasm_dir, True)
@@ -310,7 +312,7 @@ class SwissephBuildTools:
             # Max memory limit
             "-sMAXIMUM_MEMORY=128MB",
             # Target Environment
-            "-sENVIRONMENT='web'",
+            f"-sENVIRONMENT=[{'web,node' if self.node else 'web'}]"
             # Stack safety
             "-sSTACK_OVERFLOW_CHECK=1",
             # Memory access checks
@@ -368,18 +370,25 @@ if __name__ == "__main__":
         help="build env",
     )
     parser.add_argument(
+        "-n",
+        "--node",
+        action="store_true",
+        help="Enable node build.",
+        default=str(os.environ.get("node")).strip().lower() == "true",
+    )
+    parser.add_argument(
         "-v",
         "--verbose",
         action="store_true",
         help="Enable verbose output.",
-        default=str(os.environ.get("verbose")).lower() == "true",
+        default=str(os.environ.get("verbose")).strip().lower() == "true",
     )
     parser.add_argument(
         "-d",
         "--download_source_files",
         action="store_true",
         help="Download source files.",
-        default=str(os.environ.get("download_source_files")).lower() == "true",
+        default=str(os.environ.get("download_source_files")).strip().lower() == "true",
     )
 
     # Parse the arguments
@@ -391,6 +400,7 @@ if __name__ == "__main__":
 
     SwissephBuildTools(
         env=args.env,
+        node=args.node,
         verbose=args.verbose,
         download_source_files=args.download_source_files,
     )

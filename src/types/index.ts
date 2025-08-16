@@ -33,6 +33,7 @@ export interface SearchParams {
 }
 export interface SessionData extends SearchParams {
     error: ErrorType[];
+    nav: boolean;
 }
 export interface SessionState {
     data: SessionData;

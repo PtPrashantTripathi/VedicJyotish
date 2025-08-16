@@ -1,13 +1,12 @@
-import type { PakshaEn, PakshaName } from "src/backend/types";
+import type { Translation } from "src/backend/types";
 
-// Paksha Details
+/** Type Definitions */
+export type PakshaEn = "Krishna" | "Shukla";
+export type PakshaHi = "कृष्ण" | "शुक्ल";
+export type PakshaName = Translation<PakshaEn, PakshaHi>;
+
+/** Details for the two Paksha (lunar phases). */
 export const PakshaDetails: Record<PakshaEn, PakshaName> = {
-    Krishna: {
-        english: "Krishna",
-        hindi: "कृष्ण",
-    },
-    Shukla: {
-        english: "Shukla",
-        hindi: "शुक्ल",
-    },
+    Shukla: { english: "Shukla", hindi: "शुक्ल" }, // Waxing moon
+    Krishna: { english: "Krishna", hindi: "कृष्ण" }, // Waning moon
 };

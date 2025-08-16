@@ -1,21 +1,19 @@
+import { pageDetails } from "src/pages/pageDetails";
 import type { ValidPageType } from "src/types";
 
 /**
  * Validates if the given page is one of the allowed page types.
  *
- * @param {string} page - The page value to validate.
- * @returns {ValidPageType} - Returns the valid page type or null if invalid.
+ * @param input_page - The page value to validate.
+ * @returns The valid page type if found.
+ * @throws Error if the page name is invalid.
  */
-export const validPageTypes: ValidPageType[] = [
-    "Home",
-    "KundliForm",
-    "KundliResult",
-    "Panchang",
-];
-export function parseValidPageName(input: string): ValidPageType {
-    const page = input as ValidPageType;
-    if (validPageTypes.includes(page)) {
+export function parseValidPageName(input_page: string): ValidPageType {
+    const page = input_page as ValidPageType;
+
+    if (pageDetails.some(p => p.page === page)) {
         return page;
     }
-    throw new Error(`Invalid Page name: "${page}"`);
+
+    throw new Error(`Invalid Page name: "${input_page}"`);
 }

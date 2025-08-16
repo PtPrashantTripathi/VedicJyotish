@@ -1,5 +1,8 @@
 {
     "compilerOptions": {
+        "paths": {
+            "src/*": ["src/*"]
+        },
         "target": "ESNext",
         "useDefineForClassFields": true,
         "typeRoots": ["./node_modules/@types"],

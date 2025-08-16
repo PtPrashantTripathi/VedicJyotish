@@ -18,4 +18,14 @@ interface ObjectConstructor {
      *   according to the input object.
      */
     entries<T extends object>(obj: T): [keyof T, T[keyof T]][];
+
+    /**
+     * Returns a strongly typed array of properties and methods of an given
+     * object.
+     *
+     * @template T - The type of the input object
+     * @param obj - The object to extract key pairs from
+     * @returns An array of `key[]` tuples, typed according to the input object.
+     */
+    keys<T extends object>(obj: T): Array<keyof T>;
 }

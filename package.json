@@ -38,6 +38,7 @@
     },
     "devDependencies": {
         "@eslint/js": "latest",
+        "@tailwindcss/vite": "^4.1.11",
         "@types/emscripten": "latest",
         "@types/luxon": "latest",
         "@types/node": "latest",
@@ -61,9 +62,11 @@
         "react": "latest",
         "react-dom": "latest",
         "react-icons": "latest",
+        "tailwindcss": "^4.1.11",
         "typescript": "latest",
         "typescript-eslint": "latest",
-        "vite": "latest"
+        "vite": "latest",
+        "lucide-react": "^0.539.0"
     },
     "engines": {
         "node": ">=22"

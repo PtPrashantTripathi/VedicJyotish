@@ -3156,8 +3156,8 @@ export default class SwissEPH {
      * @param {number} tjd Julian day in universal time
      * @param {number} gregflag Calendar system, SE_GREG_CAL for gregorian
      *   calendar, SE_JUL_CAL for julian calendar
-     * @returns Object { year: number, // year month: number, // month (1-12)
-     *   day: number, // day (1-31) hour: number // hour (0-23.999) }
+     * @returns Object { year: number; month: number; day: number; hour: number;
+     *   }
      */
     swe_revjul(
         tjd: number,

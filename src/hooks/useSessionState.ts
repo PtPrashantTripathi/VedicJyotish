@@ -42,6 +42,7 @@ export function useSessionState(): SessionState {
         lon: 75.784912,
         ayanamsa: "Lahiri",
         error: [],
+        nav: false,
     };
 
     let searchParams = new URLSearchParams(window.location.search);
@@ -106,7 +107,7 @@ export function useSessionState(): SessionState {
         sortURL: () =>
             window.location.origin +
             window.location.pathname +
-            "#" +
+            "?id=" +
             btoa(
                 new URLSearchParams(
                     searchParamKeys.map(key => [key, String(data[key])])
