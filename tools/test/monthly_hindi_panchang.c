@@ -26,7 +26,7 @@
 #define GEO_LAT 22.60
 #define GEO_ALT 0.0
 #define IST_OFFSET (5.5 / 24.0)
-#define EPHE_PATH "/Users/ptripathi/code/VedicJyotish/public/ephe/"
+#define EPHE_PATH "/storage/emulated/0/VedicJyotish/public/ephe/"
 
 // Constants
 #define TITHI_DEGREES 12.0

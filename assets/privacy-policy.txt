@@ -1,0 +1,7 @@
+Privacy Policy for Hindu Calendar
+------------------------------------------
+The app Hindu Calendar uses Google Analytics.
+It tracks how the app is being used. It does not track or use any personal information.
+It will  accumulate usage data and transmit it over the internet. 
+For instance, OS version, feature of the app being used.
+The data will be used to make the User Interface and Experience better.

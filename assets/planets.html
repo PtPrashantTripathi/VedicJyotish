@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<meta charset="utf-8" />
+		<style type="text/css">
+
+		.right {text-align:right;float:right;}
+		.left {float:left; text-align:left;}
+
+	@css
+		</style>
+	</head>
+	<body>
+	<div class="card" style="padding:16px;">
+		@Name: <b class="plain-color">@name</b> <br/>
+		@Location:<b class="plain-color"> @location_name</b> &nbsp;&nbsp;<span style='font-size: 0.6em'>@location-string</span>
+		 <br/>
+		@time
+	</div>
+	<div class="card">
+		<table  class='alignedTable border' width='100%'>
+					<tr>
+						<td class="first" ><b>@Rashi-Name</b></td>
+
+						<td class="second"><b>
+							<a class="skyobject" href="searchsky://@rashiorig-moon"> <img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-moon.png'/> @rashi-moon</a>
+								</b></td>
+
+						<td class="first" ><b>@1Name</b></td>
+
+						<td class="second"><b> @janm-naam ...
+								</b></td>
+					</tr>
+					<tr>
+						<td class="first" > @Lagna </td>
+						<td class="second" colspan="3">
+						<a class="skyobject" href="searchsky://@rashi-ascendant"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-ascendant.png'/> @rashi-ascendant</a>
+						&nbsp;@rashipos-ascendant
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:center" class="first" colspan="2">@Balance-Of-Dasha</td>
+						<td style="text-align:center" class="second" colspan="2">@balance-of-dasha</td>
+					</tr>
+					<tr>
+						<td colspan=4 style="text-align:center">@Kuj-Dosha</td>
+					</tr>
+		</table>
+	</div>
+
+	<div class="card">
+	<table class="alignedTable border" width='100%'>
+		<tr>
+			<td class="first" >@Tithi</td>
+			<td class="second">@tithi</td>
+			<td class="first" >@Nakshatra-Pada</td>
+			<td class="second"><a class="skyobject" href='searchsky://@orig-nakshatra'>@nakshatra</a> @pada</td>
+		</tr>
+		<tr>
+			<td class="first" >@Yoga</td>
+			<td class="second">@yoga</td>
+			<td class="first" >@Karana</td>
+			<td class="second">@karana</td>
+		</tr>
+		<tr>
+			<td class="first" >@Ishtkaal</td>
+			<td class="second" >@ishtkaal</td>
+			<td class="first" >@Sunrise</td>
+			<td class="second" >@sunrise</td>
+		</tr>
+		<tr>
+			<td style="text-align:center" colspan=4 class="second">@vaar, @month, @year</td>
+		</tr>
+		<!--tr>
+			<td class="first" >@Month</td>
+			<td class="second">@month</td>
+			<td class="first" >@Year</td>
+			<td class="second">@year</td>
+		</tr-->
+	</table>
+	</div>
+	<div class="card">
+		<table class="alignedTable border" width='100%'>
+		<tr>
+			<td class="first" >@Swami-Rashi</td>
+			<td class="second">@swami-rashi</td>
+			<td class="first" >@Swami-Nakshatra</td>
+			<td class="second">@swami-nakshatra</td>
+		</tr>
+
+		<tr>
+			<td class="first" >@Paya-Nakshatra</td>
+			<td class="second">@paya-nakshatra</td>
+			<td class="first" >@Yoni</td>
+			<td class="second">@yoni</td>
+		</tr>
+		<tr>
+			<td class="first" >@Gana</td>
+			<td class="second">@gana</td>
+			<td class="first" >@Nadi</td>
+			<td class="second">@nadi</td>
+		</tr>
+		<tr>
+			<td class="first" >@Varna</td>
+			<td class="second">@varna</td>
+		</tr>
+
+		<!--<tr>
+			<td class="first" >@Tara</td>
+			<td >@tara</td>
+		</tr>-->
+
+		</table>
+</div>
+
+		<div class="card">
+		<b class="plain-color"> @Nirayana, Sidereal </b>
+	<table  class="border" width='100%'>
+		<tr class="first"><th>@Planet</th><th><small>@Rashi-Name <br/>@Nirayana</small></th><th><small>@Nakshatra-Pada<br/>@Nirayana</small></th></tr>
+
+		<tr class="first">
+			<td > @Lagna </td>
+			<td >
+				<a class="left skyobject" href="searchsky://@rashiorig-ascendant"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-ascendant.png'/> @rashi-ascendant</a>
+				<span class="right">&nbsp;@rashipos-ascendant</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-lagna'>@Nakshatra-ascendant </a>
+				<span class="right">@Pada-ascendant</span>
+			</td>
+		</tr>
+		<tr class="bg-sun">
+			<td>
+				<a class="skyobject" href="searchsky://Surya"><img width='13px' src='file:///android_asset/planets/sun_icon.png'/> @Surya</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-sun"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-sun.png'/> @rashi-sun</a>
+				<span class="right">@rashipos-sun</span>
+			</td>
+
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-sun'>@Nakshatra-sun</a>
+				<span class="right">@Pada-sun </span>
+			</td>
+		</tr>
+		<tr class="bg-moon">
+			<td>
+				<a class="skyobject" href="searchsky://Chandra"> <img width='13px' src='file:///android_asset/planets/moon_icon.png'/> @Chandra </a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-moon"> <img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-moon.png'/> @rashi-moon</a>
+				<span class="right">@rashipos-moon</span>
+			</td>
+
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-moon'>@Nakshatra-moon</a>
+				<span class="right">@Pada-moon</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Budh"> <img width='13px' src=	'file:///android_asset/planets/mercury_icon.png'/> @Budh @info-mercury</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-mercury"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-mercury.png'/> @rashi-mercury</a>
+				<span class="right">@rashipos-mercury</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-mercury'>@Nakshatra-mercury</a>
+				<span class="right">@Pada-mercury</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Shukra"> <img width='13px' src='file:///android_asset/planets/venus_icon.png'/> @Shukra @info-venus</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-venus">	<img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-venus.png'/> @rashi-venus</a>
+				<span class="right">@rashipos-venus</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-venus'>@Nakshatra-venus</a>
+				<span class="right">@Pada-venus</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Mangal"><img width='13px' src='file:///android_asset/planets/mars_icon.png'/>  @Mangal @info-mars</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-mars"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-mars.png'/> @rashi-mars</a>
+				<span class="right">@rashipos-mars</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-mars'>@Nakshatra-mars</a>
+				<span class="right">@Pada-mars</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Brihaspati"><img width='13px' src='file:///android_asset/planets/jupiter_icon.png'/> @Brihaspati @info-jupiter</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-jupiter"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-jupiter.png'/> @rashi-jupiter</a>
+				<span class="right">@rashipos-jupiter</span>
+			</td>
+			<td><a  class="skyobject" href='searchsky://@orig-nakshatra-jupiter'>@Nakshatra-jupiter</a>
+				<span class="right">@Pada-jupiter</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Shani"><img width='13px' src='file:///android_asset/planets/saturn_icon.png'/> @Shani @info-saturn</a>
+			</td>
+			<td>
+				<a  class="skyobject" href="searchsky://@rashiorig-saturn"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-saturn.png'/> @rashi-saturn</a>
+				<span class="right">@rashipos-saturn</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-saturn'>@Nakshatra-saturn</a>
+				<span class="right">@Pada-saturn</span>
+			</td>
+		</tr>
+
+
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Rahu"><img width='13px' src='file:///android_asset/planets/rahu_icon.png'/> @Rahu @info-rahu</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashi-rahu"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-rahu.png'/> @rashi-rahu</a>
+				<span class="right">@rashipos-rahu</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-rahu'>@Nakshatra-rahu</a>
+				<span class="right">@Pada-rahu</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Ketu"><img width='13px' src='file:///android_asset/planets/ketu_icon.png'/> @Ketu @info-ketu</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-ketu"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-ketu.png'/> @rashi-ketu</a>
+				<span class="right">@rashipos-ketu</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-ketu'>@Nakshatra-ketu</a>
+				<span class="right">@Pada-ketu</span>
+			</td>
+		</tr>
+		<tr style="@visible">
+			<td colspan="3"><br/></td>
+		</tr>
+
+		<tr style="@visible">
+			<td>
+				<a class="skyobject" href="searchsky://Uranus"><img width='13px' src='file:///android_asset/planets/uranus_icon.png'/> @Uranus @info-uranus</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-uranus"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-uranus.png'/> @rashi-uranus</a>
+				<span class="right">@rashipos-uranus</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-uranus'>@Nakshatra-uranus</a>
+				<span class="right">@Pada-uranus</span>
+			</td>
+		</tr>
+		<tr style="@visible">
+			<td>
+				<a class="skyobject" href="searchsky://Neptune"><img width='13px' src='file:///android_asset/planets/neptune_icon.png'/> @Neptune @info-neptune</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-neptune"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-neptune.png'/> @rashi-neptune</a>
+				<span class="right">@rashipos-neptune</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-neptune'>@Nakshatra-neptune</a>
+				<span class="right">@Pada-neptune</span>
+			</td>
+		</tr>
+		<tr style="@visible">
+			<td>
+				<a class="skyobject" href="searchsky://Pluto"><img width='13px' src='file:///android_asset/planets/pluto_icon.png'/> @Pluto @info-pluto</a>
+			</td>
+			<td>
+				<a class="skyobject" href="searchsky://@rashiorig-pluto"><img width='12px' src='file:///android_asset/zodiac/zodiac_@rashinum-pluto.png'/> @rashi-pluto</a>
+				<span class="right">@rashipos-pluto</span>
+			</td>
+			<td><a class="skyobject" href='searchsky://@orig-nakshatra-pluto'>@Nakshatra-pluto</a>
+				<span class="right">@Pada-pluto</span>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="card">
+	<b class="plain-color"> @Sayana, Tropical </b>
+    <table class="border" width='100%'>
+
+		<tr class="first"><th>@Planet</th><th><small>Tropical Position<br/>@Sayana</small></th></tr>
+		<tr class="bg-sun">
+			<td>@Lagna</td>
+			<td>@tropical-ascendant</td>
+		</tr>
+		<tr class="bg-sun">
+			<td>
+				<a class="skyobject" href="searchsky://Surya"><img width='13px' src='file:///android_asset/planets/sun_icon.png'/> @Surya</a>
+			</td>
+			<td>@tropical-sun</td>
+		</tr>
+		<tr class="bg-moon">
+			<td>
+				<a class="skyobject" href="searchsky://Chandra"> <img width='13px' src='file:///android_asset/planets/moon_icon.png'/> @Chandra</a>
+			</td>
+			<td>@tropical-moon</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Budh"> <img width='13px' src=	'file:///android_asset/planets/mercury_icon.png'/> @Budh @info-mercury</a>
+			</td>
+			<td>@tropical-mercury</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Shukra"> <img width='13px' src='file:///android_asset/planets/venus_icon.png'/> @Shukra @info-venus</a>
+			</td>
+			<td>@tropical-venus</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Mangal"><img width='13px' src='file:///android_asset/planets/mars_icon.png'/>  @Mangal @info-mars</a>
+			</td>
+			<td>@tropical-mars</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Brihaspati"><img width='13px' src='file:///android_asset/planets/jupiter_icon.png'/> @Brihaspati @info-jupiter</a>
+			</td>
+			<td>@tropical-jupiter</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Shani"><img width='13px' src='file:///android_asset/planets/saturn_icon.png'/> @Shani @info-saturn</a>
+			</td>
+			<td>@tropical-saturn</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Rahu"><img width='13px' src='file:///android_asset/planets/rahu_icon.png'/> @Rahu @info-rahu</a>
+			</td>
+			<td>@tropical-rahu</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="skyobject" href="searchsky://Ketu"><img width='13px' src='file:///android_asset/planets/ketu_icon.png'/> @Ketu @info-ketu</a>
+			</td>
+			<td>@tropical-ketu</td>
+		</tr>
+		<tr style="@visible">
+			<td colspan="2"><br/></td>
+		</tr>
+
+		<tr style="@visible">
+			<td>
+				<a class="skyobject" href="searchsky://Uranus"><img width='13px' src='file:///android_asset/planets/uranus_icon.png'/> @Uranus @info-uranus</a>
+			</td>
+			<td>@tropical-uranus</td>
+		</tr>
+		<tr style="@visible">
+			<td>
+				<a class="skyobject" href="searchsky://Neptune"><img width='13px' src='file:///android_asset/planets/neptune_icon.png'/> @Neptune @info-neptune</a>
+			</td>
+			<td>@tropical-neptune</td>
+		</tr>
+		<tr style="@visible">
+			<td>
+				<a class="skyobject" href="searchsky://Pluto"><img width='13px' src='file:///android_asset/planets/pluto_icon.png'/> @Pluto @info-pluto</a>
+			</td>
+			<td>@tropical-pluto</td>
+		</tr>
+
+	</table>
+</div>
+<br/>
+@Ayanamsa-name = @ayanamsa
+		<br/>
+		<small>
+		@help-text
+		</small>
+	<br/><br/><br/>
+</body>
+</html>

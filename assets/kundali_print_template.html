@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>@hindu_calendar</title>
+    <style>
+      body {
+        width: 230mm;
+        height: 100%;
+        margin: 0 auto;
+        padding: 0;
+        font-size: 12pt;
+          background: white;
+        color: #071b2b;
+      }
+      .large {font-size: 1.4em;}
+      a {
+      color: #071b2b;text-decoration: none;
+      }
+
+      td.first{width:50%25; text-align:right;padding-right:8px;}
+      td.second {color:#006600;width:50%25}
+      * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+      }
+      .main-page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 10mm auto;
+        background: white;
+      }
+      .sub-page {
+        padding: 1cm;
+        height: 297mm;
+      }
+      @page {
+        size: A4;
+        margin: 0;
+      }    
+      .card {
+            margin-top: 8px;
+            padding: 8px;
+            box-shadow: 1px 1px 4px 0 rgba(0,0,0,0.4);
+            transition: 0.3s;
+            border-radius: 5px; /* 5px rounded corners */
+          }
+      .float-child {    width: 48%; margin: 1%;float: left; }
+      @media print {
+        html, body {
+          width: 210mm;
+          height: 297mm;
+          background: rgb(255,255,255);
+        }
+        .main-page {
+          margin: 0;
+          border: initial;
+          border-radius: initial;
+          width: initial;
+          min-height: initial;
+          box-shadow: initial;
+          background: initial;
+          page-break-after: always;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-page">
+      <div class="sub-page">
+        <h2 style="line-height:1em" align='center'>@kundali  @name &emsp;&emsp;&emsp;<a href="https://play.google.com/store/apps/details?id=com.alokmandavgane.hinducalendar"><img width='36px' style="vertical-align:middle;" src='file:///android_asset/hindu_calendar.png'/><span style="vertical-align:middle;"> @hindu_calendar</span></a></h2>
+        <div  style="text-align:center"  class="card large">
+          @Name: <b class="plain-color">@name</b> &#9;
+          @Location:<b class="plain-color"> @location_name</b> &nbsp;&nbsp;<span style='font-size: 0.8em'>(@location-string)</span>
+           <br/>
+          @time
+        </div>
+        <div class="card">
+            <table class="border" width="100%">
+                  <tr>
+                    <td class="first large" ><b>@Rashi-Name</b></td>
+                    <td class="second large"><b>
+                      <img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-moon.png'/> @rashi-moon
+                        </b></td>
+                    <td class="first large" ><b>@1Name</b></td>
+                    <td class="second large"><b> @janm-naam.. </b></td>
+                    <td style="text-align:center">@Kuj-Dosha</td>
+
+                  </tr>
+                  <tr>
+                    <td class="first" > @Lagna </td>
+                    <td class="second" >
+                   <img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-ascendant.png'/> @rashi-ascendant
+                    </td>
+                    <td class="first" >@Balance-Of-Dasha</td>
+                    <td class="second" colspan="3">@balance-of-dasha</td>
+                    <td></td>
+                  </tr>
+            </table>
+        </div>
+        <div class="float-container">
+          <div class="card float-child">
+            <table class="border" width='100%'>
+              <tr>
+                <td class="first" >@Swami-Rashi</td>
+                <td class="second">@swami-rashi</td>
+              </tr>
+              <tr>
+                <td class="first" >@Swami-Nakshatra</td>
+                <td class="second">@swami-nakshatra</td>
+              </tr>
+              <tr>
+                <td class="first" >@Paya-Nakshatra</td>
+                <td class="second">@paya-nakshatra</td>
+              </tr>
+              <tr>
+                <td class="first" >@Yoni</td>
+                <td class="second">@yoni</td>
+              </tr>
+              <tr>
+                <td class="first" >@Gana</td>
+                <td class="second">@gana</td>
+              </tr>
+              <tr>
+                <td class="first" >@Nadi</td>
+                <td class="second">@nadi</td>
+              </tr>
+              <tr>
+                <td class="first" >@Varna</td>
+                <td class="second">@varna</td>
+              </tr>
+            </table>
+          </div>
+          <div class="card float-child">
+            <table class="border" width="100%">
+              <tr>
+                <td class="first" >@Tithi</td>
+                <td class="second">@tithi</td>
+              </tr>
+              <tr>
+                <td class="first" >@Nakshatra-Pada</td>
+                <td class="second">@nakshatra @pada</td>
+              </tr>
+              <tr>
+                <td class="first" >@Yoga</td>
+                <td class="second">@yoga</td>
+              </tr>
+              <tr>
+                <td class="first" >@Karana</td>
+                <td class="second">@karana</td>
+              </tr>
+              <tr>
+                <td class="first" >@Ishtkaal</td>
+                <td class="second" >@ishtkaal</td>
+              </tr>
+              <tr>
+                <td class="first" >@Sunrise</td>
+                <td class="second" >@sunrise</td>
+              </tr>
+              <tr>
+                <td style="text-align:center" colspan=2 class="second">@vaar, @month, @year</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div style="clear:both;"></div>
+          <div class="card" style="clear:both;">
+            <table width="100%">
+              <tr>
+                <td width='50%'><img width='100%' src='@image_kundali_path'/></td>
+                <td width='50%'>
+                      <h3>@Lagna @kundali</h3>
+                      <table  class="border" width='100%'>
+                        <tr class="first large"><td>@Planet</td><td><small>@Rashi-Name @Nirayana</small></td><td><small>@Nakshatra-Pada</small></td></tr>
+                        <tr class="bg-sun">
+                          <td>
+                            <img width='13px' src='file:///android_asset/planets/sun_icon.png'/> @Surya
+                          </td>
+                          <td><img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-sun.png'/> @rashi-sun
+                          </td>
+
+                          <td>@Nakshatra-sun, @Pada-sun </td>
+                        </tr>
+                        <tr class="bg-moon">
+                          <td>
+                             <img width='13px' src='file:///android_asset/planets/moon_icon.png'/>@Chandra
+                          </td>
+                          <td> <img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-moon.png'/> @rashi-moon
+                          </td>
+                          <td>@Nakshatra-moon, @Pada-moon </td>
+                        </tr>
+                        <tr>
+                          <td>
+                             <img width='13px' src=  'file:///android_asset/planets/mercury_icon.png'/> @Budh
+                          </td>
+                          <td>
+                         <img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-mercury.png'/> @rashi-mercury
+                          </td>
+                          <td>@Nakshatra-mercury, @Pada-mercury</td>
+                        </tr>
+                        <tr>
+                          <td>
+                           <img width='13px' src='file:///android_asset/planets/venus_icon.png'/> @Shukra
+                          </td>
+                          <td>
+                             <img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-venus.png'/> @rashi-venus
+                          </td>
+                          <td>@Nakshatra-venus, @Pada-venus </td>
+                        </tr>
+                        <tr>
+                          <td><img width='13px' src='file:///android_asset/planets/mars_icon.png'/>  @Mangal
+                          </td>
+                          <td><img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-mars.png'/> @rashi-mars
+                          </td>
+                          <td>@Nakshatra-mars, @Pada-mars </td>
+                        </tr>
+                        <tr>
+                          <td><img width='13px' src='file:///android_asset/planets/jupiter_icon.png'/> @Brihaspati
+                          </td>
+                          <td>
+                           <img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-jupiter.png'/> @rashi-jupiter
+                          </td>
+                          <td>@Nakshatra-jupiter, @Pada-jupiter</td>
+                        </tr>
+                        <tr>
+                          <td><img width='13px' src='file:///android_asset/planets/saturn_icon.png'/> @Shani
+                          </td>
+                          <td><img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-saturn.png'/> @rashi-saturn
+                          </td>
+                          <td>@Nakshatra-saturn, @Pada-saturn </td>
+                        </tr>
+
+                        <tr>
+                          <td ><img width='13px' src='file:///android_asset/planets/rahu_icon_dark.png'/> @Rahu
+                          </td>
+                          <td><img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-rahu.png'/> @rashi-rahu
+                          </td>
+                          <td>@Nakshatra-rahu, @Pada-rahu </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img width='13px' src='file:///android_asset/planets/ketu_icon_dark.png'/> @Ketu
+                          </td>
+                          <td><img width='12px' src='file:///android_asset/zodiac_dark/zodiac_@rashinum-ketu.png'/> @rashi-ketu
+                          </td>
+                          <td>@Nakshatra-ketu, @Pada-ketu </td>
+                        </tr>
+                      </table>
+                  <br><small>@Ayanamsa-name = @ayanamsa</small>
+                </td>
+              </tr>
+            </table>
+        </div>
+      </div>    
+    </div>
+
+    <!--div class="main-page">
+      <div class="sub-page">
+        @dasha
+      </div>
+    </div-->
+  </body>
+</html>
