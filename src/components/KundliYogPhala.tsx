@@ -1,4 +1,4 @@
-import type { Phala } from "src/backend/types";
+import type { Phala } from "src/backend/YogPhala";
 
 interface Props {
     yogPhala: Record<string, Phala[]>;

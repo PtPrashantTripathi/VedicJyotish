@@ -50,7 +50,7 @@ export default function KundliResult() {
                             </tr>
                             <tr>
                                 <td>weekday</td>
-                                <td>{kundliData.weekday}</td>
+                                <td>{kundliData.vara.name.hindi}</td>
                             </tr>
                             <tr>
                                 <td>daybirth</td>

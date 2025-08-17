@@ -15,11 +15,12 @@ export function calcSunRiseSunSet(
     const flag = swe.SE_BIT_DISC_CENTER | swe.SE_BIT_NO_REFRACTION;
     const geopos = toFixedLengthArray([longitude, latitude, 0], 3);
 
-    // Get Sun's position at JD
+    /** Get Sun's position at JD */
     const r = swe.swe_calc(jd, swe.SE_SUN, 0);
     const { ascmc } = swe.swe_houses(jd, latitude, longitude, "E");
 
-    const diffAscSun = MOD360(ascmc[0] - r[0]); // Ascendant vs Sun
+    /** Ascendant vs Sun */
+    const diffAscSun = MOD360(ascmc[0] - r[0]);
     const daybirth = diffAscSun <= 180;
 
     const diffICSun = MOD360(ascmc[1] + 180 - r[0]);
@@ -46,7 +47,7 @@ export function calcSunRiseSunSet(
     return {
         daybirth,
 
-        // Call swe_rise_trans for each output
+        /** Call swe_rise_trans for each output */
         sunrise: swe.swe_rise_trans(
             startJdRise,
             swe.SE_SUN,

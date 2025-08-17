@@ -1,5 +1,5 @@
-import type { Planet } from "src/backend/Planet";
-import type { Phala, PlanetEn } from "src/backend/types";
+import type { Planet, PlanetEn } from "src/backend/Planet";
+import type { Translation } from "src/backend/types";
 import { getBhriguSamhitaPlanetRasiHouseYogPhala } from "src/backend/YogPhala/BhriguSamhita/getPlanetRasiHouseEffects";
 import { getBPHSLordshipYogPhala } from "src/backend/YogPhala/BPHS/getLordship";
 import { getBPHSUpagrahaAndKalavelaHouseEffectsYogPhala } from "src/backend/YogPhala/BPHS/getUpagrahaAndKalavelaHouseEffects";
@@ -12,6 +12,11 @@ import { getSaravaliPlanetHouseYogPhala } from "src/backend/YogPhala/Saravali/ge
 import { getSaravaliLunarYogPhala } from "src/backend/YogPhala/Saravali/getLunar";
 import { getSaravaliNabhasaYogPhala } from "src/backend/YogPhala/Saravali/getNabhasa";
 import { getSaravaliRasiPositionYogPhala } from "src/backend/YogPhala/Saravali/getRasiPosition";
+
+export interface Phala {
+    description: Translation<string, string>;
+    effect: Translation<string, string>;
+}
 
 export function calcYogPhala(
     planets: Record<PlanetEn, Planet>

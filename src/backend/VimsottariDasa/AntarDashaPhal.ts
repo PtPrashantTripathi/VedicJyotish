@@ -1,4 +1,5 @@
-import type { DashaPhal, NavagrahaEn } from "src/backend/types";
+import type { NavagrahaEn } from "src/backend/Planet";
+import type { DashaPhal } from "src/backend/VimsottariDasa";
 
 export const AntarDashaPhal: Record<
     NavagrahaEn,

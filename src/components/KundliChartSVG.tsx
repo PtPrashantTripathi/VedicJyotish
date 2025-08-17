@@ -1,12 +1,12 @@
 // KundliChartSVG.tsx
 // Renders a Vedic astrology chart SVG with planets positioned in respective houses
-import { PlanetDetails } from "src/backend/Planet";
-import type {
-    LanguageTypes,
-    PlanetDetail,
-    PlanetEn,
-    RasiNumber,
-} from "src/backend/types";
+import {
+    type PlanetDetail,
+    PlanetDetails,
+    type PlanetEn,
+} from "src/backend/Planet";
+import type { RasiNumber } from "src/backend/Rasi";
+import type { LanguageTypes } from "src/backend/types";
 import { NORMALIZE12, percentage } from "src/backend/utils";
 
 interface PlanetInfo {

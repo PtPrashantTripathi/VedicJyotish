@@ -1,5 +1,5 @@
-import type { Planet } from "src/backend/Planet";
-import type { NavagrahaEn, Phala, PlanetEn } from "src/backend/types";
+import type { NavagrahaEn, Planet, PlanetEn } from "src/backend/Planet";
+import type { Phala } from "src/backend/YogPhala";
 /**
  * Returns conjunction-based effects from predefined conjunction data.
  *

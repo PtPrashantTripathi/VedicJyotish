@@ -3,7 +3,7 @@ export default function component({
 }: {
     showPage(pageId: string): void;
 }) {
-    // Show dasha details (placeholder for future implementation)
+    /** Show dasha details (placeholder for future implementation) */
     function showDashaDetails(planet: string) {
         alert(
             `Showing detailed ${planet} dasha information. This will be implemented with your backend integration.`

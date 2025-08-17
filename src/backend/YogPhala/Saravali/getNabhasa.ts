@@ -1,7 +1,7 @@
-import type { Planet } from "src/backend/Planet";
-import { DEG_PER_TITHI } from "src/backend/Tithi";
-import type { HouseNumber, Phala, PlanetEn } from "src/backend/types";
+import type { HouseNumber } from "src/backend/Houses";
+import type { Planet, PlanetEn } from "src/backend/Planet";
 import { memoizeFunction, MOD360 } from "src/backend/utils";
+import type { Phala } from "src/backend/YogPhala";
 
 export function getSaravaliNabhasaYogPhala(
     planets: Record<PlanetEn, Planet>
@@ -62,9 +62,7 @@ export function getSaravaliNabhasaYogPhala(
 
         if (english === "Moon") {
             // Bright Moon condition:
-            const lunarPhase = MOD360(planets.Moon.degree - planets.Sun.degree);
-            const tithiNum = (Math.floor(lunarPhase / DEG_PER_TITHI) % 30) + 1;
-            return tithiNum <= 15;
+            return MOD360(planets.Moon.degree - planets.Sun.degree) < 180;
         }
 
         if (english === "Mercury") {

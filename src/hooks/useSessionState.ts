@@ -1,117 +1,50 @@
-import { DateTime } from "luxon";
-import { useState } from "react";
-import type { SearchParams, SessionData, SessionState } from "src/types";
-import { parseValidTimezoneOffset } from "src/utils/parseTimezoneOffset";
-import { parseValidAyanamsaName } from "src/utils/parseValidAyanamsaName";
-import { parseValidDate } from "src/utils/parseValidDate";
-import { parseValidDegree } from "src/utils/parseValidDegree";
-import { parseValidPageName } from "src/utils/parseValidPageName";
-import { parseValidTime } from "src/utils/parseValidTime";
+// src/hooks/useSessionState.ts
+import { useMemo, useState } from "react";
+import {
+    type ISessionData,
+    parseSearchParams,
+    searchParamKeys,
+} from "src/utils/parseSearchParams";
 
-const searchParamKeys: (keyof SearchParams)[] = [
-    "page",
-    "city",
-    "tz_name",
-    "lat",
-    "lon",
-    "ayanamsa",
-    "date",
-    "time",
-    "tz",
-];
+// Defines the shape of the return value for the useSessionState hook.
+export interface SessionState {
+    data: ISessionData;
+    setData: React.Dispatch<React.SetStateAction<ISessionData>>;
+    updateData: (input: Partial<ISessionData>) => void;
+    getSortURL: () => string;
+}
 
 /**
- * Extracts session data from the current URL's query parameters. If a parameter
- * is provided, it must be valid; otherwise, return null.
+ * A custom hook to manage the application's session state, synchronizing with
+ * URL search parameters.
  *
- * @returns A fully parsed SessionData's Props object.
- * @throws Error if a provided parameter is invalid.
+ * @returns {SessionState} An object containing the session data and update
+ *   functions.
  */
 export function useSessionState(): SessionState {
-    // const data = JSON.parse(localStorage.getItem("data-form") || "{}");
+    const initialData = useMemo(() => parseSearchParams(), []);
+    const [data, setData] = useState<ISessionData>(initialData);
 
-    const now = DateTime.now();
-    const sessionData: SessionData = {
-        page: "Home",
-        date: now.toFormat("yyyy-MM-dd"),
-        time: now.toFormat("HH:mm:ss"),
-        tz: 5.5,
-        tz_name: "Asia/Kolkata",
-        city: "Ujjain, Madhya Pradesh, India",
-        lat: 23.1793,
-        lon: 75.784912,
-        ayanamsa: "Lahiri",
-        error: [],
-        nav: false,
+    const updateData = (input: Partial<ISessionData>) => {
+        setData(prev => ({ ...prev, ...input }));
     };
 
-    let searchParams = new URLSearchParams(window.location.search);
-
-    const id = searchParams.get("id");
-    if (id) {
-        searchParams = new URLSearchParams(atob(id));
-    }
-
-    searchParamKeys.forEach(key => {
-        try {
-            const value: string | number | null = searchParams.get(key);
-            if (value) {
-                switch (key) {
-                    case "page":
-                        sessionData.page = parseValidPageName(value);
-                        break;
-                    case "lat":
-                        sessionData.lat = parseValidDegree(value, "lat");
-                        break;
-                    case "lon":
-                        sessionData.lon = parseValidDegree(value, "lon");
-                        break;
-                    case "ayanamsa":
-                        sessionData.ayanamsa = parseValidAyanamsaName(value);
-                        break;
-                    case "date":
-                        sessionData.date = parseValidDate(value);
-                        break;
-                    case "time":
-                        sessionData.time = parseValidTime(value);
-                        break;
-                    case "tz":
-                        sessionData.tz = parseValidTimezoneOffset(value);
-                        break;
-                    case "city":
-                        sessionData.city = value;
-                        break;
-                    case "tz_name":
-                        sessionData.tz_name = value;
-                        break;
-                }
-            }
-        } catch (e) {
-            sessionData.error.push({
-                message: `${key}: ${e}`,
-                type: "warning",
-            });
-        }
-    });
-
-    const [data, setData] = useState(sessionData);
-    return {
-        data,
-        setData,
-        updateData: (input: Partial<SessionData>) => {
-            setData(prev => ({
-                ...prev,
-                ...input,
-            }));
-        },
-        sortURL: () =>
+    const getSortURL = () => {
+        const params = new URLSearchParams(
+            searchParamKeys.map(key => [key, String(data[key])])
+        );
+        return (
             window.location.origin +
             window.location.pathname +
             "?id=" +
-            btoa(
-                new URLSearchParams(
-                    searchParamKeys.map(key => [key, String(data[key])])
-                ).toString()
-            ),
+            btoa(params.toString())
+        );
+    };
+
+    return {
+        data,
+        setData,
+        updateData,
+        getSortURL,
     };
 }

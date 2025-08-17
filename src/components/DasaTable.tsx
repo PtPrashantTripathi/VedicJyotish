@@ -1,4 +1,4 @@
-import type { Dasha } from "src/backend/types";
+import type { Dasha } from "src/backend/VimsottariDasa";
 
 interface Props {
     dasa: Dasha;

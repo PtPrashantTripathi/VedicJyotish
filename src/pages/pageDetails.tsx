@@ -4,73 +4,108 @@ import {
     FaClock,
     FaCog,
     FaInfoCircle,
+    FaOm,
     FaRegCalendarAlt,
     FaRegCalendarCheck,
     FaSmile,
     FaStar,
+    FaStudiovinari,
     FaUsers,
 } from "react-icons/fa";
-import type { PageDetail } from "src/types";
+import type { IconType } from "react-icons/lib";
 
-export const pageDetails: PageDetail[] = [
-    {
+export type ValidPageType =
+    | "Home"
+    | "Panchang"
+    | "KundliForm"
+    | "KundliResult"
+    | "MonthlyCalendar"
+    | "Festivals"
+    | "MyTithi"
+    | "KundliMatching"
+    | "Muhurta"
+    | "HinduTime"
+    | "Settings"
+    | "About";
+
+export interface PageDetail {
+    icon: IconType;
+    page: ValidPageType;
+    title: string;
+    subtitle: string;
+}
+
+export const pageDetails: Record<ValidPageType, PageDetail> = {
+    MonthlyCalendar: {
         icon: FaCalendarAlt,
         title: "मासिक",
         subtitle: "माह के पक्ष एवं तिथि",
         page: "MonthlyCalendar",
     },
-    {
+    Panchang: {
         icon: FaRegCalendarAlt,
-        title: "पञ्चाङ्ग",
-        subtitle: "दैनिक पञ्चाङ्ग, सूर्योदय/अस्त",
+        title: "दैनिक पञ्चाङ्ग",
+        subtitle: "Today's Panchang Details",
         page: "Panchang",
     },
-    {
+    Festivals: {
         icon: FaSmile,
         title: "त्यौहार",
         subtitle: "त्यौहार एवं उत्सव के दिन",
         page: "Festivals",
     },
-    {
+    MyTithi: {
         icon: FaRegCalendarCheck,
         title: "मेरी तिथि",
         subtitle: "अपनी तिथि सुरक्षित करें",
         page: "MyTithi",
     },
-    {
+    KundliForm: {
         icon: FaStar,
         title: "कुंडली",
         subtitle: "ग्रह स्थिति, लग्न",
         page: "KundliForm",
     },
-    {
+    KundliMatching: {
         icon: FaUsers,
         title: "कुंडली मिलान",
         subtitle: "गुण मिलान, अष्टकूट",
         page: "KundliMatching",
     },
-    {
+    Muhurta: {
         icon: FaBookOpen,
         title: "मुहूर्त",
         subtitle: "मुहूर्त, चौघड़िया",
         page: "Muhurta",
     },
-    {
+    HinduTime: {
         icon: FaClock,
         title: "हिन्दू समय",
         subtitle: "इष्टकाल, घटी विधि",
         page: "HinduTime",
     },
-    {
+    Settings: {
         icon: FaCog,
         title: "सेटिंग्स",
         subtitle: "स्थान और पसंद बदलें",
         page: "Settings",
     },
-    {
+    About: {
         icon: FaInfoCircle,
         title: "जानकारी",
         subtitle: "हिन्दू कैलेंडर के बारे में",
         page: "About",
     },
-];
+    Home: {
+        icon: FaOm,
+        title: "वैदिक ज्योतिष",
+        subtitle: "Vedic Astrology",
+        page: "About",
+    },
+    KundliResult: {
+        icon: FaStudiovinari,
+        title: "KundliResult",
+        subtitle: "KundliResult",
+        page: "KundliResult",
+    },
+};

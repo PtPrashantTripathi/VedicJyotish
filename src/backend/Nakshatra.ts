@@ -1,8 +1,5 @@
-import type {
-    CalculatedDetail,
-    NavagrahaEn,
-    Translation,
-} from "src/backend/types";
+import type { NavagrahaEn } from "src/backend/Planet";
+import type { CalculatedDetail, Translation } from "src/backend/types";
 import { MOD360 } from "src/backend/utils";
 
 /** Type Definitions */
@@ -104,7 +101,7 @@ export interface NakshatraDetail {
 /** The final calculated Nakshatra object, including positional data. */
 export type Nakshatra = NakshatraDetail & CalculatedDetail;
 
-// Constants
+/** Constants */
 
 /** The total number of Nakshatras in Vedic astrology. */
 export const TOTAL_NAKSHATRA_SIGNS = 27;
@@ -112,7 +109,7 @@ export const TOTAL_NAKSHATRA_SIGNS = 27;
 /** The angular span of each Nakshatra in degrees (13°20'). */
 export const DEG_PER_NAKSHATRA = 360 / TOTAL_NAKSHATRA_SIGNS;
 
-// Data: Source of Truth for Nakshatra Details
+/** Data: Source of Truth for Nakshatra Details */
 
 /**
  * A comprehensive dictionary containing details for each of the 27 Nakshatras.
@@ -258,7 +255,7 @@ export const NakshatraDetails: Record<NakshatraEn, NakshatraDetail> = {
     },
 };
 
-// Optimized Data Structure for Fast Lookups
+/** Optimized Data Structure for Fast Lookups */
 
 /**
  * An indexed array of Nakshatra details for O(1) lookup time. It is generated
@@ -271,7 +268,7 @@ const NakshatraDetailsByIndex: NakshatraDetail[] = Object.values(
     NakshatraDetails
 ).sort((a, b) => a.nakshatra_num - b.nakshatra_num);
 
-// Core Calculation Function
+/** Core Calculation Function */
 
 /**
  * Calculates the Nakshatra (lunar mansion) based on a given zodiac degree.
@@ -282,34 +279,34 @@ const NakshatraDetailsByIndex: NakshatraDetail[] = Object.values(
  * @throws {Error} If the degree is invalid or a Nakshatra cannot be found.
  */
 export function getNakshatra(degree: number): Nakshatra {
-    // 1. Normalize degree to be within the 0-360 range.
+    /** 1. Normalize degree to be within the 0-360 range. */
     const normalizedDegree = MOD360(degree);
 
-    // 2. Determine the Nakshatra number (1-based index).
+    /** 2. Determine the Nakshatra number (1-based index). */
     const nakshatraNum = Math.floor(normalizedDegree / DEG_PER_NAKSHATRA) + 1;
 
-    // 3. Perform a bounds check to ensure the number is valid.
+    /** 3. Perform a bounds check to ensure the number is valid. */
     if (nakshatraNum < 1 || nakshatraNum > TOTAL_NAKSHATRA_SIGNS) {
         throw new Error(
             `Invalid Nakshatra number calculated: ${nakshatraNum}. Degree was ${degree}.`
         );
     }
 
-    // 4. Retrieve Nakshatra details using a direct O(1) array lookup.
+    /** 4. Retrieve Nakshatra details using a direct O(1) array lookup. */
     const details = NakshatraDetailsByIndex[nakshatraNum - 1];
 
-    // This check is a safeguard against data structure initialization errors.
+    /** This check is a safeguard against data structure initialization errors. */
     if (!details) {
         throw new Error(
             `Could not find Nakshatra details for number: ${nakshatraNum}.`
         );
     }
 
-    // 5. Construct and return the final Nakshatra object.
+    /** 5. Construct and return the final Nakshatra object. */
     return {
         ...details,
         degree: normalizedDegree % DEG_PER_NAKSHATRA,
-        // Calculate the start and end degrees for this Nakshatra's span.
+        /** Calculate the start and end degrees for this Nakshatra's span. */
         range: {
             start: (nakshatraNum - 1) * DEG_PER_NAKSHATRA,
             end: nakshatraNum * DEG_PER_NAKSHATRA,

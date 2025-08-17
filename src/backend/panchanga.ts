@@ -1,54 +1,162 @@
-import type { DateTime } from "luxon";
+/**
+ * @file Panchang.ts
+ * @brief A comprehensive Panchang calculator using the Swiss Ephemeris library.
+ *
+ * This program calculates the five elements of the Hindu lunar calendar (Panchang)
+ * for a given date, time, and location:
+ * 1. Tithi (Lunar Day)
+ * 2. Vara (Weekday)
+ * 3. Nakshatra (Lunar Mansion)
+ * 4. Yoga (Luni-Solar combination)
+ * 5. Karana (Half of a Tithi)
+ */
+import { DateTime } from "luxon";
 import { getKarana } from "src/backend/Karana";
-import { MaahaDetails } from "src/backend/Maaha";
+import { getMaaha, MaahaNumber } from "src/backend/Maaha";
 import { getNakshatra } from "src/backend/Nakshatra";
-import { SamvatsaraDetails } from "src/backend/Samvatsara";
+import { getRasi } from "src/backend/Rasi";
+import { getSamvatsara } from "src/backend/Samvatsara";
 import SwissEPH from "src/backend/swisseph-wasm";
-import type { FixedLengthArray } from "src/backend/swisseph-wasm/utils/fixed-length-array";
+import { toFixedLengthArray } from "src/backend/swisseph-wasm/utils/fixed-length-array";
 import { getTithi } from "src/backend/Tithi";
-import type {
-    MaahaDetail,
-    SamvatsaraDetail,
-    VaraDetail,
-} from "src/backend/types";
 import { MOD360 } from "src/backend/utils";
-import { VarasDetails } from "src/backend/Varas";
 import { getVara } from "src/backend/Varas";
 import { getYoga } from "src/backend/Yoga";
+
 /**
- * A generic search function to find the time when a function f(t) crosses zero.
- * It uses a binary search approach.
+ * @param jd_ut The Julian Day in Universal Time.
+ * @param buffer A character buffer to store the resulting string.
+ * @param buffer_size The size of the buffer.
+ * @brief Converts a Julian Day (UT) to a readable IST date-time string.
  */
-function search(f: (jd: number) => number, startJD: number): number | null {
-    let a = startJD;
-    let b = startJD + 2; // Look ahead 2 days
+function jdToDateTime(swe: SwissEPH, jd_ut: number): DateTime<true> {
+    // Correct function to convert Julian Day to calendar date is swe_revjul
+    const dt = swe.swe_revjul(jd_ut, swe.SE_GREG_CAL);
+    const dtUTC = DateTime.utc(dt.year, dt.month, dt.day).plus({
+        hours: dt.hour,
+    });
 
-    let fa = f(a);
-    let fb = f(b);
+    if (!dtUTC.isValid) throw new Error("Invalid date");
 
-    if (fa * fb >= 0) {
-        // We need the function to cross zero in the interval.
-        // If not, we might not find a root.
-        // This can happen if a tithi/nakshatra doesn't end within the next 2 days, which is rare.
-        return null;
-    }
-
-    for (let i = 0; i < 20; i++) {
-        // 20 iterations are enough for high precision
-        const m = (a + b) / 2;
-        const fm = f(m);
-        if (fm * fa < 0) {
-            b = m;
-            fb = fm;
-        } else {
-            a = m;
-            fa = fm;
-        }
-    }
-    return a;
+    return dtUTC;
 }
 
-function calculateRahuKalam(
+function decimalToHMS(days: number) {
+    return DateTime.fromObject(
+        { hour: 0, minute: 0, second: 0 },
+        { zone: "utc" }
+    )
+        .plus({ days })
+        .toFormat("HH'h' mm'm' ss's'");
+}
+
+/**
+ * @param jd_start The Julian Day to start searching from.
+ * @param target_angle The target angular separation in degrees.
+ * @returns The Julian Day (UT) of the event.
+ * @brief Finds the precise time for a lunar event (Tithi/Karana) crossing.
+ * This is when the angular separation between the Moon and Sun reaches a specific degree.
+ */
+function find_lunar_event_time(
+    swe: SwissEPH,
+    jd_start: number,
+    target_angle: number
+): number {
+    const iflag = swe.SEFLG_SWIEPH | swe.SEFLG_SPEED | swe.SEFLG_SIDEREAL;
+
+    // Get current positions and speeds
+    let xx_sun = swe.swe_calc_ut(jd_start, swe.SE_SUN, iflag);
+    let xx_moon = swe.swe_calc_ut(jd_start, swe.SE_MOON, iflag);
+
+    let lunar_phase = MOD360(xx_moon[0] - xx_sun[0]);
+    let relative_speed = xx_moon[3] - xx_sun[3];
+
+    // initial estimate
+    let angle_diff = target_angle - lunar_phase;
+    if (angle_diff > 180.0) angle_diff -= 360.0;
+    if (angle_diff < -180.0) angle_diff += 360.0;
+
+    // Initial approximation
+    let jd_estimated = jd_start + angle_diff / relative_speed;
+
+    // Refine with maximum 5 iterations
+    for (let i = 0; i < 5; i++) {
+        // Calculate Sun and Moon positions at the current estimated time
+        xx_sun = swe.swe_calc_ut(jd_estimated, swe.SE_SUN, iflag);
+        xx_moon = swe.swe_calc_ut(jd_estimated, swe.SE_MOON, iflag);
+
+        // Calculate current separation, handling the 360-degree wrap-around
+        lunar_phase = MOD360(xx_moon[0] - xx_sun[0]);
+
+        // Relative speed of Moon with respect to Sun
+        relative_speed = xx_moon[3] - xx_sun[3];
+
+        // Difference from target
+        angle_diff = target_angle - lunar_phase;
+
+        // Handle wrap-around for the difference itself
+        if (angle_diff > 180.0) angle_diff -= 360.0;
+        if (angle_diff < -180.0) angle_diff += 360.0;
+        if (Math.abs(angle_diff) < 0.001) break; // Sufficient precision
+
+        if (relative_speed !== 0) {
+            // Avoid division by zero
+            // Estimate time correction and update the Julian Day
+            jd_estimated += angle_diff / relative_speed;
+        }
+    }
+    return jd_estimated;
+}
+
+/**
+ * @param jd_start The Julian Day to start searching from.
+ * @param target_lon The target combined longitude.
+ * @returns The Julian Day (UT) of the event.
+ * @brief Finds the precise time for the sum of Sun and Moon longitudes to cross a specific degree (for Yoga).
+ */
+function find_yoga_crossing_time(
+    swe: SwissEPH,
+    jd_start: number,
+    target_lon: number
+): number {
+    const iflag = swe.SEFLG_SWIEPH | swe.SEFLG_SPEED | swe.SEFLG_SIDEREAL;
+
+    // Get initial positions and speeds
+    let xx_sun = swe.swe_calc_ut(jd_start, swe.SE_SUN, iflag);
+    let xx_moon = swe.swe_calc_ut(jd_start, swe.SE_MOON, iflag);
+
+    let combined_lon = MOD360(xx_sun[0] + xx_moon[0]);
+    let combined_speed = xx_sun[3] + xx_moon[3];
+
+    // Initial estimate
+    let angle_diff = target_lon - combined_lon;
+    if (angle_diff > 180.0) angle_diff -= 360.0;
+    if (angle_diff < -180.0) angle_diff += 360.0;
+
+    let jd_estimated = jd_start + angle_diff / combined_speed;
+
+    // Refine with maximum 5 iterations
+    for (let i = 0; i < 5; i++) {
+        xx_sun = swe.swe_calc_ut(jd_estimated, swe.SE_SUN, iflag);
+        xx_moon = swe.swe_calc_ut(jd_estimated, swe.SE_MOON, iflag);
+
+        combined_lon = MOD360(xx_sun[0] + xx_moon[0]);
+        combined_speed = xx_sun[3] + xx_moon[3];
+        angle_diff = target_lon - combined_lon;
+
+        if (angle_diff > 180.0) angle_diff -= 360.0;
+        if (angle_diff < -180.0) angle_diff += 360.0;
+
+        if (Math.abs(angle_diff) < 0.001) break;
+
+        if (combined_speed !== 0) {
+            jd_estimated += angle_diff / combined_speed;
+        }
+    }
+    return jd_estimated;
+}
+
+function calculaterahu_kalam(
     sunrise: number,
     sunset: number,
     vara: number
@@ -56,8 +164,8 @@ function calculateRahuKalam(
     const dayDuration = sunset - sunrise;
     const portion = dayDuration / 8;
 
-    const rahuKalamPortionIndex = [8, 2, 7, 5, 6, 4, 3]; // Sun, Mon, Tue, Wed, Thu, Fri, Sat
-    const portionIndex = rahuKalamPortionIndex[vara];
+    const rahu_kalamPortionIndex = [8, 2, 7, 5, 6, 4, 3]; // Sun, Mon, Tue, Wed, Thu, Fri, Sat
+    const portionIndex = rahu_kalamPortionIndex[vara];
 
     const start = sunrise + (portionIndex - 1) * portion;
     const end = sunrise + portionIndex * portion;
@@ -68,194 +176,172 @@ function calculateRahuKalam(
     };
 }
 
+/** Main calculation function */
 export async function getPanchanga(
-    date: DateTime<true>,
+    datetime: DateTime<true>,
     latitude: number,
-    longitude: number,
-    altitude: number = 0,
-    pressure: number = 0, // Atmospheric values (ignored for Hindu method)
-    temperature: number = 0
+    longitude: number
 ) {
+    // Initialization
     const swe = await SwissEPH.init();
+
+    // Path to Swiss Ephemeris data files.
     await swe.swe_set_ephe_path("./ephe", [
         "seas_18.se1",
         "sepl_18.se1",
         "semo_18.se1",
     ]);
     swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
-    // Setup location detail
-    swe.swe_set_topo(longitude, latitude, altitude);
 
-    // Prepare position array
-    const geopos = [
-        longitude, // east positive
-        latitude, // north positive
-        altitude, // height above sea level in meters
-    ] as FixedLengthArray<3, number>;
+    // Location settings
+    swe.swe_set_topo(longitude, latitude, 0);
 
-    const get_rise = (jd: number, body: number) =>
-        swe.swe_rise_trans(
-            jd,
-            body,
-            null,
-            swe.SEFLG_SWIEPH,
-            swe.SE_CALC_RISE | swe.SE_BIT_HINDU_RISING,
-            geopos,
-            pressure,
-            temperature
-        );
-    const get_set = (jd: number, body: number) =>
-        swe.swe_rise_trans(
-            jd,
-            body,
-            null,
-            swe.SEFLG_SWIEPH,
-            swe.SE_CALC_SET | swe.SE_BIT_HINDU_RISING,
-            geopos,
-            pressure,
-            temperature
-        );
-    const get_location = (jd: number, body: number) =>
-        MOD360(
-            swe.swe_calc_ut(
-                jd,
-                body,
-                swe.SEFLG_SWIEPH |
-                    swe.SEFLG_SPEED |
-                    swe.SEFLG_SIDEREAL |
-                    swe.SEFLG_EQUATORIAL
-            )[0]
-        );
-
-    // Calculate Julian Day
-    const tjd_ut = swe.swe_julday(
-        date.year,
-        date.month,
-        date.day,
-        date.hour,
+    // Convert current system time to Julian Day UT
+    const utc_dt = datetime.toUTC();
+    const tjd_ut = swe.swe_utc_to_jd(
+        utc_dt.year,
+        utc_dt.month,
+        utc_dt.day,
+        utc_dt.hour,
+        utc_dt.minute,
+        utc_dt.second,
         swe.SE_GREG_CAL
+    )[1];
+
+    // Get Sun and Moon positions at the given time
+    const iflag = swe.SEFLG_SWIEPH | swe.SEFLG_SPEED | swe.SEFLG_SIDEREAL;
+    const xx_sun = swe.swe_calc_ut(tjd_ut, swe.SE_SUN, iflag);
+    const xx_moon = swe.swe_calc_ut(tjd_ut, swe.SE_MOON, iflag);
+    const sun_lon = xx_sun[0];
+    const moon_lon = xx_moon[0];
+
+    // Sun and Moon info
+    const sun_info = getRasi(sun_lon);
+    const moon_info = getRasi(moon_lon);
+
+    // Panchang Details
+
+    // Calculate rise/set times
+    const geopos = toFixedLengthArray([longitude, latitude, 0], 3);
+
+    const sunrise_jd = swe.swe_rise_trans(
+        tjd_ut,
+        swe.SE_SUN,
+        null,
+        swe.SEFLG_SWIEPH,
+        swe.SE_CALC_RISE,
+        geopos,
+        0,
+        0
     );
 
-    // Calculate Hindu Sunrise
-    const sunrise_jd = get_rise(tjd_ut, swe.SE_SUN);
-    const sunrise = date.plus({ days: sunrise_jd - tjd_ut });
-
-    // Calculate Hindu Sunset
-    const sunset_jd = get_set(sunrise_jd, swe.SE_SUN);
-    const sunset = date.plus({ days: sunset_jd - tjd_ut });
-
-    // Calculate Hindu Moonrise
-    const moonrise_jd = get_rise(tjd_ut, swe.SE_MOON);
-    const moonrise = date.plus({ days: moonrise_jd - tjd_ut });
-
-    // Calculate Hindu Moonset
-    const moonset_jd = get_set(moonrise_jd, swe.SE_MOON);
-    const moonset = date.plus({ days: moonset_jd - tjd_ut });
+    const sunset_jd = swe.swe_rise_trans(
+        sunrise_jd,
+        swe.SE_SUN,
+        null,
+        swe.SEFLG_SWIEPH,
+        swe.SE_CALC_SET,
+        geopos,
+        0,
+        0
+    );
 
     // Calculate Hindu Next Day Sunrise
-    const next_sunrise_jd = get_rise(sunset_jd, swe.SE_SUN);
+    const next_sunrise_jd = swe.swe_rise_trans(
+        tjd_ut + 1,
+        swe.SE_SUN,
+        null,
+        swe.SEFLG_SWIEPH,
+        swe.SE_CALC_RISE,
+        geopos,
+        0,
+        0
+    );
 
     // Day Duration
     const day_duration = sunset_jd - sunrise_jd;
-    // const night_duration = next_sunrise_jd - sunset_jd;
+    const night_duration = next_sunrise_jd - sunset_jd;
 
-    const moon_lon = get_location(sunrise_jd, swe.SE_MOON);
-    const sun_lon = get_location(sunrise_jd, swe.SE_SUN);
+    const moonrise_jd = swe.swe_rise_trans(
+        sunrise_jd,
+        swe.SE_MOON,
+        null,
+        swe.SEFLG_SWIEPH,
+        swe.SE_CALC_RISE,
+        geopos,
+        0,
+        0
+    );
 
+    const moonset_jd = swe.swe_rise_trans(
+        moonrise_jd,
+        swe.SE_MOON,
+        null,
+        swe.SEFLG_SWIEPH,
+        swe.SE_CALC_SET,
+        geopos,
+        0,
+        0
+    );
+
+    // Vara (Weekday) - No calculation needed, direct function
+    const vara = getVara(
+        swe.swe_day_of_week(sunrise_jd + utc_dt.offset / (24 * 60))
+    );
+
+    // Tithi - Optimized calculation
     const tithi = getTithi(sun_lon, moon_lon);
+    const tithi_start_jd = find_lunar_event_time(
+        swe,
+        tjd_ut - 0.5,
+        tithi.range.start
+    );
+    const tithi_end_jd = find_lunar_event_time(swe, tjd_ut, tithi.range.end);
+
+    // Nakshatra - Use direct swe_mooncross_ut
     const nakshatra = getNakshatra(moon_lon);
+    const nakshatra_start_jd = swe.swe_mooncross_ut(
+        nakshatra.range.start,
+        tjd_ut - 1.0,
+        swe.SEFLG_SIDEREAL
+    );
+    const nakshatra_end_jd = swe.swe_mooncross_ut(
+        nakshatra.range.end,
+        tjd_ut,
+        swe.SEFLG_SIDEREAL
+    );
+
+    // Yoga - Optimized calculation
     const yoga = getYoga(sun_lon, moon_lon);
+    const yoga_start_jd = find_yoga_crossing_time(
+        swe,
+        tjd_ut - 0.5,
+        yoga.range.start
+    );
+    const yoga_end_jd = find_yoga_crossing_time(swe, tjd_ut, yoga.range.end);
+
+    // Karana - Optimized calculation
     const karana = getKarana(sun_lon, moon_lon);
-    const vara = getVara(swe.swe_day_of_week(sunrise_jd));
-
-    const nakshatraStartTime = search(
-        jd => MOD360(get_location(jd, swe.SE_MOON) - nakshatra.range.min),
-        tjd_ut - 25 / 24 // A nakshatra lasts about a day. Searching from 25 hours before should be safe.
+    const karana_start_jd = find_lunar_event_time(
+        swe,
+        tjd_ut - 0.25,
+        karana.range.start
     );
-    const nakshatraEndTime = search(
-        jd => MOD360(get_location(jd, swe.SE_MOON) - nakshatra.range.max),
-        tjd_ut
-    );
-
-    const tithiStartTime = search(
-        jd =>
-            MOD360(
-                get_location(jd, swe.SE_MOON) -
-                    get_location(jd, swe.SE_SUN) -
-                    tithi.range.min
-            ),
-        // A tithi is slightly less than a day. Searching from 25h before is safe.
-        tjd_ut - 25 / 24
-    );
-    const tithiEndTime = search(
-        jd =>
-            MOD360(
-                get_location(jd, swe.SE_MOON) -
-                    get_location(jd, swe.SE_SUN) -
-                    tithi.range.max
-            ),
-        tjd_ut
-    );
-
-    const yogaEndTime = search(
-        jd =>
-            get_location(jd, swe.SE_MOON) +
-            get_location(jd, swe.SE_SUN) -
-            yoga.range.max,
-        tjd_ut
-    );
-
-    const rahuKalam = calculateRahuKalam(sunrise_jd, sunset_jd, vara.num);
-
-    /**
-     * Find all Karana transitions (end times and names) between startDate and
-     * endDate (typically sunrise to next sunrise)
-     */
-    function findKaranaTransitions(startJD: number, endJD: number) {
-        const transitions = [];
-        let lastJD = startJD;
-        let lastKarana = karana;
-        while (lastJD < endJD) {
-            // Karana changes every 6 degrees of moon-sun difference
-            const nextKarana = getKarana(
-                get_location(lastJD, swe.SE_SUN),
-                get_location(lastJD, swe.SE_MOON)
-            );
-            // Find next Karana end
-            const nextKaranaEnd = search(
-                jd =>
-                    get_location(jd, swe.SE_MOON) -
-                    get_location(jd, swe.SE_SUN) -
-                    nextKarana.degree,
-                lastJD
-            );
-            if (!nextKaranaEnd || nextKaranaEnd > endJD) {
-                // Last Karana for the day
-                transitions.push({ name: lastKarana, endTime: endJD });
-                break;
-            } else {
-                transitions.push({ name: lastKarana, endTime: nextKaranaEnd });
-                lastJD = nextKaranaEnd + 1 / (24 * 60);
-                lastKarana = nextKarana;
-            }
-        }
-        return transitions;
-    }
-    const karanaTransitions = findKaranaTransitions(sunset_jd, next_sunrise_jd);
+    const karana_end_jd = find_lunar_event_time(swe, tjd_ut, karana.range.end);
 
     // Masa
     const slast = MOD360(
         swe.swe_calc_ut(
             sunrise_jd - (tithi.lunarphase / 360.0) * 30.0,
             swe.SE_SUN,
-            swe.SEFLG_SWIEPH
+            iflag
         )[0]
     );
     const snext = MOD360(
         swe.swe_calc_ut(
             sunrise_jd + ((30.0 - tithi.lunarphase) / 360.0) * 30.0,
             swe.SE_SUN,
-            swe.SEFLG_SWIEPH
+            iflag
         )[0]
     );
     const m1 = Math.floor(slast / 30.0) + 1;
@@ -274,53 +360,54 @@ export async function getPanchanga(
     const samvatsara_num =
         (kali + 27 + Math.floor((kali * 211 - 108) / 18000)) % 60;
 
-    // todo : need to check
-    return {
-        sunrise_jd,
-        sunset_jd,
-        moonrise_jd,
-        moonset_jd,
-        day_duration_hours: day_duration * 24,
-        moon_lon,
-        sun_lon,
-        tithi,
-        nakshatra,
-        yoga,
-        karana,
-        vara,
+    const rahu_kalam = calculaterahu_kalam(sunrise_jd, sunset_jd, vara.num);
 
-        nakshatraStartTime,
-        nakshatraEndTime,
-        tithiStartTime,
-        tithiEndTime,
-        yogaEndTime,
-        rahuKalam,
-        // For Karana transitions, use sunrise to next day's sunrise
-        next_sunrise_jd,
-        karanaTransitions,
-        // Masa
-        masa_num,
-        // Samvatsara
-        ahargana,
+    // Cleanup
+    swe.swe_close();
+
+    return {
+        datetime,
+        latitude,
+        longitude,
+        sun_info,
+        moon_info,
+        sunrise: jdToDateTime(swe, sunrise_jd),
+        sunset: jdToDateTime(swe, sunset_jd),
+        moonrise: jdToDateTime(swe, moonrise_jd),
+        moonset: jdToDateTime(swe, moonset_jd),
+        day_duration: decimalToHMS(day_duration),
+        night_duration: decimalToHMS(night_duration),
+        vara,
+        tithi: {
+            ...tithi,
+            start_dt: jdToDateTime(swe, tithi_start_jd),
+            end_dt: jdToDateTime(swe, tithi_end_jd),
+        },
+        nakshatra: {
+            ...nakshatra,
+            start_dt: jdToDateTime(swe, nakshatra_start_jd),
+            end_dt: jdToDateTime(swe, nakshatra_end_jd),
+        },
+        yoga: {
+            ...yoga,
+            start_dt: jdToDateTime(swe, yoga_start_jd),
+            end_dt: jdToDateTime(swe, yoga_end_jd),
+        },
+        karana: {
+            ...karana,
+            start_dt: jdToDateTime(swe, karana_start_jd),
+            end_dt: jdToDateTime(swe, karana_end_jd),
+        },
+        masa: getMaaha(masa_num as MaahaNumber),
+        samvatsara: getSamvatsara(samvatsara_num),
+
         kali,
         saka_samvat,
         vikrama_samvat,
         samvatsara_num,
-
-        jd: tjd_ut,
-        sunrise,
-        sunset,
-        moonrise,
-        moonset,
-        vaara: Object.values(VarasDetails).find(
-            item => item.num === Math.floor(tjd_ut + 1) % 7
-        ) as VaraDetail,
-        masa: Object.values(MaahaDetails).find(
-            item => item.num === masa_num
-        ) as MaahaDetail,
-        samvatsara: Object.values(SamvatsaraDetails).find(
-            item => item.num === samvatsara_num
-        ) as SamvatsaraDetail,
-        ritu: (masa_num - 1) / 2,
+        rahu_kalam: {
+            start_dt: jdToDateTime(swe, rahu_kalam.start),
+            end_dt: jdToDateTime(swe, rahu_kalam.end),
+        },
     };
 }

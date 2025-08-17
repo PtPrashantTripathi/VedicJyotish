@@ -1,13 +1,9 @@
-import { HouseDetails } from "src/backend/Houses";
-import type { Planet } from "src/backend/Planet";
+import { HouseDetails, type HouseNumber } from "src/backend/Houses";
+import type { Planet, PlanetEn } from "src/backend/Planet";
 import { RasiDetails } from "src/backend/Rasi";
-import type {
-    HouseNumber,
-    Phala,
-    PlanetEn,
-    Translation,
-} from "src/backend/types";
+import type { Translation } from "src/backend/types";
 import { reorderArray } from "src/backend/utils";
+import { Phala } from "src/backend/YogPhala";
 
 /**
  * Get the BPHS (Brihat Parashara Hora Shastra) phala for each house lord's

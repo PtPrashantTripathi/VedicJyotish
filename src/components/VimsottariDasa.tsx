@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import type { Dasha } from "src/backend/types";
+import type { Dasha } from "src/backend/VimsottariDasa";
 import { DasaTable } from "src/components/DasaTable";
 interface Props {
     dasaData: Dasha[];

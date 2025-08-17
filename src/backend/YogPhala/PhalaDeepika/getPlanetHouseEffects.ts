@@ -1,11 +1,7 @@
-import type { Planet } from "src/backend/Planet";
-import type {
-    HouseNumber,
-    NavagrahaEn,
-    Phala,
-    PlanetEn,
-    Translation,
-} from "src/backend/types";
+import type { HouseNumber } from "src/backend/Houses";
+import type { NavagrahaEn, Planet, PlanetEn } from "src/backend/Planet";
+import type { Translation } from "src/backend/types";
+import { Phala } from "src/backend/YogPhala";
 
 /**
  * Retrieves house effect descriptions for each planet based on its current

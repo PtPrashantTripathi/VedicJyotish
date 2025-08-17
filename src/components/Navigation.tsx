@@ -15,7 +15,7 @@ export default function Navigation() {
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
                 <a href={"?page=Home"} className="flex items-center space-x-3">
                     <img
-                        src="icon/android-chrome-192x192.png"
+                        src="icon/icon-192x192.png"
                         className="h-6 w-6 text-blue-700"
                     />
                     <span className="text-xl font-semibold">
@@ -34,7 +34,7 @@ export default function Navigation() {
             {/* Navigation List */}
             <nav className="p-3">
                 <ul className="flex flex-col font-medium rounded-lg space-y-1">
-                    {pageDetails.map((item, idx) => (
+                    {Object.values(pageDetails).map((item, idx) => (
                         <li key={idx}>
                             <a
                                 href={"?page=" + item.page}

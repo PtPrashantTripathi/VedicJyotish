@@ -1,43 +1,128 @@
-import { getHouse } from "src/backend/Houses";
-import { getNakshatra } from "src/backend/Nakshatra";
-import { getRasi } from "src/backend/Rasi";
-import type {
-    AscendantEn,
-    AscendantHi,
-    BahyagrahaEn,
-    BahyagrahaHi,
-    ChhayagrahaEn,
-    ChhayagrahaHi,
-    DayEn,
-    HouseDetail,
-    HouseNumber,
-    KalavelasEn,
-    KalavelasHi,
-    Nakshatra,
-    PlanetDetail,
-    PlanetEn,
-    PlanetHi,
-    Rasi,
-    RasiEn,
-    RasiNumber,
-    SaptagrahaEn,
-    SaptagrahaHi,
-    Translation,
-    UpagrahaEn,
-    UpagrahaHi,
-} from "src/backend/types";
-import { DEGS, mod2pi, MOD360, NORMALIZE12, RADS } from "src/backend/utils";
+import {
+    getHouse,
+    type HouseDetail,
+    type HouseNumber,
+} from "src/backend/Houses";
+import { getNakshatra, type Nakshatra } from "src/backend/Nakshatra";
+import {
+    getRasi,
+    type Rasi,
+    type RasiEn,
+    type RasiNumber,
+} from "src/backend/Rasi";
+import type { Translation } from "src/backend/types";
+import { MOD360, NORMALIZE12 } from "src/backend/utils";
+import { DayEn } from "src/backend/Varas";
 
-const AscendantDetails: Record<
-    AscendantEn,
-    {
-        name: Translation<AscendantEn, AscendantHi>;
-        type: "Ascendant";
-        shortname: Translation<string, string>;
-        symbol: string;
-        color: string;
-    }
-> = {
+/** TYPE DEFINITIONS */
+
+/** Ascendant (Lagna) at the time of birth. */
+export type AscendantEn = "Ascendant";
+export type AscendantHi = "लग्न";
+
+/** Core 7 Planets (Satyagraha). */
+export type SaptagrahaEn =
+    | "Sun"
+    | "Moon"
+    | "Mars"
+    | "Mercury"
+    | "Jupiter"
+    | "Venus"
+    | "Saturn";
+
+export type SaptagrahaHi =
+    | "सूर्य"
+    | "चंद्र"
+    | "मंगल"
+    | "बुध"
+    | "गुरु"
+    | "शुक्र"
+    | "शनि";
+
+/** "Chhaya" = shadow planets (lunar nodes, Rahu & Ketu). */
+export type ChhayagrahaEn = "Rahu" | "Ketu";
+export type ChhayagrahaHi = "राहु" | "केतु";
+
+/** Core 9 Planets (Navagraha) - English. */
+export type NavagrahaEn = SaptagrahaEn | ChhayagrahaEn;
+/** Core 9 Planets (Navagraha) - Hindi. */
+export type NavagrahaHi = SaptagrahaHi | ChhayagrahaHi;
+
+/** Outer planets beyond Saturn (Bahyagrahas). */
+export type BahyagrahaEn = "Uranus" | "Neptune" | "Pluto";
+export type BahyagrahaHi = "अरुण" | "वरुण" | "यम";
+
+/** Minor shadow Planets (Upagrahas). */
+export type UpagrahaEn =
+    | "Dhuma"
+    | "Vyatipata"
+    | "Parivesha"
+    | "Chapa"
+    | "Upaketu";
+export type UpagrahaHi = "धूम" | "व्यतीपात" | "परिवेष" | "चाप" | "उपकेतु";
+
+/** Time-based shadow periods (Kalavelas). */
+export type KalavelasEn =
+    | "Gulika"
+    | "Kaala"
+    | "Mrityu"
+    | "Yamaghantaka"
+    | "Ardhaprahara";
+export type KalavelasHi = "गुलिक" | "काल" | "मृत्यु" | "यमघंटक" | "अर्धप्रहर";
+
+/** A union of all possible planet types. */
+export type PlanetEn =
+    | AscendantEn
+    | SaptagrahaEn
+    | ChhayagrahaEn
+    | BahyagrahaEn
+    | UpagrahaEn
+    | KalavelasEn;
+
+export type PlanetHi =
+    | AscendantHi
+    | SaptagrahaHi
+    | ChhayagrahaHi
+    | BahyagrahaHi
+    | UpagrahaHi
+    | KalavelasHi;
+
+/**
+ * Defines the static attributes for a planet, such as its name, type, and
+ * astrological properties.
+ */
+export interface PlanetDetail {
+    name: Translation<PlanetEn, PlanetHi>;
+    shortname?: Translation<string, string>;
+    type:
+        | "Ascendant"
+        | "Saptagraha"
+        | "Chhayagraha"
+        | "Bahyagraha"
+        | "Upagraha"
+        | "Kalavelas";
+    day?: DayEn;
+    aspect?: HouseNumber[];
+    happy_house?: HouseNumber[];
+    sad_house?: HouseNumber[];
+    friend?: SaptagrahaEn[];
+    enemy?: SaptagrahaEn[];
+    neutral?: SaptagrahaEn[];
+    exaltation?: RasiEn;
+    debilitation?: RasiEn;
+    own_sign?: RasiEn[];
+    symbol: string;
+    color: string;
+}
+
+/**
+ * # =============================================================================
+ *
+ * STATIC DATA: PLANET DETAILS These objects serve as the primary source of
+ * truth for all planet attributes.
+ */
+
+const AscendantDetails: Record<AscendantEn, PlanetDetail> = {
     Ascendant: {
         name: { english: "Ascendant", hindi: "लग्न" },
         type: "Ascendant",
@@ -63,7 +148,7 @@ const SaptagrahaDetails: Record<
         exaltation: RasiEn;
         debilitation: RasiEn;
         /* Swakshetra */
-        ownsign: RasiEn[];
+        own_sign: RasiEn[];
         symbol: string;
         color: string;
     }
@@ -82,7 +167,7 @@ const SaptagrahaDetails: Record<
         color: "#f39c12",
         exaltation: "Aries",
         debilitation: "Libra",
-        ownsign: ["Leo"],
+        own_sign: ["Leo"],
         shortname: { english: "Su", hindi: "सू" },
     },
     Moon: {
@@ -99,7 +184,7 @@ const SaptagrahaDetails: Record<
         color: "#5dade2",
         exaltation: "Taurus",
         debilitation: "Scorpio",
-        ownsign: ["Cancer"],
+        own_sign: ["Cancer"],
         shortname: { english: "Mo", hindi: "च" },
     },
     Mars: {
@@ -116,7 +201,7 @@ const SaptagrahaDetails: Record<
         color: "#e74c3c",
         exaltation: "Capricorn",
         debilitation: "Cancer",
-        ownsign: ["Aries", "Scorpio"],
+        own_sign: ["Aries", "Scorpio"],
         shortname: { english: "Ma", hindi: "मं" },
     },
     Mercury: {
@@ -133,7 +218,7 @@ const SaptagrahaDetails: Record<
         color: "#27ae60",
         exaltation: "Virgo",
         debilitation: "Pisces",
-        ownsign: ["Gemini", "Virgo"],
+        own_sign: ["Gemini", "Virgo"],
         shortname: { english: "Me", hindi: "बु" },
     },
     Jupiter: {
@@ -150,7 +235,7 @@ const SaptagrahaDetails: Record<
         color: "#b7950b",
         exaltation: "Cancer",
         debilitation: "Capricorn",
-        ownsign: ["Sagittarius", "Pisces"],
+        own_sign: ["Sagittarius", "Pisces"],
         shortname: { english: "Ju", hindi: "गु" },
     },
     Venus: {
@@ -167,7 +252,7 @@ const SaptagrahaDetails: Record<
         color: "#ff69b4",
         exaltation: "Pisces",
         debilitation: "Virgo",
-        ownsign: ["Taurus", "Libra"],
+        own_sign: ["Taurus", "Libra"],
         shortname: { english: "Ve", hindi: "शु" },
     },
     Saturn: {
@@ -184,7 +269,7 @@ const SaptagrahaDetails: Record<
         color: "#5d6d7e",
         exaltation: "Libra",
         debilitation: "Aries",
-        ownsign: ["Capricorn", "Aquarius"],
+        own_sign: ["Capricorn", "Aquarius"],
         shortname: { english: "Sa", hindi: "श" },
     },
 };
@@ -270,7 +355,7 @@ const UpagrahaDetails: Record<
         type: "Upagraha";
         exaltation: RasiEn;
         debilitation: RasiEn;
-        ownsign: RasiEn[];
+        own_sign: RasiEn[];
         symbol: string;
         color: string;
     }
@@ -282,7 +367,7 @@ const UpagrahaDetails: Record<
         color: "#1e90ff",
         exaltation: "Leo",
         debilitation: "Aquarius",
-        ownsign: ["Capricorn"],
+        own_sign: ["Capricorn"],
     },
     Vyatipata: {
         name: { english: "Vyatipata", hindi: "व्यतीपात" },
@@ -291,7 +376,7 @@ const UpagrahaDetails: Record<
         color: "#1e90ff",
         exaltation: "Scorpio",
         debilitation: "Taurus",
-        ownsign: ["Gemini"],
+        own_sign: ["Gemini"],
     },
     Parivesha: {
         name: { english: "Parivesha", hindi: "परिवेष" },
@@ -300,7 +385,7 @@ const UpagrahaDetails: Record<
         color: "#1e90ff",
         exaltation: "Gemini",
         debilitation: "Sagittarius",
-        ownsign: ["Sagittarius"],
+        own_sign: ["Sagittarius"],
     },
     Chapa: {
         name: { english: "Chapa", hindi: "चाप" },
@@ -309,7 +394,7 @@ const UpagrahaDetails: Record<
         color: "#1e90ff",
         exaltation: "Sagittarius",
         debilitation: "Gemini",
-        ownsign: ["Cancer"],
+        own_sign: ["Cancer"],
     },
     Upaketu: {
         name: { english: "Upaketu", hindi: "उपकेतु" },
@@ -318,7 +403,7 @@ const UpagrahaDetails: Record<
         color: "#1e90ff",
         exaltation: "Aquarius",
         debilitation: "Leo",
-        ownsign: ["Cancer"],
+        own_sign: ["Cancer"],
     },
 };
 
@@ -327,7 +412,7 @@ const KalavelasDetails: Record<
     {
         name: Translation<KalavelasEn, KalavelasHi>;
         type: "Kalavelas";
-        ownsign: RasiEn[];
+        own_sign: RasiEn[];
         symbol: string;
         color: string;
     }
@@ -337,35 +422,35 @@ const KalavelasDetails: Record<
         type: "Kalavelas",
         symbol: "☉",
         color: "#1e90ff",
-        ownsign: ["Aquarius"],
+        own_sign: ["Aquarius"],
     },
     Kaala: {
         name: { english: "Kaala", hindi: "काल" },
         type: "Kalavelas",
         symbol: "☉",
         color: "#1e90ff",
-        ownsign: ["Capricorn"],
+        own_sign: ["Capricorn"],
     },
     Mrityu: {
         name: { english: "Mrityu", hindi: "मृत्यु" },
         type: "Kalavelas",
         symbol: "☉",
         color: "#1e90ff",
-        ownsign: ["Scorpio"],
+        own_sign: ["Scorpio"],
     },
     Yamaghantaka: {
         name: { english: "Yamaghantaka", hindi: "यमघंटक" },
         type: "Kalavelas",
         symbol: "☉",
         color: "#1e90ff",
-        ownsign: ["Sagittarius"],
+        own_sign: ["Sagittarius"],
     },
     Ardhaprahara: {
         name: { english: "Ardhaprahara", hindi: "अर्धप्रहर" },
         type: "Kalavelas",
         symbol: "☉",
         color: "#1e90ff",
-        ownsign: ["Gemini"],
+        own_sign: ["Gemini"],
     },
 };
 
@@ -378,7 +463,12 @@ export const PlanetDetails: Record<PlanetEn, PlanetDetail> = {
     ...UpagrahaDetails,
 };
 
+/**
+ * Represents a celestial body (planet, ascendant, etc.) with its calculated
+ * astrological attributes and static details.
+ */
 export class Planet implements PlanetDetail {
+    // Calculated dynamic properties
     degree: number;
     rasi: Rasi;
     nakshatra: Nakshatra;
@@ -392,9 +482,10 @@ export class Planet implements PlanetDetail {
     divisional: Record<string, Rasi>;
     house: HouseDetail;
 
-    name: Translation<PlanetEn, PlanetHi>;
+    // Static PlanetDetail properties
+    name!: Translation<PlanetEn, PlanetHi>;
     shortname?: Translation<string, string>;
-    type:
+    type!:
         | "Ascendant"
         | "Saptagraha"
         | "Chhayagraha"
@@ -411,9 +502,9 @@ export class Planet implements PlanetDetail {
     neutral?: SaptagrahaEn[];
     exaltation?: RasiEn;
     debilitation?: RasiEn;
-    ownsign?: RasiEn[];
-    symbol: string;
-    color: string;
+    own_sign?: RasiEn[];
+    symbol!: string;
+    color!: string;
 
     constructor(
         planetName: PlanetEn,
@@ -421,23 +512,10 @@ export class Planet implements PlanetDetail {
         hCoords: number[] = [],
         ascendant_rasi_num: RasiNumber = 1
     ) {
-        const data = PlanetDetails[planetName];
-        this.name = data.name;
-        this.shortname = data.shortname;
-        this.type = data.type;
-        this.color = data.color;
-        this.symbol = data.symbol;
-        this.day = data.day;
-        this.aspect = data.aspect;
-        this.happy_house = data.happy_house;
-        this.sad_house = data.sad_house;
-        this.friend = data.friend;
-        this.enemy = data.enemy;
-        this.neutral = data.neutral;
-        this.exaltation = data.exaltation;
-        this.debilitation = data.debilitation;
-        this.ownsign = data.ownsign;
+        // Assign all static properties directly from the data map.
+        Object.assign(this, PlanetDetails[planetName]);
 
+        // Calculate and assign dynamic properties from the coordinate data.
         this.degree = MOD360(vCoords[0] ?? 0);
         this.latitude = vCoords[1] ?? 0;
         this.distance = vCoords[2] ?? 0;
@@ -453,78 +531,65 @@ export class Planet implements PlanetDetail {
             apparent: hCoords[2] ?? 0,
         };
 
+        // Determine calculated astrological properties.
         this.rasi = getRasi(this.degree);
         this.nakshatra = getNakshatra(this.degree);
         this.visibility = this.azimuth < 0 ? "Asta" : "Udaya";
         this.motion = this.speed.longitude < 0 ? "Vakri" : "Margi";
         this.house = getHouse(this.rasi.rasi_num, ascendant_rasi_num);
 
-        // Apply divisional chart calculations
+        // Apply and calculate all divisional charts.
         this.divisional = {
             // D2 (Hora - Wealth and resources)
             hora: this.getDivChart(2),
-
             // D3 (Drekkana - Siblings, courage)
             drekkana: this.getDivChart(3),
-
             // D4 (Chaturthamsa - Property, fixed assets)
             chaturthamsa: this.getDivChart(4),
-
             // D5 (Panchamsa - Power, authority)
             panchamsa: this.getDivChart(5),
-
             // D6 (Shashtamsa - Diseases)
             shashtamsa: this.getDivChart(6),
-
             // D7 (Saptamsa - Children)
             saptamsa: this.getDivChart(7),
-
             // D8 (Ashtamsa - Longevity, struggles)
             ashtamsa: this.getDivChart(8),
-
             // D9 (Navamsa - Marriage, fortune, dharma)
             navamsa: this.getDivChart(9),
-
             // D10 (Dasamsa - Career)
             dasamsa: this.getDivChart(10),
-
             // D12 (Dvadasamsa - Parents)
             dvadasamsa: this.getDivChart(12),
-
             // D16 (Shodashamsa - Vehicles, luxuries)
             shodashamsa: this.getDivChart(16),
-
             // D20 (Vimshamsa - Spiritual progress)
             vimshamsa: this.getDivChart(20),
-
             // D24 (Siddhamsa/Chaturvimshamsa - Education, learning)
             siddhamsa: this.getDivChart(24),
-
             // D27 (Bhamsa/Nakshatramsa - Strength, vulnerability)
             bhamsa: this.getDivChart(27),
-
             // D30 (Trimsamsa - Evils, misfortunes)
             trimsamsa: this.getDivChart(30),
-
             // D40 (Khavedamsa - Maternal happiness)
             khavedamsa: this.getDivChart(40),
-
             // D45 (Akshavedamsa - Personality)
             akshavedamsa: this.getDivChart(45),
-
             // D60 (Shashtiamsa - Past life karmas)
             shashtiamsa: this.getDivChart(60),
         };
     }
 
     /**
-     * Generic method to calculate a divisional chart (D-chart)
+     * Generic method to calculate a divisional chart (D-chart).
      *
-     * @param {number} divisor - Number of divisions in chart (e.g., 9 for D9)
-     * @returns {Rasi} - Resulting Rasi object
+     * @param {number} divisor - Number of divisions in chart (e.g., 9 for D9).
+     * @returns {Rasi} - The resulting Rasi object for this divisional chart.
      */
     getDivChart(divisor: number): Rasi {
-        return getRasi(mod2pi(this.degree * divisor * RADS) * DEGS);
+        // The correct logic is to multiply the planet's longitude by the divisor
+        // and then find the Rasi for the resulting degree.
+        const divisionalDegree = this.degree * divisor;
+        return getRasi(divisionalDegree);
     }
 
     /**
@@ -533,14 +598,17 @@ export class Planet implements PlanetDetail {
      *
      * @param target - The planet to check whether it receives aspect from the
      *   graha.
-     * @returns {boolean | number} - True if graha aspects the target, false
-     *   otherwise.
+     * @returns {boolean | number} - True if graha aspects the target, or the
+     *   aspect distance if it exists. Returns `false` otherwise.
      */
     isAspecting(target: Planet): boolean | number {
+        // Calculate the house distance between the two planets.
         const aspectDistance = NORMALIZE12(
             target.rasi.rasi_num + 1 - this.rasi.rasi_num
         );
+        // Check if the calculated distance is in the list of this planet's aspects.
         const hasAspect = this.aspect?.includes(aspectDistance) ?? false;
+        // Return the aspect distance or false.
         return hasAspect ? aspectDistance : false;
     }
 }

@@ -1,36 +1,55 @@
-import { lazy } from "react";
-import { Errors } from "src/components/Errors";
-import { Footer } from "src/components/Footer";
-import { Header } from "src/components/Header";
-import { Navigation } from "src/components/Navigation";
+import "src/style/global.css";
+
+// import { lazy } from "react";
+import Errors from "src/components/Errors";
+import Footer from "src/components/Footer";
+import Header from "src/components/Header";
+import Navigation from "src/components/Navigation";
 import { SessionContext } from "src/contexts/SessionContext";
 import { useSessionState } from "src/hooks/useSessionState";
+import About from "src/pages/About";
 import Home from "src/pages/Home";
-import Information from "src/pages/Information";
 import KundliForm from "src/pages/KundliForm";
+import KundliMatching from "src/pages/KundliMatching";
+import KundliResult from "src/pages/KundliResult";
+import MonthlyCalendar from "src/pages/MonthlyCalendar";
 import Panchang from "src/pages/Panchang";
-const KundliResult = lazy(() => import("src/pages/KundliResult"));
+import Settings from "src/pages/Settings";
+// const KundliResult = lazy(() => import("src/pages/KundliResult"));
 
 export function App() {
     const session = useSessionState();
 
     console.log("session.data:", JSON.stringify(session.data, null, 4));
-    console.log(session.sortURL());
+    console.log(session.getSortURL());
 
     return (
         <SessionContext value={session}>
             <Header />
+            <div
+                onClick={() => session.updateData({ nav: false })}
+                className={
+                    "fixed inset-0 bg-black/40 opacity-0 transition-opacity duration-300 z-40" +
+                    (session.data.nav ? " opacity-100" : " pointer-events-none")
+                }></div>
             <Navigation />
+
             <main>
                 <Errors />
                 {session.data.page === "KundliForm" ? (
                     <KundliForm />
                 ) : session.data.page === "KundliResult" ? (
                     <KundliResult />
-                ) : session.data.page === "Information" ? (
-                    <Information />
+                ) : session.data.page === "KundliMatching" ? (
+                    <KundliMatching />
+                ) : session.data.page === "About" ? (
+                    <About />
                 ) : session.data.page === "Panchang" ? (
                     <Panchang />
+                ) : session.data.page === "MonthlyCalendar" ? (
+                    <MonthlyCalendar />
+                ) : session.data.page === "Settings" ? (
+                    <Settings />
                 ) : session.data.page === "Home" ? (
                     <Home />
                 ) : (
@@ -39,6 +58,12 @@ export function App() {
                     </section>
                 )}
             </main>
+
+            {/* <DASHAPAGE showPage={showPage} /> */}
+            {/* <PHALADESHPAGE showPage={showPage} /> */}
+
+            {/* <DATEDETAILSPAGE /> */}
+
             <Footer />
         </SessionContext>
     );

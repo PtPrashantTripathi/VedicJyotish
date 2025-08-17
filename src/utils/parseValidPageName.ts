@@ -1,5 +1,4 @@
-import { pageDetails } from "src/pages/pageDetails";
-import type { ValidPageType } from "src/types";
+import { pageDetails, type ValidPageType } from "src/pages/pageDetails";
 
 /**
  * Validates if the given page is one of the allowed page types.
@@ -9,10 +8,8 @@ import type { ValidPageType } from "src/types";
  * @throws Error if the page name is invalid.
  */
 export function parseValidPageName(input_page: string): ValidPageType {
-    const page = input_page as ValidPageType;
-
-    if (pageDetails.some(p => p.page === page)) {
-        return page;
+    if (input_page in pageDetails) {
+        return input_page as ValidPageType;
     }
 
     throw new Error(`Invalid Page name: "${input_page}"`);

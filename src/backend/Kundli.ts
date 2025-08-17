@@ -1,16 +1,11 @@
 // Import utility functions
 import { DateTime } from "luxon";
 import { calcSunRiseSunSet } from "src/backend/calcSunRiseSunSet";
-import { Planet } from "src/backend/Planet";
+import { DayKalavelasCalculation } from "src/backend/KalavelasCalculation";
+import { Planet, type PlanetEn } from "src/backend/Planet";
 import SwissEPH from "src/backend/swisseph-wasm";
-import type {
-    Dasha,
-    KalavelasEn,
-    NavagrahaEn,
-    PlanetEn,
-} from "src/backend/types";
-import { reorderArray } from "src/backend/utils";
-import { calcVimsottariDasa } from "src/backend/VimsottariDasa";
+import { getVara } from "src/backend/Varas";
+import { calcVimsottariDasa, Dasha } from "src/backend/VimsottariDasa";
 import { calcYogPhala } from "src/backend/YogPhala";
 
 // getPlanetaryPosition
@@ -64,7 +59,6 @@ export async function Kundli(
         latitude,
         longitude
     );
-    const day_of_weekday = (swe.swe_day_of_week(sunrise) + 1) % 7;
 
     // Add Ascendant
     const planets: Partial<Record<PlanetEn, Planet>> = {};
@@ -157,8 +151,11 @@ export async function Kundli(
         );
     }
 
+    const vara = getVara(
+        swe.swe_day_of_week(sunrise + datetime.offset / (24 * 60))
+    );
     for (const [name, t_jd] of Object.entries(
-        KalavelasCalculation(sunrise, sunset, day_of_weekday)
+        DayKalavelasCalculation(sunrise, sunset, vara.num % 7)
     )) {
         planets[name] = new Planet(
             name,
@@ -181,7 +178,7 @@ export async function Kundli(
     return {
         datetime,
         daybirth,
-        weekday: dayLords[day_of_weekday],
+        vara,
         sunrise: datetime.plus({ days: sunrise - julian_datetime }),
         sunset: datetime.plus({ days: sunset - julian_datetime }),
         latitude,
@@ -191,39 +188,5 @@ export async function Kundli(
         planets: planets as Record<PlanetEn, Planet>,
         vimsottari_dasa,
         yogPhala: calcYogPhala(planets as Record<PlanetEn, Planet>),
-    };
-}
-
-const dayLords: Record<number, NavagrahaEn> = {
-    0: "Sun", // Sunday
-    1: "Moon", // Monday
-    2: "Mars", // Tuesday
-    3: "Mercury", // Wednesday
-    4: "Jupiter", // Thursday
-    5: "Venus", // Friday
-    6: "Saturn", // Saturday
-};
-
-function KalavelasCalculation(
-    sunrise_jd: number,
-    sunset_jd: number,
-    day_of_weekday: number
-): Record<KalavelasEn, number> {
-    const duration = sunset_jd - sunrise_jd;
-    const periods = Array.from(
-        { length: 8 },
-        (_, i) => sunrise_jd + i * (duration / 8)
-    );
-    const grahaSequence = reorderArray(
-        Object.values(dayLords),
-        dayLords[day_of_weekday]
-    );
-
-    return {
-        Gulika: periods[grahaSequence.indexOf("Saturn")],
-        Kaala: periods[grahaSequence.indexOf("Sun")],
-        Mrityu: periods[grahaSequence.indexOf("Mars")],
-        Yamaghantaka: periods[grahaSequence.indexOf("Jupiter")],
-        Ardhaprahara: periods[grahaSequence.indexOf("Mercury")],
     };
 }

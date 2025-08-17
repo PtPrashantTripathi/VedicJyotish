@@ -312,7 +312,7 @@ class SwissephBuildTools:
             # Max memory limit
             "-sMAXIMUM_MEMORY=128MB",
             # Target Environment
-            f"-sENVIRONMENT=[{'web,node' if self.node else 'web'}]"
+            f"-sENVIRONMENT=[{'web,node' if self.node else 'web'}]",
             # Stack safety
             "-sSTACK_OVERFLOW_CHECK=1",
             # Memory access checks

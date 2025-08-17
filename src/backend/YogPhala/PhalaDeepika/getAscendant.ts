@@ -1,5 +1,7 @@
-import type { Planet } from "src/backend/Planet";
-import type { Phala, PlanetEn, RasiEn, Translation } from "src/backend/types";
+import type { Planet, PlanetEn } from "src/backend/Planet";
+import type { RasiEn } from "src/backend/Rasi";
+import type { Translation } from "src/backend/types";
+import { Phala } from "src/backend/YogPhala";
 
 /**
  * Retrieves the ascendant effects from Phala Deepika based on the Ascendant's

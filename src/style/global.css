@@ -1,16 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&display=swap");
-@import "tailwindcss";
-@layer base {
-    :root {
-        --font-sans: "Noto Sans Devanagari", sans-serif;
-    }
 
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+    --font-sans:
+        "Noto Sans Devanagari", sans-serif, "Inter", "Geist", ui-sans-serif,
+        system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@layer base {
     html {
         font-family: var(--font-sans);
-    }
-
-    .gradient-bg {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .panchang-bg {

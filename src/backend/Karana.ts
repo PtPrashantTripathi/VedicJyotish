@@ -40,9 +40,7 @@ export interface KaranaDetail {
 /** The final calculated Karana object, including positional data. */
 export type Karana = KaranaDetail & CalculatedDetail;
 
-// ==================================================================================
-// Constants
-// ==================================================================================
+/** Constants */
 
 /**
  * A comprehensive dictionary containing details for each of the 11 unique
@@ -77,7 +75,7 @@ export const DEG_PER_KARANA = 6;
  * An array of the 7 repeating Karanas (Bava to Vishti). Used for easy access
  * within the conditional logic.
  */
-const repeatingKaranas = Object.values(KaranaDetailsMap).slice(0, 7); // Bava to Vishti
+const repeatingKaranas = Object.values(KaranaDetailsMap).slice(0, 7);
 
 /**
  * Calculates the Karana (lunar mansion) based on a given zodiac degree using a
@@ -90,39 +88,44 @@ const repeatingKaranas = Object.values(KaranaDetailsMap).slice(0, 7); // Bava to
  * @throws {Error} If a valid Karana cannot be determined.
  */
 export function getKarana(sun_lon: number, moon_lon: number): Karana {
-    // 1. Calculate the lunar degree: the angular distance of the Moon from the Sun.
+    /**
+     * 1. Calculate the lunar degree: the angular distance of the Moon from the
+     *    Sun.
+     */
     const degree = MOD360(moon_lon - sun_lon);
 
-    // 2. Determine the Karana index (0-59) from the lunar degree.
+    /** 2. Determine the Karana index (0-59) from the lunar degree. */
     const index = Math.trunc(degree / DEG_PER_KARANA);
 
     const details: KaranaDetail =
         index === 0
-            ? // #60
+            ? /** #60 */
               KaranaDetailsMap.Kimstughna
             : index === 56
-              ? // #57
+              ? /** #57 */
                 KaranaDetailsMap.Sakuni
               : index === 57
-                ? // #58
+                ? /** #58 */
                   KaranaDetailsMap.Catuspada
                 : index === 58
-                  ? // #59
+                  ? /** #59 */
                     KaranaDetailsMap.Naga
-                  : // All other indices (1-55) are part of the repeating cycle of 7 Karanas.
-                    // We use the modulo operator to find the correct Karana in the cycle.
+                  : /**
+                     * All other indices (1-55) are part of the repeating cycle of 7 Karanas. We
+                     * use the modulo operator to find the correct Karana in the cycle.
+                     */
                     repeatingKaranas[(index - 1) % 7];
 
     if (!details) {
         throw new Error(`No Karana found for degree ${degree}`);
     }
 
-    // 4. Construct and return the final Karana object.
+    /** 4. Construct and return the final Karana object. */
     return {
         ...details,
-        // The `num` is the 0-based index from the calculation.
+        /** The `num` is the 0-based index from the calculation. */
         num: index,
-        // Calculate the angular range for this Karana.
+        /** Calculate the angular range for this Karana. */
         range: {
             start: index * DEG_PER_KARANA,
             end: (index + 1) * DEG_PER_KARANA,

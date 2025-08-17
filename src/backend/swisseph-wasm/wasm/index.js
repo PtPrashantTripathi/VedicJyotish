@@ -24,29 +24,13 @@ async function Module(moduleArg = {}) {
 
     // Determine the runtime environment we are in. You can customize this by
     // setting the ENVIRONMENT setting at compile time (see settings.js).
-    // Attempt to auto-detect the environment
-    var ENVIRONMENT_IS_WEB = typeof window == "object";
+    var ENVIRONMENT_IS_WEB = true;
 
-    var ENVIRONMENT_IS_WORKER = typeof WorkerGlobalScope != "undefined";
+    var ENVIRONMENT_IS_WORKER = false;
 
-    // N.b. Electron.js environment is simultaneously a NODE-environment, but
-    // also a web environment.
-    var ENVIRONMENT_IS_NODE =
-        typeof process == "object" &&
-        process.versions?.node &&
-        process.type != "renderer";
+    var ENVIRONMENT_IS_NODE = false;
 
-    var ENVIRONMENT_IS_SHELL =
-        !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIRONMENT_IS_WORKER;
-
-    if (ENVIRONMENT_IS_NODE) {
-        // When building an ES module `require` is not normally available.
-        // We need to use `createRequire()` to construct the require()` function.
-        const { createRequire } = await import("module");
-        /** @suppress {duplicate} */ var require = createRequire(
-            import.meta.url
-        );
-    }
+    var ENVIRONMENT_IS_SHELL = false;
 
     // --pre-jses are emitted after the Module integration code, so that they can
     // refer to Module (if they choose; they can also define Module)
@@ -73,62 +57,7 @@ async function Module(moduleArg = {}) {
     // Hooks that are implemented differently in different runtime environments.
     var readAsync, readBinary;
 
-    if (ENVIRONMENT_IS_NODE) {
-        const isNode =
-            typeof process == "object" &&
-            process.versions?.node &&
-            process.type != "renderer";
-        if (!isNode)
-            throw new Error(
-                "not compiled for this environment (did you build to HTML and try to run it not on the web, or set ENVIRONMENT to something - like node - and run it someplace else - like on the web?)"
-            );
-        var nodeVersion = process.versions.node;
-        var numericVersion = nodeVersion.split(".").slice(0, 3);
-        numericVersion =
-            numericVersion[0] * 1e4 +
-            numericVersion[1] * 100 +
-            numericVersion[2].split("-")[0] * 1;
-        if (numericVersion < 16e4) {
-            throw new Error(
-                "This emscripten-generated code requires node v16.0.0 (detected v" +
-                    nodeVersion +
-                    ")"
-            );
-        }
-        // These modules will usually be used on Node.js. Load them eagerly to avoid
-        // the complexity of lazy-loading.
-        var fs = require("fs");
-        if (_scriptName.startsWith("file:")) {
-            scriptDirectory =
-                require("path").dirname(
-                    require("url").fileURLToPath(_scriptName)
-                ) + "/";
-        }
-        // include: node_shell_read.js
-        readBinary = filename => {
-            // We need to re-wrap `file://` strings to URLs.
-            filename = isFileURI(filename) ? new URL(filename) : filename;
-            var ret = fs.readFileSync(filename);
-            assert(Buffer.isBuffer(ret));
-            return ret;
-        };
-        readAsync = async (filename, binary = true) => {
-            // See the comment in the `readBinary` function.
-            filename = isFileURI(filename) ? new URL(filename) : filename;
-            var ret = fs.readFileSync(filename, binary ? undefined : "utf8");
-            assert(binary ? Buffer.isBuffer(ret) : typeof ret == "string");
-            return ret;
-        };
-        // end include: node_shell_read.js
-        if (process.argv.length > 1) {
-            thisProgram = process.argv[1].replace(/\\/g, "/");
-        }
-        arguments_ = process.argv.slice(2);
-        quit_ = (status, toThrow) => {
-            process.exitCode = status;
-            throw toThrow;
-        };
-    } else if (ENVIRONMENT_IS_SHELL) {
+    if (ENVIRONMENT_IS_SHELL) {
         const isNode =
             typeof process == "object" &&
             process.versions?.node &&
@@ -208,6 +137,11 @@ async function Module(moduleArg = {}) {
     assert(
         !ENVIRONMENT_IS_WORKER,
         "worker environment detected but not enabled at build time.  Add `worker` to `-sENVIRONMENT` to enable."
+    );
+
+    assert(
+        !ENVIRONMENT_IS_NODE,
+        "node environment detected but not enabled at build time.  Add `node` to `-sENVIRONMENT` to enable."
     );
 
     assert(
@@ -736,11 +670,7 @@ async function Module(moduleArg = {}) {
     }
 
     async function instantiateAsync(binary, binaryFile, imports) {
-        if (
-            !binary &&
-            typeof WebAssembly.instantiateStreaming == "function" &&
-            !ENVIRONMENT_IS_NODE
-        ) {
+        if (!binary && typeof WebAssembly.instantiateStreaming == "function") {
             try {
                 var response = fetch(binaryFile, {
                     credentials: "same-origin",
@@ -951,7 +881,6 @@ async function Module(moduleArg = {}) {
         warnOnce.shown ||= {};
         if (!warnOnce.shown[text]) {
             warnOnce.shown[text] = 1;
-            if (ENVIRONMENT_IS_NODE) text = "warning: " + text;
             err(text);
         }
     };
@@ -1031,14 +960,7 @@ async function Module(moduleArg = {}) {
         join2: (l, r) => PATH.normalize(l + "/" + r),
     };
 
-    var initRandomFill = () => {
-        // This block is not needed on v19+ since crypto.getRandomValues is builtin
-        if (ENVIRONMENT_IS_NODE) {
-            var nodeCrypto = require("crypto");
-            return view => nodeCrypto.randomFillSync(view);
-        }
-        return view => crypto.getRandomValues(view);
-    };
+    var initRandomFill = () => view => crypto.getRandomValues(view);
 
     var randomFill = view => {
         // Lazily init on the first invocation.
@@ -1119,15 +1041,15 @@ async function Module(moduleArg = {}) {
     };
 
     /**
-     * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the
-     * given array that contains uint8 values, returns a copy of that string as
-     * a Javascript String object. heapOrArray is either a regular array, or a
+     * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the given
+     * array that contains uint8 values, returns a copy of that string as a
+     * Javascript String object. heapOrArray is either a regular array, or a
      * JavaScript typed array view.
      *
      * @param {number} [idx]
      * @param {number} [maxBytesToRead]
-     * @param {boolean} [ignoreNul] - If true, the function will not stop on a
-     *   NUL character.
+     * @param {boolean} [ignoreNul] - If true, the function will not stop on a NUL
+     *   character.
      * @returns {string}
      */ var UTF8ArrayToString = (
         heapOrArray,
@@ -1279,31 +1201,7 @@ async function Module(moduleArg = {}) {
     var FS_stdin_getChar = () => {
         if (!FS_stdin_getChar_buffer.length) {
             var result = null;
-            if (ENVIRONMENT_IS_NODE) {
-                // we will read data by chunks of BUFSIZE
-                var BUFSIZE = 256;
-                var buf = Buffer.alloc(BUFSIZE);
-                var bytesRead = 0;
-                // For some reason we must suppress a closure warning here, even though
-                // fd definitely exists on process.stdin, and is even the proper way to
-                // get the fd of stdin,
-                // https://github.com/nodejs/help/issues/2136#issuecomment-523649904
-                // This started to happen after moving this logic out of library_tty.js,
-                // so it is related to the surrounding code in some unclear manner.
-                /** @suppress {missingProperties} */ var fd = process.stdin.fd;
-                try {
-                    bytesRead = fs.readSync(fd, buf, 0, BUFSIZE);
-                } catch (e) {
-                    // Cross-platform differences: on Windows, reading EOF throws an
-                    // exception, but on other OSes, reading EOF returns 0. Uniformize
-                    // behavior by treating the EOF exception to return 0.
-                    if (e.toString().includes("EOF")) bytesRead = 0;
-                    else throw e;
-                }
-                if (bytesRead > 0) {
-                    result = buf.slice(0, bytesRead).toString("utf-8");
-                }
-            } else if (
+            if (
                 typeof window != "undefined" &&
                 typeof window.prompt == "function"
             ) {
@@ -1960,12 +1858,12 @@ async function Module(moduleArg = {}) {
      *
      * @param {number} ptr
      * @param {number} [maxBytesToRead] - An optional length that specifies the
-     *   maximum number of bytes to read. You can omit this parameter to scan
-     *   the string until the first 0 byte. If maxBytesToRead is passed, and the
-     *   string at [ptr, ptr+maxBytesToReadr[ contains a null byte in the
-     *   middle, then the string will cut short at that byte index.
-     * @param {boolean} [ignoreNul] - If true, the function will not stop on a
-     *   NUL character.
+     *   maximum number of bytes to read. You can omit this parameter to scan the
+     *   string until the first 0 byte. If maxBytesToRead is passed, and the string
+     *   at [ptr, ptr+maxBytesToReadr[ contains a null byte in the middle, then the
+     *   string will cut short at that byte index.
+     * @param {boolean} [ignoreNul] - If true, the function will not stop on a NUL
+     *   character.
      * @returns {string}
      */ var UTF8ToString = (ptr, maxBytesToRead, ignoreNul) => {
         assert(

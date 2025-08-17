@@ -1,11 +1,7 @@
-import type { Planet } from "src/backend/Planet";
-import type {
-    Phala,
-    PlanetEn,
-    RasiEn,
-    SaptagrahaEn,
-    Translation,
-} from "src/backend/types";
+import type { Planet, PlanetEn, SaptagrahaEn } from "src/backend/Planet";
+import type { RasiEn } from "src/backend/Rasi";
+import type { Translation } from "src/backend/types";
+import type { Phala } from "src/backend/YogPhala";
 
 /**
  * Retrieves rasi effect descriptions for each planet based on its current rasi

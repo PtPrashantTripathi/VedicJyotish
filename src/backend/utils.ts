@@ -1,13 +1,4 @@
-import type { HMS, IDMS, RasiNumber } from "src/backend/types";
-
-// --- Constants ---
-export const EPS = 1e-12; // Smallest meaningful difference
-export const TPI = 2 * Math.PI; // 2π
-export const RTOH = 12 / Math.PI; // Radians → Hours
-export const RADS = Math.PI / 180; // Degrees → Radians
-export const DEGS = 180 / Math.PI; // Radians → Degrees
-export const RTS = 206264.80624709636; // Arcseconds per radian
-export const STR = 4.84813681109536e-6; // Radians per arcsecond
+import { RasiNumber } from "src/backend/Rasi";
 
 // --- Math Utility Functions ---
 
@@ -17,12 +8,6 @@ export const absolute = (x: number): number =>
 
 /** Normalize to 0–24 hour range */
 export const mod24 = (x: number): number => (x + 24) % 24;
-
-/** Normalize angle to [0, 2π] */
-export const mod2pi = (x: number): number => {
-    const a = TPI * (x / TPI - absolute(x / TPI));
-    return a < 0 ? TPI + a : a;
-};
 
 /** Normalize to 0 – 359.99... degrees */
 export const MOD360 = (x: number): number => {
@@ -47,6 +32,11 @@ export function NORMALIZE12(x: number): RasiNumber {
 }
 
 // --- Time/Angle Formatting ---
+export interface HMS {
+    hour: number;
+    minute: number;
+    second: number;
+}
 
 /** Convert decimal hours to HMS+ms */
 export const hms = (h: number): HMS => {
@@ -63,7 +53,7 @@ export const hms = (h: number): HMS => {
 };
 
 // 👉 Factory function
-export const DMS = (d: number): IDMS => {
+export const DMS = (d: number) => {
     const s = Math.abs(d);
     const degree = Math.floor(s);
     const minute = Math.floor((s - degree) * 60);

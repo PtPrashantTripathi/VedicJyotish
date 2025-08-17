@@ -7,10 +7,14 @@ import {
 } from "react-icons/fa";
 import { IconType } from "react-icons/lib";
 import { useSessionContext } from "src/contexts/SessionContext";
-import { ErrorType } from "src/types";
+
+export interface IErrorType {
+    type: "error" | "warning" | "info" | "success";
+    message: string;
+}
 
 const ErrorStyles: Record<
-    ErrorType["type"],
+    IErrorType["type"],
     {
         color: string;
         Icon: IconType;

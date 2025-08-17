@@ -1,12 +1,8 @@
-import type { Planet } from "src/backend/Planet";
-import type {
-    HouseNumber,
-    NavagrahaEn,
-    Phala,
-    PlanetEn,
-    RasiEn,
-    Translation,
-} from "src/backend/types";
+import { HouseNumber } from "src/backend/Houses";
+import type { NavagrahaEn, Planet, PlanetEn } from "src/backend/Planet";
+import type { RasiEn } from "src/backend/Rasi";
+import type { Translation } from "src/backend/types";
+import { Phala } from "src/backend/YogPhala";
 
 /**
  * Returns a list of house position details for a given planet position map.

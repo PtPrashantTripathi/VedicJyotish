@@ -1,4 +1,5 @@
-import type { SaptagrahaEn, Translation } from "src/backend/types";
+import type { SaptagrahaEn } from "src/backend/Planet";
+import type { Translation } from "src/backend/types";
 
 // Type Definitions
 

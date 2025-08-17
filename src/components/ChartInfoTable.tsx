@@ -1,5 +1,4 @@
-import type { Planet } from "src/backend/Planet";
-import type { PlanetEn } from "src/backend/types";
+import type { Planet, PlanetEn } from "src/backend/Planet";
 import { DMS } from "src/backend/utils";
 
 interface Props {
