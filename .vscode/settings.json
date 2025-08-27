@@ -447,5 +447,8 @@
         "हस्त",
         "हेमन्त",
         "हेविळम्बि"
-    ]
+    ],
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }

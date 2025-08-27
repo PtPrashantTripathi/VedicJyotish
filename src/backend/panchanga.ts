@@ -10,18 +10,18 @@
  * 4. Yoga (Luni-Solar combination)
  * 5. Karana (Half of a Tithi)
  */
+import { toFixedLengthArray } from "fixed-len-array/index";
 import { DateTime } from "luxon";
 import { getKarana } from "src/backend/Karana";
 import { getMaaha, MaahaNumber } from "src/backend/Maaha";
 import { getNakshatra } from "src/backend/Nakshatra";
 import { getRasi } from "src/backend/Rasi";
 import { getSamvatsara } from "src/backend/Samvatsara";
-import SwissEPH from "src/backend/swisseph-wasm";
-import { toFixedLengthArray } from "src/backend/swisseph-wasm/utils/fixed-length-array";
 import { getTithi } from "src/backend/Tithi";
 import { MOD360 } from "src/backend/utils";
 import { getVara } from "src/backend/Varas";
 import { getYoga } from "src/backend/Yoga";
+import type SwissEPH from "sweph-wasm/index";
 
 /**
  * @param jd_ut The Julian Day in Universal Time.
@@ -178,19 +178,11 @@ function calculaterahu_kalam(
 
 /** Main calculation function */
 export async function getPanchanga(
+    swe: SwissEPH,
     datetime: DateTime<true>,
     latitude: number,
     longitude: number
 ) {
-    // Initialization
-    const swe = await SwissEPH.init();
-
-    // Path to Swiss Ephemeris data files.
-    await swe.swe_set_ephe_path("./ephe", [
-        "seas_18.se1",
-        "sepl_18.se1",
-        "semo_18.se1",
-    ]);
     swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
 
     // Location settings
@@ -216,13 +208,13 @@ export async function getPanchanga(
     const moon_lon = xx_moon[0];
 
     // Sun and Moon info
-    const sun_info = getRasi(sun_lon);
-    const moon_info = getRasi(moon_lon);
+    const sun_rashi = getRasi(sun_lon);
+    const moon_rashi = getRasi(moon_lon);
 
     // Panchang Details
 
     // Calculate rise/set times
-    const geopos = toFixedLengthArray([longitude, latitude, 0], 3);
+    const geopos = toFixedLengthArray([longitude, latitude, 0], 3, 0);
 
     const sunrise_jd = swe.swe_rise_trans(
         tjd_ut,
@@ -369,8 +361,8 @@ export async function getPanchanga(
         datetime,
         latitude,
         longitude,
-        sun_info,
-        moon_info,
+        sun_rashi,
+        moon_rashi,
         sunrise: jdToDateTime(swe, sunrise_jd),
         sunset: jdToDateTime(swe, sunset_jd),
         moonrise: jdToDateTime(swe, moonrise_jd),

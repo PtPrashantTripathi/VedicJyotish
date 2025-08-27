@@ -121,8 +121,16 @@ export const age2date = (
 };
 
 //  Helper Functions
-export function percentage(p: number, x: number): number {
-    return (p * x) / 100;
+
+/**
+ * Utility function to calculate percentage
+ *
+ * @param percent
+ * @param total
+ * @returns
+ */
+export function percentage(percent: number, total: number): number {
+    return (percent / 100) * total;
 }
 
 /**

@@ -1,6 +1,6 @@
-import type SwissEPH from "src/backend/swisseph-wasm";
-import { toFixedLengthArray } from "src/backend/swisseph-wasm/utils/fixed-length-array";
+import { toFixedLengthArray } from "fixed-len-array/index";
 import { MOD360 } from "src/backend/utils";
+import type SwissEPH from "sweph-wasm/index";
 
 export function calcSunRiseSunSet(
     swe: SwissEPH,
@@ -13,7 +13,7 @@ export function calcSunRiseSunSet(
     sunset: number;
 } {
     const flag = swe.SE_BIT_DISC_CENTER | swe.SE_BIT_NO_REFRACTION;
-    const geopos = toFixedLengthArray([longitude, latitude, 0], 3);
+    const geopos = toFixedLengthArray([longitude, latitude, 0], 3, 0);
 
     /** Get Sun's position at JD */
     const r = swe.swe_calc(jd, swe.SE_SUN, 0);
@@ -52,7 +52,7 @@ export function calcSunRiseSunSet(
             startJdRise,
             swe.SE_SUN,
             null,
-            0,
+            swe.SEFLG_SWIEPH,
             swe.SE_CALC_RISE | flag,
             geopos,
             0,
@@ -63,7 +63,7 @@ export function calcSunRiseSunSet(
             startJdSet,
             swe.SE_SUN,
             null,
-            0,
+            swe.SEFLG_SWIEPH,
             swe.SE_CALC_SET | flag,
             geopos,
             0,

@@ -1,16 +1,18 @@
-import { EpheFileMetadata } from "src/backend/swisseph-wasm/utils/ephe_file_metadata";
-import type { FixedLengthArray } from "src/backend/swisseph-wasm/utils/fixed-length-array";
-import { getBaseURLPath } from "src/backend/swisseph-wasm/utils/get_base_url_path";
-import { SWEerror } from "src/backend/swisseph-wasm/utils/swe_error";
-import Module, { type WASMModule } from "src/backend/swisseph-wasm/wasm";
-
+import {
+    type FixedLengthArray,
+    toFixedLengthArray,
+} from "fixed-len-array/index";
 import {
     ArrayPointer,
     NumberPointer,
     StringPointer,
-    toBooleanType,
-    toCharType,
-} from "./utils/wasm-helper";
+    TypeConverter,
+} from "wasp-lib/index";
+
+import { EpheFileMetadata } from "./utils/ephe_file_metadata";
+import { getBaseURLPath } from "./utils/get_base_url_path";
+import { SWEerror } from "./utils/swe_error";
+import Module, { type SwissephModule } from "./wasm/swisseph";
 
 /** Wrapper class for Swiss Ephemeris WebAssembly bindings. */
 export default class SwissEPH {
@@ -672,14 +674,14 @@ export default class SwissEPH {
         this.SEMOD_DELTAT_STEPHENSON_ETC_2016;
 
     /** The Swisseph Emscripten WebAssembly Module instance. */
-    public wasm: WASMModule;
+    public wasm: SwissephModule;
 
     /**
      * Creates a new instance.
      *
      * @param wasm - Swisseph Emscripten WebAssembly Module instance
      */
-    constructor(wasm: WASMModule) {
+    constructor(wasm: SwissephModule) {
         this.wasm = wasm;
     }
 
@@ -723,8 +725,8 @@ export default class SwissEPH {
         geopos: [longitude: number, latitude: number, elevation: number],
         xin: [azimuth: number, true_altitude: number]
     ): CelestialCoordinates2D {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
-        const xinPtr = ArrayPointer.from(this.wasm, "double", xin);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
+        const xinPtr = ArrayPointer.from(this.wasm, "double", 2, xin);
         const outPtr = ArrayPointer.alloc(this.wasm, "double", 2);
         this.wasm._swe_azalt_rev(
             tjd_ut,
@@ -735,7 +737,7 @@ export default class SwissEPH {
         );
         xinPtr.free();
         geoposPtr.free();
-        return outPtr.readAndFree(2);
+        return outPtr.readAndFree();
     }
 
     /**
@@ -772,8 +774,8 @@ export default class SwissEPH {
         attemp: number,
         xin: [number, number, number]
     ): HorizontalCoordinates {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
-        const xinPtr = ArrayPointer.from(this.wasm, "double", xin);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
+        const xinPtr = ArrayPointer.from(this.wasm, "double", 3, xin);
         const outPtr = ArrayPointer.alloc(this.wasm, "double", 3); // Allocate space for 3 doubles: az, alt, ap
         this.wasm._swe_azalt(
             tjd_ut,
@@ -786,7 +788,7 @@ export default class SwissEPH {
         );
         geoposPtr.free();
         xinPtr.free();
-        return outPtr.readAndFree(3);
+        return outPtr.readAndFree();
     }
 
     /**
@@ -798,7 +800,7 @@ export default class SwissEPH {
      * @param {number} tjd_et - Julian day (ephemeris time, TT)
      * @param {number} ipl - Target body ID (e.g., SE_MARS)
      * @param {number} iplctr - Center body ID (e.g., SE_JUPITER)
-     * @param {number} iflag - Computation flags (bitwise ORed SEFLG constants)
+     * @param {number} iflag - Computation flags (bitwise ORed SEFLG swe)
      * @returns {CelestialCoordinatesAdvance} Array of 6 numbers representing
      *   celestial position:
      *
@@ -836,7 +838,7 @@ export default class SwissEPH {
         );
         const errorMsg = serrPtr.readAndFree();
         if (flag < this.OK) throw new SWEerror(errorMsg, flag);
-        return xxPtr.readAndFree(6);
+        return xxPtr.readAndFree();
     }
 
     /**
@@ -884,7 +886,7 @@ export default class SwissEPH {
             serrPtr.ptr
         );
         if (flag < this.OK) throw new SWEerror(serrPtr.readAndFree(), flag);
-        return xxPtr.readAndFree(6);
+        return xxPtr.readAndFree();
     }
 
     /**
@@ -928,7 +930,7 @@ export default class SwissEPH {
             serrPtr.ptr
         );
         if (flag < this.OK) throw new SWEerror(serrPtr.readAndFree(), flag);
-        return xxPtr.readAndFree(6);
+        return xxPtr.readAndFree();
     }
 
     /**
@@ -969,11 +971,11 @@ export default class SwissEPH {
         xpo: CelestialCoordinatesAdvance,
         eps: number
     ): CelestialCoordinatesAdvance {
-        const xpoPtr = ArrayPointer.from(this.wasm, "double", xpo);
+        const xpoPtr = ArrayPointer.from(this.wasm, "double", 6, xpo);
         const xpnPtr = ArrayPointer.alloc(this.wasm, "double", 6);
         this.wasm._swe_cotrans_sp(xpoPtr.ptr, xpnPtr.ptr, eps);
         xpoPtr.free();
-        return xpnPtr.readAndFree(6);
+        return xpnPtr.readAndFree();
     }
 
     /**
@@ -1001,11 +1003,11 @@ export default class SwissEPH {
         xpo: CelestialCoordinates3D,
         eps: number
     ): CelestialCoordinates3D {
-        const xpoPtr = ArrayPointer.from(this.wasm, "double", xpo);
-        const xpnPtr = ArrayPointer.alloc(this.wasm, "double", 6);
+        const xpoPtr = ArrayPointer.from(this.wasm, "double", 3, xpo);
+        const xpnPtr = ArrayPointer.alloc(this.wasm, "double", 3);
         this.wasm._swe_cotrans(xpoPtr.ptr, xpnPtr.ptr, eps);
         xpoPtr.free();
-        return xpnPtr.readAndFree(3);
+        return xpnPtr.readAndFree();
     }
 
     /**
@@ -1053,7 +1055,7 @@ export default class SwissEPH {
         this.wasm._swe_cs2lonlatstr(
             csec,
             sep.charCodeAt(0),
-            toBooleanType(suppresszero),
+            TypeConverter.boolToC(suppresszero),
             out.ptr
         );
         return out.readAndFree();
@@ -1113,7 +1115,7 @@ export default class SwissEPH {
             month,
             day,
             uttime,
-            toCharType(calendar),
+            TypeConverter.charToC(calendar),
             tjd.ptr
         );
         if (flag < this.OK) throw new SWEerror("illegal date", flag);
@@ -1228,7 +1230,7 @@ export default class SwissEPH {
     } {
         const mag = NumberPointer.alloc(this.wasm, "double");
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starPtr = StringPointer.from(this.wasm, star);
+        const starPtr = StringPointer.from(this.wasm, star.length, star);
         const flag = this.wasm._swe_fixstar_mag(starPtr.ptr, mag.ptr, serr.ptr);
         if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
         return {
@@ -1253,7 +1255,7 @@ export default class SwissEPH {
     swe_fixstar_ut(star: string, tjd_ut: number, iflag: number): FixstarResult {
         const xx = ArrayPointer.alloc(this.wasm, "double", 6);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starPtr = StringPointer.from(this.wasm, star);
+        const starPtr = StringPointer.from(this.wasm, star.length, star);
         const flag = this.wasm._swe_fixstar_ut(
             starPtr.ptr,
             tjd_ut,
@@ -1264,7 +1266,7 @@ export default class SwissEPH {
         if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
         return {
             star_name: starPtr.readAndFree(),
-            data: xx.readAndFree(6),
+            data: xx.readAndFree(),
         };
     }
 
@@ -1288,7 +1290,7 @@ export default class SwissEPH {
     swe_fixstar(star: string, tjd_et: number, iflag: number): FixstarResult {
         const xx = ArrayPointer.alloc(this.wasm, "double", 6);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starPtr = StringPointer.from(this.wasm, star);
+        const starPtr = StringPointer.from(this.wasm, star.length, star);
         const flag = this.wasm._swe_fixstar(
             starPtr.ptr,
             tjd_et,
@@ -1301,7 +1303,7 @@ export default class SwissEPH {
         }
         return {
             star_name: starPtr.readAndFree(),
-            data: xx.readAndFree(6),
+            data: xx.readAndFree(),
         };
     }
 
@@ -1320,7 +1322,7 @@ export default class SwissEPH {
     swe_fixstar2_mag(star: string): FixstarMagnitude {
         const mag = NumberPointer.alloc(this.wasm, "double");
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starPtr = StringPointer.from(this.wasm, star);
+        const starPtr = StringPointer.from(this.wasm, star.length, star);
         const flag = this.wasm._swe_fixstar2_mag(
             starPtr.ptr,
             mag.ptr,
@@ -1366,7 +1368,7 @@ export default class SwissEPH {
     } {
         const xx = ArrayPointer.alloc(this.wasm, "double", 6);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starPtr = StringPointer.from(this.wasm, star);
+        const starPtr = StringPointer.from(this.wasm, star.length, star);
         const flag = this.wasm._swe_fixstar2_ut(
             starPtr.ptr,
             tjd_ut,
@@ -1377,7 +1379,7 @@ export default class SwissEPH {
         if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
         return {
             star_name: starPtr.readAndFree(),
-            data: xx.readAndFree(6),
+            data: xx.readAndFree(),
         };
     }
 
@@ -1414,7 +1416,7 @@ export default class SwissEPH {
     } {
         const xx = ArrayPointer.alloc(this.wasm, "double", 6);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starPtr = StringPointer.from(this.wasm, star);
+        const starPtr = StringPointer.from(this.wasm, star.length, star);
         const flag = this.wasm._swe_fixstar2(
             starPtr.ptr,
             tjd_et,
@@ -1425,7 +1427,7 @@ export default class SwissEPH {
         if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
         return {
             star_name: starPtr.readAndFree(),
-            data: xx.readAndFree(6),
+            data: xx.readAndFree(),
         };
     }
 
@@ -1449,8 +1451,8 @@ export default class SwissEPH {
      *
      *   Throws `SWEerror` if the underlying C function returns an error flag.
      *
-     *   Const result = swe_gauquelin_sector(2413256, constants.SE_MOON, null,
-     *   constants.SEFLG_SWIEPH, 0, [15, 10, 0], 0, 0); console.log(`Sector:
+     *   Const result = swe_gauquelin_sector(2413256, swe.SE_MOON, null,
+     *   swe.SEFLG_SWIEPH, 0, [15, 10, 0], 0, 0); console.log(`Sector:
      *   ${Math.floor(result)}`);
      */
     swe_gauquelin_sector(
@@ -1463,9 +1465,11 @@ export default class SwissEPH {
         atpress: number,
         attemp: number
     ): number {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starnamePtr = StringPointer.from(this.wasm, starname);
+        const starnamePtr = starname
+            ? StringPointer.from(this.wasm, starname.length, starname)
+            : StringPointer.alloc(this.wasm, 0);
         const dgsect = NumberPointer.alloc(this.wasm, "double");
         const flag = this.wasm._swe_gauquelin_sector(
             tjd_ut,
@@ -1479,6 +1483,7 @@ export default class SwissEPH {
             dgsect.ptr,
             serr.ptr
         );
+        starnamePtr.free();
         if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
         return dgsect.readAndFree();
     }
@@ -1498,7 +1503,7 @@ export default class SwissEPH {
      *
      *   Throws `SWEerror` if computation fails or flags are incompatible.
      *
-     *   Const result = swe_get_ayanamsa_ex_ut(2314234, constants.SEFLG_SWIEPH);
+     *   Const result = swe_get_ayanamsa_ex_ut(2314234, swe.SEFLG_SWIEPH);
      *   console.log(`Ayanamsa: ${result}`);
      */
     swe_get_ayanamsa_ex_ut(tjd_ut: number, iflags: number): number {
@@ -1529,7 +1534,7 @@ export default class SwissEPH {
      *
      *   Throws `SWEerror` if computation fails or flags are incompatible.
      *
-     *   Const result = swe_get_ayanamsa_ex(2314234, constants.SEFLG_SWIEPH);
+     *   Const result = swe_get_ayanamsa_ex(2314234, swe.SEFLG_SWIEPH);
      *   console.log(`Ayanamsa: ${result}`);
      */
     swe_get_ayanamsa_ex(tjd_et: number, iflags: number): number {
@@ -1601,7 +1606,7 @@ export default class SwissEPH {
      *   used (e.g., 431) }
      *
      *   // Perform a calculation to ensure ephemeris file is loaded calc(2342342,
-     *   constants.SE_VENUS, constants.SEFLG_SWIEPH);
+     *   swe.SE_VENUS, swe.SEFLG_SWIEPH);
      */
     swe_get_current_file_data(ifno: number): {
         /** Path to ephemeris file */
@@ -1668,7 +1673,7 @@ export default class SwissEPH {
             serr.ptr
         );
         if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
-        return dataPtr.readAndFree(17);
+        return toFixedLengthArray(dataPtr.readAndFree(), 17, 0);
     }
 
     /**
@@ -1729,10 +1734,14 @@ export default class SwissEPH {
         event_type: number,
         hel_flag: number
     ): HeliacalPhenomena {
-        const dgeoPtr = ArrayPointer.from(this.wasm, "double", dgeo);
-        const datmPtr = ArrayPointer.from(this.wasm, "double", datm);
-        const dobsPtr = ArrayPointer.from(this.wasm, "double", dobs);
-        const object_namePtr = StringPointer.from(this.wasm, object_name);
+        const dgeoPtr = ArrayPointer.from(this.wasm, "double", 3, dgeo);
+        const datmPtr = ArrayPointer.from(this.wasm, "double", 4, datm);
+        const dobsPtr = ArrayPointer.from(this.wasm, "double", 6, dobs);
+        const object_namePtr = StringPointer.from(
+            this.wasm,
+            object_name.length,
+            object_name
+        );
         const retPtr = ArrayPointer.alloc(this.wasm, "double", 50);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
 
@@ -1754,7 +1763,7 @@ export default class SwissEPH {
         datmPtr.free();
         dobsPtr.free();
         object_namePtr.free();
-        return retPtr.readAndFree(30);
+        return toFixedLengthArray(retPtr.readAndFree(), 30, 0);
     }
 
     /**
@@ -1804,12 +1813,17 @@ export default class SwissEPH {
         event_type: number,
         hel_flag: number
     ): HeliacalVisibilityWindow {
-        const dgeoPtr = ArrayPointer.from(this.wasm, "double", dgeo);
-        const datmPtr = ArrayPointer.from(this.wasm, "double", datm);
-        const dobsPtr = ArrayPointer.from(this.wasm, "double", dobs);
-        const object_namePtr = StringPointer.from(this.wasm, object_name);
+        const dgeoPtr = ArrayPointer.from(this.wasm, "double", 3, dgeo);
+        const datmPtr = ArrayPointer.from(this.wasm, "double", 4, datm);
+        const dobsPtr = ArrayPointer.from(this.wasm, "double", 6, dobs);
+        const object_namePtr = StringPointer.from(
+            this.wasm,
+            object_name.length,
+            object_name
+        );
         const retPtr = ArrayPointer.alloc(this.wasm, "double", 50);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
+
         const flag = this.wasm._swe_heliacal_ut(
             tjd_ut,
             dgeoPtr.ptr,
@@ -1827,7 +1841,7 @@ export default class SwissEPH {
         datmPtr.free();
         dobsPtr.free();
         object_namePtr.free();
-        return retPtr.readAndFree(3);
+        return toFixedLengthArray(retPtr.readAndFree(), 3, 0);
     }
 
     /**
@@ -1929,7 +1943,7 @@ export default class SwissEPH {
         hsys: HouseSystems,
         xpin: [longitude: number, latitude: number]
     ): number {
-        const xpinPtr = ArrayPointer.from(this.wasm, "double", xpin);
+        const xpinPtr = ArrayPointer.from(this.wasm, "double", 2, xpin);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const house = this.wasm._swe_house_pos(
             armc,
@@ -1998,12 +2012,21 @@ export default class SwissEPH {
         );
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return {
-            cusps: cusps.readAndFree(cuspLen),
-            ascmc: ascmc.readAndFree(8),
-            cusp_speed: cusp_speed.readAndFree(cuspLen),
-            ascmc_speed: ascmc_speed.readAndFree(8),
-        } as ConditionalReturnType<HS, { G: HousesEx<37> }, HousesEx<13>>;
+
+        const ret = {} as ConditionalReturnType<
+            HS,
+            { G: HousesEx<37> },
+            HousesEx<13>
+        >;
+        ret.cusps = toFixedLengthArray(cusps.readAndFree(), cuspLen, 0);
+        ret.ascmc = toFixedLengthArray(ascmc.readAndFree(), 8, 0);
+        ret.cusp_speed = toFixedLengthArray(
+            cusp_speed.readAndFree(),
+            cuspLen,
+            0
+        );
+        ret.ascmc_speed = toFixedLengthArray(ascmc_speed.readAndFree(), 8, 0);
+        return ret;
     }
 
     /**
@@ -2049,10 +2072,15 @@ export default class SwissEPH {
             ascmc.ptr
         );
         if (flag < this.OK) throw new SWEerror("swe_houses_armc", flag);
-        return {
-            cusps: cusps.readAndFree(cuspLen),
-            ascmc: ascmc.readAndFree(8),
-        } as ConditionalReturnType<HS, { G: Houses<37> }, Houses<13>>;
+
+        const ret = {} as ConditionalReturnType<
+            HS,
+            { G: Houses<37> },
+            Houses<13>
+        >;
+        ret.cusps = toFixedLengthArray(cusps.readAndFree(), cuspLen, 0);
+        ret.ascmc = toFixedLengthArray(ascmc.readAndFree(), 8, 0);
+        return ret;
     }
 
     /**
@@ -2093,10 +2121,15 @@ export default class SwissEPH {
             ascmc.ptr
         );
         if (flag < this.OK) throw new SWEerror("swe_houses_ex", flag);
-        return {
-            cusps: cusps.readAndFree(cuspLen),
-            ascmc: ascmc.readAndFree(8),
-        } as ConditionalReturnType<HS, { G: Houses<37> }, Houses<13>>;
+
+        const ret = {} as ConditionalReturnType<
+            HS,
+            { G: Houses<37> },
+            Houses<13>
+        >;
+        ret.cusps = toFixedLengthArray(cusps.readAndFree(), cuspLen, 0);
+        ret.ascmc = toFixedLengthArray(ascmc.readAndFree(), 8, 0);
+        return ret;
     }
 
     /**
@@ -2149,12 +2182,21 @@ export default class SwissEPH {
         );
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return {
-            cusps: cusps.readAndFree(cuspLen),
-            ascmc: ascmc.readAndFree(8),
-            cusp_speed: cusp_speed.readAndFree(cuspLen),
-            ascmc_speed: ascmc_speed.readAndFree(8),
-        } as ConditionalReturnType<HS, { G: HousesEx<37> }, HousesEx<13>>;
+
+        const ret = {} as ConditionalReturnType<
+            HS,
+            { G: HousesEx<37> },
+            HousesEx<13>
+        >;
+        ret.cusps = toFixedLengthArray(cusps.readAndFree(), cuspLen, 0);
+        ret.ascmc = toFixedLengthArray(ascmc.readAndFree(), 8, 0);
+        ret.cusp_speed = toFixedLengthArray(
+            cusp_speed.readAndFree(),
+            cuspLen,
+            0
+        );
+        ret.ascmc_speed = toFixedLengthArray(ascmc_speed.readAndFree(), 8, 0);
+        return ret;
     }
 
     /**
@@ -2192,10 +2234,15 @@ export default class SwissEPH {
             ascmc.ptr
         );
         if (flag < this.OK) throw new SWEerror("swe_houses", flag);
-        return {
-            cusps: cusps.readAndFree(cuspLen),
-            ascmc: ascmc.readAndFree(8),
-        } as ConditionalReturnType<HS, { G: Houses<37> }, Houses<13>>;
+
+        const ret = {} as ConditionalReturnType<
+            HS,
+            { G: Houses<37> },
+            Houses<13>
+        >;
+        ret.cusps = toFixedLengthArray(cusps.readAndFree(), cuspLen, 0);
+        ret.ascmc = toFixedLengthArray(ascmc.readAndFree(), 8, 0);
+        return ret;
     }
 
     /**
@@ -2366,7 +2413,7 @@ export default class SwissEPH {
         ifl: number,
         geopos: [longitude: number, latitude: number, elevation: number]
     ): LunarEclipseCharacteristics {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
         const attr = ArrayPointer.alloc(this.wasm, "double", 20);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const flag = this.wasm._swe_lun_eclipse_how(
@@ -2378,7 +2425,7 @@ export default class SwissEPH {
         );
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return attr.readAndFree(11);
+        return toFixedLengthArray(attr.readAndFree(), 11, 0);
     }
 
     /**
@@ -2422,7 +2469,7 @@ export default class SwissEPH {
         /** Array of additional data about the lunar eclipse */
         Array: LunarEclipseCharacteristics;
     } {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
         const ret = ArrayPointer.alloc(this.wasm, "double", 10);
         const attr = ArrayPointer.alloc(this.wasm, "double", 20);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
@@ -2432,15 +2479,15 @@ export default class SwissEPH {
             geoposPtr.ptr,
             ret.ptr,
             attr.ptr,
-            toBooleanType(backwards),
+            TypeConverter.boolToC(backwards),
             serr.ptr
         );
         geoposPtr.free();
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
         return {
-            data: ret.readAndFree(10),
-            Array: attr.readAndFree(11),
+            data: ret.readAndFree(),
+            Array: toFixedLengthArray(attr.readAndFree(), 11, 0),
         };
     }
 
@@ -2476,12 +2523,12 @@ export default class SwissEPH {
             ifl,
             ifltype,
             ret.ptr,
-            toBooleanType(backwards),
+            TypeConverter.boolToC(backwards),
             serr.ptr
         );
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return ret.readAndFree(8);
+        return toFixedLengthArray(ret.readAndFree(), 8, 0);
     }
 
     /**
@@ -2518,7 +2565,9 @@ export default class SwissEPH {
         ifltype: number,
         backwards: boolean
     ): EclipsePhaseTimesAdvance {
-        const starnamePtr = StringPointer.from(this.wasm, starname);
+        const starnamePtr = starname
+            ? StringPointer.from(this.wasm, starname.length, starname)
+            : StringPointer.alloc(this.wasm, 0);
         const ret = ArrayPointer.alloc(this.wasm, "double", 10);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const flag = this.wasm._swe_lun_occult_when_glob(
@@ -2528,13 +2577,13 @@ export default class SwissEPH {
             ifl,
             ifltype,
             ret.ptr,
-            toBooleanType(backwards),
+            TypeConverter.boolToC(backwards),
             serr.ptr
         );
         starnamePtr.free();
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return ret.readAndFree(10);
+        return ret.readAndFree();
     }
 
     /**
@@ -2580,11 +2629,13 @@ export default class SwissEPH {
         /** Array of additional data about the lunar eclipse */
         Array: EclipseCharacteristics;
     } {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
         const ret = ArrayPointer.alloc(this.wasm, "double", 10);
         const attr = ArrayPointer.alloc(this.wasm, "double", 20);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starnamePtr = StringPointer.from(this.wasm, starname);
+        const starnamePtr = starname
+            ? StringPointer.from(this.wasm, starname.length, starname)
+            : StringPointer.alloc(this.wasm, 0);
         const flag = this.wasm._swe_lun_occult_when_loc(
             tjd_start,
             ipl,
@@ -2593,7 +2644,7 @@ export default class SwissEPH {
             geoposPtr.ptr,
             ret.ptr,
             attr.ptr,
-            toBooleanType(backwards),
+            TypeConverter.boolToC(backwards),
             serr.ptr
         );
         geoposPtr.free();
@@ -2601,8 +2652,8 @@ export default class SwissEPH {
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
         return {
-            data: ret.readAndFree(7),
-            Array: attr.readAndFree(8),
+            data: toFixedLengthArray(ret.readAndFree(), 7, 0),
+            Array: toFixedLengthArray(attr.readAndFree(), 8, 0),
         };
     }
 
@@ -2670,7 +2721,9 @@ export default class SwissEPH {
         const geopos = ArrayPointer.alloc(this.wasm, "double", 10);
         const attr = ArrayPointer.alloc(this.wasm, "double", 20);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starnamePtr = StringPointer.from(this.wasm, starname);
+        const starnamePtr = starname
+            ? StringPointer.from(this.wasm, starname.length, starname)
+            : StringPointer.alloc(this.wasm, 0);
         const flag = this.wasm._swe_lun_occult_where(
             tjd_ut,
             ipl,
@@ -2684,8 +2737,8 @@ export default class SwissEPH {
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
         return {
-            data: geopos.readAndFree(10),
-            Array: attr.readAndFree(8),
+            data: geopos.readAndFree(),
+            Array: toFixedLengthArray(attr.readAndFree(), 8, 0),
         };
     }
 
@@ -2868,10 +2921,10 @@ export default class SwissEPH {
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
         return {
-            ascending: asc.readAndFree(6),
-            descending: dsc.readAndFree(6),
-            perihelion: per.readAndFree(6),
-            aphelion: aph.readAndFree(6),
+            ascending: asc.readAndFree(),
+            descending: dsc.readAndFree(),
+            perihelion: per.readAndFree(),
+            aphelion: aph.readAndFree(),
         };
     }
 
@@ -2928,10 +2981,10 @@ export default class SwissEPH {
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
         return {
-            ascending: asc.readAndFree(6),
-            descending: dsc.readAndFree(6),
-            perihelion: per.readAndFree(6),
-            aphelion: aph.readAndFree(6),
+            ascending: asc.readAndFree(),
+            descending: dsc.readAndFree(),
+            perihelion: per.readAndFree(),
+            aphelion: aph.readAndFree(),
         };
     }
 
@@ -3019,7 +3072,7 @@ export default class SwissEPH {
         );
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return attr.readAndFree(5);
+        return toFixedLengthArray(attr.readAndFree(), 5, 0);
     }
 
     /**
@@ -3062,7 +3115,7 @@ export default class SwissEPH {
         );
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return attr.readAndFree(5);
+        return toFixedLengthArray(attr.readAndFree(), 5, 0);
     }
 
     /**
@@ -3127,7 +3180,7 @@ export default class SwissEPH {
         );
         return {
             altitude,
-            extended: ret.readAndFree(4),
+            extended: toFixedLengthArray(ret.readAndFree(), 4, 0),
         };
     }
 
@@ -3225,10 +3278,12 @@ export default class SwissEPH {
         attemp: number,
         horhgt: number
     ): number {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
         const ret = NumberPointer.alloc(this.wasm, "double");
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starnamePtr = StringPointer.from(this.wasm, starname);
+        const starnamePtr = starname
+            ? StringPointer.from(this.wasm, starname.length, starname)
+            : StringPointer.alloc(this.wasm, 0);
         const flag = this.wasm._swe_rise_trans_true_hor(
             tjd_ut,
             ipl,
@@ -3278,10 +3333,12 @@ export default class SwissEPH {
         atpress: number,
         attemp: number
     ): number {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
         const ret = NumberPointer.alloc(this.wasm, "double");
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
-        const starnamePtr = StringPointer.from(this.wasm, starname);
+        const starnamePtr = starname
+            ? StringPointer.from(this.wasm, starname.length, starname)
+            : StringPointer.alloc(this.wasm, 0);
         const flag = this.wasm._swe_rise_trans(
             tjd_ut,
             ipl,
@@ -3330,17 +3387,18 @@ export default class SwissEPH {
      * the ephemeris path.
      *
      * @example
-     *     await swe.swe_set_ephe_path(
-     *         "https://github.com/aloistr/swisseph/raw/refs/heads/master/ephe/",
-     *         ["seas_18.se1", "sepl_18.se1", "semo_18.se1", "sefstars.txt"]
-     *     );
+     *     await swe.swe_set_ephe_path("https://unpkg.com/sweph-wasm/ephe/", [
+     *         "seas_18.se1",
+     *         "sepl_18.se1",
+     *         "semo_18.se1",
+     *     ]);
      *
      * @param epheUrl - Base URL or directory path containing `.se1` ephemeris
      *   files.
      * @throws {SWEerror} If no ephemeris files are successfully loaded.
      */
     async swe_set_ephe_path(
-        epheUrl: string = "https://github.com/aloistr/swisseph/raw/refs/heads/master/ephe/",
+        epheUrl: string = "https://unpkg.com/sweph-wasm/ephe/",
         fileNames: Array<string> = ["seas_18.se1", "sepl_18.se1", "semo_18.se1"]
     ): Promise<void> {
         const epheDir = "/ephe";
@@ -3387,7 +3445,11 @@ export default class SwissEPH {
         console.log(loaded.join("\n"));
         console.log(`Total ephemeris files loaded: ${loaded.length}`);
         // Set ephemeris path in Swiss Ephemeris
-        const ephePathPtr = StringPointer.from(this.wasm, epheDir);
+        const ephePathPtr = StringPointer.from(
+            this.wasm,
+            epheDir.length,
+            epheDir
+        );
         this.wasm._swe_set_ephe_path(ephePathPtr.ptr);
         ephePathPtr.free();
     }
@@ -3410,7 +3472,7 @@ export default class SwissEPH {
      *   `"de405.eph"`).
      */
     swe_set_jpl_file(file: string): void {
-        const filePathPtr = StringPointer.from(this.wasm, file);
+        const filePathPtr = StringPointer.from(this.wasm, file.length, file);
         this.wasm._swe_set_jpl_file(filePathPtr.ptr);
         filePathPtr.free();
     }
@@ -3422,9 +3484,9 @@ export default class SwissEPH {
      * @param {number} sid_mode Ayanamsa ID
      * @param {number} t0 Reference date in jd_ut for custom ayanamsas
      * @param {number} ayan_t0 Initial value in degrees for custom ayanamsas //
-     *   set ayanamsa to Lahiri set_sid_mode(constants.SE_SIDM_LAHIRI, 0, 0) //
+     *   set ayanamsa to Lahiri swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0) //
      *   define custom ayanamsa as 25 degrees at J2000
-     *   set_sid_mode(constants.SE_SIDM_USER, 2451545, 25)
+     *   swe_set_sid_mode(swe.SE_SIDM_USER, 2451545, 25)
      */
     swe_set_sid_mode(sid_mode: number, t0: number, ayan_t0: number): void {
         this.wasm._swe_set_sid_mode(sid_mode, t0, ayan_t0);
@@ -3435,8 +3497,8 @@ export default class SwissEPH {
      *
      * @param {number} t_acc Tidal acceleration value // set custom value
      *   set_tid_acc(25.90); // set predefined value
-     *   set_tid_acc(constants.SE_TIDAL_DE403); // reset to auto
-     *   set_tid_acc(constants.SE_TIDAL_AUTOMATIC);
+     *   set_tid_acc(swe.SE_TIDAL_DE403); // reset to auto
+     *   set_tid_acc(swe.SE_TIDAL_AUTOMATIC);
      */
     swe_set_tid_acc(t_acc: number): void {
         this.wasm._swe_set_tid_acc(t_acc);
@@ -3449,8 +3511,8 @@ export default class SwissEPH {
      * @param {number} geolat Geographic latitude in degrees
      * @param {number} elevation Elevation in meters // set observer to 124'30E,
      *   23'30N, 1250 meters above sea level; set_topo(124.5, 23.5, 1250); //
-     *   call swe_with topocentric flag let result = calc(2342341,
-     *   constants.SE_MOON, constants.SEFLG_SWIEPH | constants.SEFLG_TOPOCTR)
+     *   call swe_with topocentric flag let result = calc(2342341, swe.SE_MOON,
+     *   swe.SEFLG_SWIEPH | swe.SEFLG_TOPOCTR)
      */
     swe_set_topo(geolon: number, geolat: number, elevation: number): void {
         this.wasm._swe_set_topo(geolon, geolat, elevation);
@@ -3507,7 +3569,7 @@ export default class SwissEPH {
         ifl: number,
         geopos: [longitude: number, latitude: number, elevation: number]
     ): EclipseAttributes {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
         const attr = ArrayPointer.alloc(this.wasm, "double", 20);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const flag = this.wasm._swe_sol_eclipse_how(
@@ -3520,7 +3582,7 @@ export default class SwissEPH {
         geoposPtr.free();
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return attr.readAndFree(11);
+        return toFixedLengthArray(attr.readAndFree(), 11, 0);
     }
 
     /**
@@ -3559,12 +3621,12 @@ export default class SwissEPH {
             ifl,
             iftype,
             ret.ptr,
-            toBooleanType(backwards),
+            TypeConverter.boolToC(backwards),
             serr.ptr
         );
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return ret.readAndFree(10);
+        return ret.readAndFree();
     }
 
     /**
@@ -3609,7 +3671,7 @@ export default class SwissEPH {
         eclipseContactTimes: EclipseContactTimes;
         eclipseAttributes: EclipseAttributes;
     } {
-        const geoposPtr = ArrayPointer.from(this.wasm, "double", geopos);
+        const geoposPtr = ArrayPointer.from(this.wasm, "double", 3, geopos);
         const tret = ArrayPointer.alloc(this.wasm, "double", 10);
         const attr = ArrayPointer.alloc(this.wasm, "double", 20);
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
@@ -3619,7 +3681,7 @@ export default class SwissEPH {
             geoposPtr.ptr,
             tret.ptr,
             attr.ptr,
-            toBooleanType(backwards),
+            TypeConverter.boolToC(backwards),
             serr.ptr
         );
         geoposPtr.free();
@@ -3628,8 +3690,8 @@ export default class SwissEPH {
             throw new SWEerror(error, flag);
         }
         return {
-            eclipseContactTimes: tret.readAndFree(7),
-            eclipseAttributes: attr.readAndFree(11),
+            eclipseContactTimes: toFixedLengthArray(tret.readAndFree(), 7, 0),
+            eclipseAttributes: toFixedLengthArray(attr.readAndFree(), 11, 0),
         };
     }
 
@@ -3688,8 +3750,8 @@ export default class SwissEPH {
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
         return {
-            data: geopos.readAndFree(10),
-            Array: attr.readAndFree(11),
+            data: geopos.readAndFree(),
+            Array: toFixedLengthArray(attr.readAndFree(), 11, 0),
         };
     }
 
@@ -3894,7 +3956,7 @@ export default class SwissEPH {
         );
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return ret.readAndFree(2);
+        return ret.readAndFree();
     }
 
     /** Get current swisseph version Swisseph version */
@@ -3968,11 +4030,15 @@ export default class SwissEPH {
         /** The object's magnitude */
         magnitude: number,
     ] {
-        const dgeoPtr = ArrayPointer.from(this.wasm, "double", dgeo);
-        const datmPtr = ArrayPointer.from(this.wasm, "double", datm);
-        const dobsPtr = ArrayPointer.from(this.wasm, "double", dobs);
+        const dgeoPtr = ArrayPointer.from(this.wasm, "double", 3, dgeo);
+        const datmPtr = ArrayPointer.from(this.wasm, "double", 4, datm);
+        const dobsPtr = ArrayPointer.from(this.wasm, "double", 6, dobs);
         const ret = ArrayPointer.alloc(this.wasm, "double", 8);
-        const objectnamePtr = StringPointer.from(this.wasm, objectname);
+        const objectnamePtr = StringPointer.from(
+            this.wasm,
+            objectname.length,
+            objectname
+        );
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const flag = this.wasm._swe_vis_limit_mag(
             tjd_ut,
@@ -3990,7 +4056,7 @@ export default class SwissEPH {
         objectnamePtr.free();
         const error = serr.readAndFree();
         if (flag < this.OK) throw new SWEerror(error, flag);
-        return ret.readAndFree(8);
+        return ret.readAndFree();
     }
 }
 

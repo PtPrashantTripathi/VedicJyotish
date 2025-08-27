@@ -25,6 +25,7 @@ export interface ISearchParams {
 export interface ISessionData extends ISearchParams {
     error: IErrorType[];
     nav: boolean;
+    updated?: boolean;
 }
 // An array of search parameter keys to ensure consistent parsing and URL generation.
 export const searchParamKeys: (keyof ISearchParams)[] = [

@@ -13,8 +13,8 @@
 
 // gcc -O0 -Wno-deprecated-declarations  -fsanitize=address -g tools/test/monthly_hindi_panchang.c src/backend/swisseph-wasm/lib/*.c -o main && ./main
 
-import SwissEPH from "src/backend/swisseph-wasm";
-import { toFixedLengthArray } from "src/backend/swisseph-wasm/utils/fixed-length-array";
+import { toFixedLengthArray } from "fixed-len-array/index";
+import SwissEPH from "sweph-wasm/index";
 
 // Configuration
 // Location: Mandla, Madhya Pradesh, India
@@ -391,7 +391,7 @@ await swe.swe_set_ephe_path("./ephe", [
 
 swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
 // Location settings
-const geopos = toFixedLengthArray([GEO_LON, GEO_LAT, GEO_ALT], 3);
+const geopos = toFixedLengthArray([GEO_LON, GEO_LAT, GEO_ALT], 3, 0);
 swe.swe_set_topo(GEO_LON, GEO_LAT, GEO_ALT);
 // Get current time
 const tm_gmt = new Date();

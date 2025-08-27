@@ -6,11 +6,12 @@ import { pageDetails } from "src/pages/pageDetails";
 export default function Header() {
     const session = useSessionContext();
     const [currentTime, setCurrentTime] = useState(new Date());
+
     useEffect(() => {
-        const timer = setInterval(() => {
+        const timerId = setInterval(() => {
             setCurrentTime(new Date());
         }, 1000);
-        return () => clearInterval(timer);
+        return () => clearInterval(timerId);
     }, []);
 
     const pageDetail = pageDetails[session.data.page];

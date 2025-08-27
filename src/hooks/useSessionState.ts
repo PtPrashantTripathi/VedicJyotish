@@ -1,32 +1,29 @@
 // src/hooks/useSessionState.ts
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
     type ISessionData,
     parseSearchParams,
     searchParamKeys,
 } from "src/utils/parseSearchParams";
+import { merge } from "ts-deepmerge";
 
-// Defines the shape of the return value for the useSessionState hook.
-export interface SessionState {
-    data: ISessionData;
-    setData: React.Dispatch<React.SetStateAction<ISessionData>>;
-    updateData: (input: Partial<ISessionData>) => void;
-    getSortURL: () => string;
-}
+// Recursive Partial (DeepPartial)
+export type DeepPartial<T> = {
+    [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
+};
 
 /**
  * A custom hook to manage the application's session state, synchronizing with
  * URL search parameters.
  *
- * @returns {SessionState} An object containing the session data and update
- *   functions.
+ * @returns An object containing the session data and update functions.
  */
-export function useSessionState(): SessionState {
-    const initialData = useMemo(() => parseSearchParams(), []);
-    const [data, setData] = useState<ISessionData>(initialData);
+export function useSessionState() {
+    const [data, setData] = useState<ISessionData>(parseSearchParams());
 
-    const updateData = (input: Partial<ISessionData>) => {
-        setData(prev => ({ ...prev, ...input }));
+    // Our updater function
+    const updateData = (patch: DeepPartial<ISessionData>) => {
+        setData(data => merge(data, patch) as ISessionData);
     };
 
     const getSortURL = () => {
@@ -40,6 +37,13 @@ export function useSessionState(): SessionState {
             btoa(params.toString())
         );
     };
+
+    console.log(
+        "session.data:",
+        // new Date().toISOString(),
+        JSON.stringify(data, null, 4)
+    );
+    // console.time(session.getSortURL());
 
     return {
         data,

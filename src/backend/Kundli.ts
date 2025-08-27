@@ -3,27 +3,20 @@ import { DateTime } from "luxon";
 import { calcSunRiseSunSet } from "src/backend/calcSunRiseSunSet";
 import { DayKalavelasCalculation } from "src/backend/KalavelasCalculation";
 import { Planet, type PlanetEn } from "src/backend/Planet";
-import SwissEPH from "src/backend/swisseph-wasm";
 import { getVara } from "src/backend/Varas";
 import { calcVimsottariDasa, Dasha } from "src/backend/VimsottariDasa";
 import { calcYogPhala } from "src/backend/YogPhala";
+import type SwissEPH from "sweph-wasm/index";
 
 // getPlanetaryPosition
 export async function Kundli(
+    swe: SwissEPH,
     datetime: DateTime<true>,
     longitude: number, // north positive
     latitude: number, // east positive
     altitude: number = 0 // height above sea level in meters
 ) {
     // todo : we neet to use tjd_et (Julian Day in Ephemeris Time or Terrestrial Time):
-    const swe = await SwissEPH.init();
-    console.log("swe_version", swe.swe_version());
-
-    await swe.swe_set_ephe_path("./ephe", [
-        "seas_18.se1",
-        "sepl_18.se1",
-        "semo_18.se1",
-    ]);
     // Setup location detail
     swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
     swe.swe_set_topo(longitude, latitude, altitude);

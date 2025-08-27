@@ -3,17 +3,6 @@ import { useSessionContext } from "src/contexts/SessionContext";
 
 export default function Home() {
     const session = useSessionContext();
-    // Current time and date updates
-    function updateDateTime() {
-        const now = new Date();
-        const timeElement = document.getElementById("current-time");
-        if (timeElement) {
-            timeElement.textContent = now.toLocaleTimeString();
-        }
-    }
-
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
 
     return (
         <div id="home-page">

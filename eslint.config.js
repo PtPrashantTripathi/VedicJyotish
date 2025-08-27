@@ -8,6 +8,8 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import js from "@eslint/js";
 import ts from "typescript-eslint";
 import { globalIgnores } from "eslint/config";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 export default ts.config([
     globalIgnores(["dist", "node_modules"]),
@@ -28,6 +30,10 @@ export default ts.config([
                 ...globals.browser,
                 React: "readonly",
                 JSX: "readonly",
+            },
+            parserOptions: {
+                project: "./tsconfig.json",
+                tsconfigRootDir: path.dirname(fileURLToPath(import.meta.url)),
             },
         },
         plugins: {

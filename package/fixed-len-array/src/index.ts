@@ -17,24 +17,26 @@ export type FixedLengthArray<
 
 /**
  * Creates a fixed-length array of a specific type, trimming or padding with a
- * default null value as needed.
+ * default value as needed.
  *
  * @example
- *     const vec3 = toFixedLengthArray([1], 3); // [1, 0, 0]
+ *     const vec3 = toFixedLengthArray([1], 3, 0); // [1, 0, 0]
  *
  * @param input - The input array (can be shorter or longer than the target
  *   length).
  * @param fixedLength - The target length of the output array.
+ * @param defaultValue - The value to pad the array with if it's too short.
  * @returns A new array with the specified fixed length.
  */
 export function toFixedLengthArray<N extends number, T>(
     input: T[],
-    fixedLength: N
+    fixedLength: N,
+    defaultValue: T
 ): FixedLengthArray<N, T> {
-    const output: T[] = input.slice(0, fixedLength).map(v => v as T);
+    const output: T[] = input.slice(0, fixedLength);
 
     while (output.length < fixedLength) {
-        output.push(null as T);
+        output.push(defaultValue);
     }
 
     return output as FixedLengthArray<N, T>;

@@ -8,6 +8,7 @@ import Navigation from "src/components/Navigation";
 import { SessionContext } from "src/contexts/SessionContext";
 import { useSessionState } from "src/hooks/useSessionState";
 import About from "src/pages/About";
+import HinduTime from "src/pages/HinduTime";
 import Home from "src/pages/Home";
 import KundliForm from "src/pages/KundliForm";
 import KundliMatching from "src/pages/KundliMatching";
@@ -15,13 +16,11 @@ import KundliResult from "src/pages/KundliResult";
 import MonthlyCalendar from "src/pages/MonthlyCalendar";
 import Panchang from "src/pages/Panchang";
 import Settings from "src/pages/Settings";
+
 // const KundliResult = lazy(() => import("src/pages/KundliResult"));
 
-export function App() {
+export default function App() {
     const session = useSessionState();
-
-    console.log("session.data:", JSON.stringify(session.data, null, 4));
-    console.log(session.getSortURL());
 
     return (
         <SessionContext value={session}>
@@ -50,6 +49,8 @@ export function App() {
                     <MonthlyCalendar />
                 ) : session.data.page === "Settings" ? (
                     <Settings />
+                ) : session.data.page === "HinduTime" ? (
+                    <HinduTime />
                 ) : session.data.page === "Home" ? (
                     <Home />
                 ) : (

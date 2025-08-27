@@ -8,9 +8,13 @@ import KundliYogPhala from "src/components/KundliYogPhala";
 import Loader from "src/components/Loader";
 import VimsottariDasa from "src/components/VimsottariDasa";
 import { useSessionContext } from "src/contexts/SessionContext";
+import { useWASMContext } from "src/contexts/WASMContext";
 
 export default function KundliResult() {
-    const session = useSessionContext();
+    const {
+        data: { date, time, lat, lon, tz_name, ayanamsa },
+    } = useSessionContext();
+    const swe = useWASMContext();
     const [kundliData, setKundliData] = useState<Awaited<
         ReturnType<typeof Kundli>
     > | null>(null);
@@ -18,18 +22,18 @@ export default function KundliResult() {
     useEffect(() => {
         async function fetchKundli() {
             const result = await Kundli(
-                DateTime.fromISO(`${session.data.date}T${session.data.time}`, {
-                    zone: session.data.tz_name,
+                swe,
+                DateTime.fromISO(`${date}T${time}`, {
+                    zone: tz_name,
                 }) as DateTime<true>,
-                session.data.lon,
-                session.data.lat,
-                0
+                lat,
+                lon
             );
             setKundliData(result);
         }
 
         fetchKundli();
-    }, [session.data]);
+    }, [swe, date, time, lat, lon, tz_name]);
 
     if (kundliData) {
         return (
@@ -79,7 +83,7 @@ export default function KundliResult() {
                             <tr>
                                 <td>ayanamsa</td>
                                 <td>
-                                    {session.data.ayanamsa} (
+                                    {ayanamsa} (
                                     {DMS(kundliData.ayanamsa).toString()})
                                 </td>
                             </tr>

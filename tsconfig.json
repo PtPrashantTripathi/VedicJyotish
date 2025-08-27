@@ -1,11 +1,14 @@
 {
     "compilerOptions": {
         "paths": {
-            "src/*": ["src/*"]
+            "src/*": ["src/*"],
+            "fixed-len-array/*": ["./package/fixed-len-array/src/*"],
+            "sweph-wasm/*": ["./package/sweph-wasm/src/*"],
+            "wasp-lib/*": ["./package/wasp-lib/src/*"]
         },
         "target": "ESNext",
         "useDefineForClassFields": true,
-        "typeRoots": ["./node_modules/@types"],
+        "typeRoots": ["./node_modules/@types", "./package/@types"],
         "lib": ["ESNext", "DOM", "DOM.Iterable"],
         "module": "ESNext",
         "skipLibCheck": true,
@@ -37,6 +40,6 @@
     "build": {
         "minify": true
     },
-    "include": ["src", "*.ts"],
+    "include": ["src", "package", "*.ts"],
     "exclude": ["node_modules"]
 }
