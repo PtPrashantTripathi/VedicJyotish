@@ -31,12 +31,12 @@ export type FixedLengthArray<
 export function toFixedLengthArray<N extends number, T>(
     input: T[],
     fixedLength: N,
-    defaultValue: T
+    defaultValue?: T
 ): FixedLengthArray<N, T> {
     const output: T[] = input.slice(0, fixedLength);
 
     while (output.length < fixedLength) {
-        output.push(defaultValue);
+        output.push(defaultValue ?? null as T);
     }
 
     return output as FixedLengthArray<N, T>;
