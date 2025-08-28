@@ -1,4 +1,4 @@
-import { SaptagrahaEn } from "src/backend/Planet";
+import type { SaptagrahaEn } from "src/backend/Planet";
 import type { CalculatedDetail, Translation } from "src/backend/types";
 import { MOD360 } from "src/backend/utils";
 

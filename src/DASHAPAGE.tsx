@@ -12,7 +12,7 @@ export default function component({
     return (
         <div id="dasha-page">
             <div className="container mx-auto px-4 py-8">
-                <div className="flex items-center mb-6">
+                <div className="mb-6 flex items-center">
                     <button
                         onClick={() => showPage("home")}
                         className="mr-4 text-blue-600 hover:text-blue-800">
@@ -23,7 +23,7 @@ export default function component({
                     </h2>
                 </div>
 
-                <div className="bg-white rounded-xl p-8 card-shadow">
+                <div className="card-shadow rounded-xl bg-white p-8">
                     <div className="overflow-x-auto">
                         <table className="w-full table-auto">
                             <thead className="bg-blue-50">
@@ -104,11 +104,11 @@ export default function component({
                         </table>
                     </div>
 
-                    <div className="mt-8 p-6 bg-blue-50 rounded-lg">
-                        <h3 className="text-lg font-semibold text-blue-800 mb-3">
+                    <div className="mt-8 rounded-lg bg-blue-50 p-6">
+                        <h3 className="mb-3 text-lg font-semibold text-blue-800">
                             Current Running Dasha
                         </h3>
-                        <div className="grid md:grid-cols-3 gap-4">
+                        <div className="grid gap-4 md:grid-cols-3">
                             <div className="text-center">
                                 <p className="text-sm text-gray-600">
                                     Mahadasha

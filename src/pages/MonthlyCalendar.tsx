@@ -54,7 +54,7 @@ export default function MonthlyCalendar() {
     return (
         <div id="panchang-calendar">
             <div className="container mx-auto px-4 py-8">
-                <div className="flex items-center justify-between mb-6">
+                <div className="mb-6 flex items-center justify-between">
                     <div className="flex items-center">
                         <button
                             onClick={() => session.updateData({ page: "Home" })}
@@ -84,41 +84,41 @@ export default function MonthlyCalendar() {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-xl p-6 card-shadow">
+                <div className="card-shadow rounded-xl bg-white p-6">
                     {/* <!-- Calendar Header  --> */}
                     <div className="calendar-grid mb-2">
-                        <div className="text-center font-semibold text-red-600 p-3">
+                        <div className="p-3 text-center font-semibold text-red-600">
                             Sun
                         </div>
-                        <div className="text-center font-semibold text-gray-700 p-3">
+                        <div className="p-3 text-center font-semibold text-gray-700">
                             Mon
                         </div>
-                        <div className="text-center font-semibold text-gray-700 p-3">
+                        <div className="p-3 text-center font-semibold text-gray-700">
                             Tue
                         </div>
-                        <div className="text-center font-semibold text-gray-700 p-3">
+                        <div className="p-3 text-center font-semibold text-gray-700">
                             Wed
                         </div>
-                        <div className="text-center font-semibold text-gray-700 p-3">
+                        <div className="p-3 text-center font-semibold text-gray-700">
                             Thu
                         </div>
-                        <div className="text-center font-semibold text-gray-700 p-3">
+                        <div className="p-3 text-center font-semibold text-gray-700">
                             Fri
                         </div>
-                        <div className="text-center font-semibold text-blue-600 p-3">
+                        <div className="p-3 text-center font-semibold text-blue-600">
                             Sat
                         </div>
                     </div>
 
                     {/* <!-- Calendar Days  --> */}
-                    <div className="calendar-grid bg-gray-100 rounded-lg">
+                    <div className="calendar-grid rounded-lg bg-gray-100">
                         {/* <!-- Week 1  --> */}
                         <div className="bg-gray-100 p-3"></div>
                         <div className="bg-gray-100 p-3"></div>
                         <div className="bg-gray-100 p-3"></div>
                         <div className="bg-gray-100 p-3"></div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-01")}>
                             <div className="font-semibold">1</div>
                             <div className="text-xs text-purple-600">
@@ -126,7 +126,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-02")}>
                             <div className="font-semibold">2</div>
                             <div className="text-xs text-orange-600">
@@ -134,7 +134,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-03")}>
                             <div className="font-semibold">3</div>
                             <div className="text-xs text-green-600">
@@ -144,13 +144,13 @@ export default function MonthlyCalendar() {
 
                         {/* <!-- Week 2  --> */}
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-04")}>
                             <div className="font-semibold text-red-600">4</div>
                             <div className="text-xs text-blue-600">Tritiya</div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-05")}>
                             <div className="font-semibold">5</div>
                             <div className="text-xs text-purple-600">
@@ -158,7 +158,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-06")}>
                             <div className="font-semibold">6</div>
                             <div className="text-xs text-orange-600">
@@ -166,7 +166,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-07")}>
                             <div className="font-semibold">7</div>
                             <div className="text-xs text-green-600">
@@ -174,19 +174,19 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-08")}>
                             <div className="font-semibold">8</div>
                             <div className="text-xs text-red-600">Saptami</div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-09")}>
                             <div className="font-semibold">9</div>
                             <div className="text-xs text-blue-600">Ashtami</div>
                         </div>
                         <div
-                            className="calendar-day bg-blue-100 border p-3 hover:bg-blue-200 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-blue-100 p-3 hover:bg-blue-200"
                             onClick={() => showDateDetails("2025-08-09")}>
                             <div className="font-semibold text-blue-700">9</div>
                             <div className="text-xs text-blue-700">Today</div>
@@ -194,7 +194,7 @@ export default function MonthlyCalendar() {
 
                         {/* <!-- Week 3  --> */}
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-11")}>
                             <div className="font-semibold text-red-600">11</div>
                             <div className="text-xs text-orange-600">
@@ -202,7 +202,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-12")}>
                             <div className="font-semibold">12</div>
                             <div className="text-xs text-green-600">
@@ -210,7 +210,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-13")}>
                             <div className="font-semibold">13</div>
                             <div className="text-xs text-purple-600">
@@ -218,7 +218,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-14")}>
                             <div className="font-semibold">14</div>
                             <div className="text-xs text-red-600">
@@ -226,7 +226,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-15")}>
                             <div className="font-semibold">15</div>
                             <div className="text-xs text-orange-600">
@@ -234,7 +234,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-16")}>
                             <div className="font-semibold">16</div>
                             <div className="text-xs text-green-600">
@@ -242,7 +242,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-17")}>
                             <div className="font-semibold text-blue-600">
                                 17
@@ -254,7 +254,7 @@ export default function MonthlyCalendar() {
 
                         {/* <!-- Week 4  --> */}
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-18")}>
                             <div className="font-semibold text-red-600">18</div>
                             <div className="text-xs text-purple-600">
@@ -262,7 +262,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-19")}>
                             <div className="font-semibold">19</div>
                             <div className="text-xs text-orange-600">
@@ -270,7 +270,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-20")}>
                             <div className="font-semibold">20</div>
                             <div className="text-xs text-green-600">
@@ -278,13 +278,13 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-21")}>
                             <div className="font-semibold">21</div>
                             <div className="text-xs text-red-600">Panchami</div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-22")}>
                             <div className="font-semibold">22</div>
                             <div className="text-xs text-blue-600">
@@ -292,7 +292,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-23")}>
                             <div className="font-semibold">23</div>
                             <div className="text-xs text-purple-600">
@@ -300,7 +300,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-24")}>
                             <div className="font-semibold text-blue-600">
                                 24
@@ -312,19 +312,19 @@ export default function MonthlyCalendar() {
 
                         {/* <!-- Week 5  --> */}
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-25")}>
                             <div className="font-semibold text-red-600">25</div>
                             <div className="text-xs text-green-600">Navami</div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-26")}>
                             <div className="font-semibold">26</div>
                             <div className="text-xs text-red-600">Dashami</div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-27")}>
                             <div className="font-semibold">27</div>
                             <div className="text-xs text-blue-600">
@@ -332,7 +332,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-28")}>
                             <div className="font-semibold">28</div>
                             <div className="text-xs text-purple-600">
@@ -340,7 +340,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-29")}>
                             <div className="font-semibold">29</div>
                             <div className="text-xs text-orange-600">
@@ -348,7 +348,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-30")}>
                             <div className="font-semibold">30</div>
                             <div className="text-xs text-green-600">
@@ -356,7 +356,7 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                         <div
-                            className="calendar-day bg-white border p-3 hover:bg-blue-50 cursor-pointer"
+                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
                             onClick={() => showDateDetails("2025-08-31")}>
                             <div className="font-semibold text-blue-600">
                                 31
@@ -367,23 +367,23 @@ export default function MonthlyCalendar() {
                 </div>
 
                 {/* <!-- Legend  --> */}
-                <div className="mt-6 bg-white rounded-xl p-4 card-shadow">
-                    <h3 className="font-semibold mb-3">Legend</h3>
-                    <div className="grid md:grid-cols-4 gap-4 text-sm">
+                <div className="card-shadow mt-6 rounded-xl bg-white p-4">
+                    <h3 className="mb-3 font-semibold">Legend</h3>
+                    <div className="grid gap-4 text-sm md:grid-cols-4">
                         <div className="flex items-center">
-                            <div className="w-4 h-4 bg-purple-600 rounded mr-2"></div>
+                            <div className="mr-2 h-4 w-4 rounded bg-purple-600"></div>
                             <span>Purnima/Amavasya</span>
                         </div>
                         <div className="flex items-center">
-                            <div className="w-4 h-4 bg-orange-600 rounded mr-2"></div>
+                            <div className="mr-2 h-4 w-4 rounded bg-orange-600"></div>
                             <span>Special Tithi</span>
                         </div>
                         <div className="flex items-center">
-                            <div className="w-4 h-4 bg-green-600 rounded mr-2"></div>
+                            <div className="mr-2 h-4 w-4 rounded bg-green-600"></div>
                             <span>Auspicious Day</span>
                         </div>
                         <div className="flex items-center">
-                            <div className="w-4 h-4 bg-red-600 rounded mr-2"></div>
+                            <div className="mr-2 h-4 w-4 rounded bg-red-600"></div>
                             <span>Festival</span>
                         </div>
                     </div>

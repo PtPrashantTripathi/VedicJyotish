@@ -1,4 +1,4 @@
-import { RasiNumber } from "src/backend/Rasi";
+import type { RasiNumber } from "src/backend/Rasi";
 
 // --- Math Utility Functions ---
 

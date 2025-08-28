@@ -1,4 +1,4 @@
-import { type WASMModule } from "../types";
+import type { WASMModule } from "../types";
 
 /**
  * @author Pt. Prashant Tripathi

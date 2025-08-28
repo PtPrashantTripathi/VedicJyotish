@@ -12,7 +12,7 @@ import {
 } from "src/backend/Rasi";
 import type { Translation } from "src/backend/types";
 import { MOD360, NORMALIZE12 } from "src/backend/utils";
-import { DayEn } from "src/backend/Varas";
+import type { DayEn } from "src/backend/Varas";
 
 /** TYPE DEFINITIONS */
 

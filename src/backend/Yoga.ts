@@ -1,4 +1,4 @@
-import { NakshatraNumber } from "src/backend/Nakshatra";
+import type { NakshatraNumber } from "src/backend/Nakshatra";
 import type { CalculatedDetail, Translation } from "src/backend/types";
 import { MOD360 } from "src/backend/utils";
 

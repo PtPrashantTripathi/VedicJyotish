@@ -8,11 +8,11 @@ export default function Navigation() {
     return (
         <aside
             className={
-                "fixed inset-y-0 left-0 w-72 max-w-[80vw] bg-white shadow-xl transform transition-transform duration-300 z-50" +
+                "fixed inset-y-0 left-0 z-50 w-72 max-w-[80vw] transform bg-white shadow-xl transition-transform duration-300" +
                 (session.data.nav ? "" : " -translate-x-full")
             }>
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
                 <a href={"?page=Home"} className="flex items-center space-x-3">
                     <img
                         src="icon/icon-192x192.png"
@@ -25,7 +25,7 @@ export default function Navigation() {
                 <button
                     id="closeDrawerBtn"
                     onClick={() => session.updateData({ nav: false })}
-                    className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                    className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none"
                     aria-label="Close menu">
                     <FaTimes className="h-5 w-5" />
                 </button>
@@ -33,14 +33,14 @@ export default function Navigation() {
 
             {/* Navigation List */}
             <nav className="p-3">
-                <ul className="flex flex-col font-medium rounded-lg space-y-1">
+                <ul className="flex flex-col space-y-1 rounded-lg font-medium">
                     {Object.values(pageDetails).map((item, idx) => (
                         <li key={idx}>
                             <a
                                 href={"?page=" + item.page}
-                                className={`flex items-center gap-3 py-2 px-3 rounded-sm cursor-pointer transition-colors ${
+                                className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-2 transition-colors ${
                                     item.page === session.data.page
-                                        ? "text-white bg-blue-700"
+                                        ? "bg-blue-700 text-white"
                                         : "text-gray-900 hover:bg-gray-100"
                                 }`}
                                 aria-current={

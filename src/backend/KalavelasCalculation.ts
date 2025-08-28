@@ -1,4 +1,4 @@
-import { KalavelasEn } from "src/backend/Planet";
+import type { KalavelasEn } from "src/backend/Planet";
 import { reorderArray } from "src/backend/utils";
 import { VarasDetails } from "src/backend/Varas";
 

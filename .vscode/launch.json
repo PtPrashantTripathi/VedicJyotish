@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Debug App",
+            "url": "http://localhost:5173", // Adjust if your Vite dev server uses a different port
+            "webRoot": "${workspaceFolder}", // Or the root of your source files
+            "sourceMaps": true
+        }
+    ]
+}

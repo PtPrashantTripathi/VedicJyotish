@@ -5,7 +5,7 @@ import {
     FaTimes,
     FaTimesCircle,
 } from "react-icons/fa";
-import { IconType } from "react-icons/lib";
+import type { IconType } from "react-icons/lib";
 import { useSessionContext } from "src/contexts/SessionContext";
 
 export interface IErrorType {
@@ -40,39 +40,39 @@ export default function Errors() {
         <>
             {/* Backdrop with dim effect */}
             <div
-                className={`fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 transition-opacity duration-300 ${
+                className={`bg-opacity-50 fixed inset-0 z-50 bg-black backdrop-blur-sm transition-opacity duration-300 ${
                     session.data.error.length ? "opacity-30" : "opacity-0"
                 }`}
                 onClick={clearErrors}
             />
 
             {/* Error Modal */}
-            <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4 pointer-events-none">
-                <div className="pointer-events-auto w-full max-w-md transform transition-all duration-300 translate-y-0 opacity-100 scale-100">
-                    <div className="bg-white rounded-xl shadow-2xl max-h-96 overflow-y-auto">
+            <div className="pointer-events-none fixed inset-0 z-50 flex items-start justify-center px-4 pt-16">
+                <div className="pointer-events-auto w-full max-w-md translate-y-0 scale-100 transform opacity-100 transition-all duration-300">
+                    <div className="max-h-96 overflow-y-auto rounded-xl bg-white shadow-2xl">
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                        <div className="flex items-center justify-between border-b border-gray-200 p-4">
                             <h3 className="text-lg font-semibold text-gray-900">
                                 Notifications
                             </h3>
                             <button
                                 onClick={clearErrors}
-                                className="text-gray-400 hover:text-gray-600 transition-colors">
+                                className="text-gray-400 transition-colors hover:text-gray-600">
                                 <FaTimes className="text-xl" />
                             </button>
                         </div>
 
                         {/* Error Messages */}
-                        <div className="p-4 space-y-3">
+                        <div className="space-y-3 p-4">
                             {session.data.error.map((error, id) => {
                                 const { color, Icon } = ErrorStyles[error.type];
                                 return (
                                     <div
                                         key={id}
-                                        className={`p-4 rounded-lg mb-3 flex items-start gap-3 shadow-lg border-l-4 animate-slide-in bg-${color}-50 border-${color}}-500 text-${color}-800`}>
-                                        <Icon className="text-lg mt-0.5 flex-shrink-0" />
+                                        className={`animate-slide-in mb-3 flex items-start gap-3 rounded-lg border-l-4 p-4 shadow-lg bg-${color}-50 border-${color}}-500 text-${color}-800`}>
+                                        <Icon className="mt-0.5 flex-shrink-0 text-lg" />
                                         <div className="flex-1">
-                                            <p className="text-sm font-medium leading-5">
+                                            <p className="text-sm leading-5 font-medium">
                                                 {error.message}
                                             </p>
                                         </div>
@@ -82,8 +82,8 @@ export default function Errors() {
                         </div>
 
                         {/* Auto-hide progress bar */}
-                        <div className="w-full h-1 bg-gray-200 rounded-full">
-                            <div className="h-full bg-purple-500 rounded-full animate-progress-bar" />
+                        <div className="h-1 w-full rounded-full bg-gray-200">
+                            <div className="animate-progress-bar h-full rounded-full bg-purple-500" />
                         </div>
                     </div>
                 </div>

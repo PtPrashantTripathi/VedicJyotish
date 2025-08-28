@@ -5,9 +5,9 @@ export default function KundliMatching() {
     return (
         <div id="matching-form">
             <div className="container mx-auto px-4 py-8">
-                <div className="max-w-4xl mx-auto">
-                    <div className="bg-white rounded-xl p-8 card-shadow">
-                        <div className="flex items-center mb-6">
+                <div className="mx-auto max-w-4xl">
+                    <div className="card-shadow rounded-xl bg-white p-8">
+                        <div className="mb-6 flex items-center">
                             <button
                                 onClick={() =>
                                     session.updateData({ page: "Home" })
@@ -20,42 +20,42 @@ export default function KundliMatching() {
                             </h2>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-8">
+                        <div className="grid gap-8 md:grid-cols-2">
                             {/* <!-- Male Details  --> */}
                             <div>
-                                <h3 className="text-lg font-semibold mb-4 text-blue-600">
+                                <h3 className="mb-4 text-lg font-semibold text-blue-600">
                                     Male Details
                                 </h3>
                                 <div className="space-y-4">
                                     <input
                                         type="text"
-                                        className="w-full p-3 border border-gray-300 rounded-lg"
+                                        className="w-full rounded-lg border border-gray-300 p-3"
                                         placeholder="Full Name"
                                     />
                                     <input
                                         type="date"
-                                        className="w-full p-3 border border-gray-300 rounded-lg"
+                                        className="w-full rounded-lg border border-gray-300 p-3"
                                     />
                                     <input
                                         type="time"
-                                        className="w-full p-3 border border-gray-300 rounded-lg"
+                                        className="w-full rounded-lg border border-gray-300 p-3"
                                     />
                                     <input
                                         type="text"
-                                        className="w-full p-3 border border-gray-300 rounded-lg"
+                                        className="w-full rounded-lg border border-gray-300 p-3"
                                         placeholder="Birth Place"
                                     />
                                     <div className="grid grid-cols-2 gap-2">
                                         <input
                                             type="number"
                                             step="0.0001"
-                                            className="w-full p-3 border border-gray-300 rounded-lg"
+                                            className="w-full rounded-lg border border-gray-300 p-3"
                                             placeholder="Latitude"
                                         />
                                         <input
                                             type="number"
                                             step="0.0001"
-                                            className="w-full p-3 border border-gray-300 rounded-lg"
+                                            className="w-full rounded-lg border border-gray-300 p-3"
                                             placeholder="Longitude"
                                         />
                                     </div>
@@ -64,39 +64,39 @@ export default function KundliMatching() {
 
                             {/* <!-- Female Details  --> */}
                             <div>
-                                <h3 className="text-lg font-semibold mb-4 text-pink-600">
+                                <h3 className="mb-4 text-lg font-semibold text-pink-600">
                                     Female Details
                                 </h3>
                                 <div className="space-y-4">
                                     <input
                                         type="text"
-                                        className="w-full p-3 border border-gray-300 rounded-lg"
+                                        className="w-full rounded-lg border border-gray-300 p-3"
                                         placeholder="Full Name"
                                     />
                                     <input
                                         type="date"
-                                        className="w-full p-3 border border-gray-300 rounded-lg"
+                                        className="w-full rounded-lg border border-gray-300 p-3"
                                     />
                                     <input
                                         type="time"
-                                        className="w-full p-3 border border-gray-300 rounded-lg"
+                                        className="w-full rounded-lg border border-gray-300 p-3"
                                     />
                                     <input
                                         type="text"
-                                        className="w-full p-3 border border-gray-300 rounded-lg"
+                                        className="w-full rounded-lg border border-gray-300 p-3"
                                         placeholder="Birth Place"
                                     />
                                     <div className="grid grid-cols-2 gap-2">
                                         <input
                                             type="number"
                                             step="0.0001"
-                                            className="w-full p-3 border border-gray-300 rounded-lg"
+                                            className="w-full rounded-lg border border-gray-300 p-3"
                                             placeholder="Latitude"
                                         />
                                         <input
                                             type="number"
                                             step="0.0001"
-                                            className="w-full p-3 border border-gray-300 rounded-lg"
+                                            className="w-full rounded-lg border border-gray-300 p-3"
                                             placeholder="Longitude"
                                         />
                                     </div>
@@ -107,7 +107,7 @@ export default function KundliMatching() {
                         <div className="mt-8 text-center">
                             <button
                                 type="button"
-                                className="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold">
+                                className="rounded-lg bg-red-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-red-700">
                                 Check Compatibility
                             </button>
                         </div>

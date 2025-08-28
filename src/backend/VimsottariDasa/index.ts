@@ -1,5 +1,5 @@
 import type { DateTime } from "luxon";
-import { Nakshatra } from "src/backend/Nakshatra";
+import type { Nakshatra } from "src/backend/Nakshatra";
 import type { NavagrahaEn } from "src/backend/Planet";
 import type { SourceBookEn, Translation } from "src/backend/types";
 import { reorderArray } from "src/backend/utils";

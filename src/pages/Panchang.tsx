@@ -67,17 +67,17 @@ export default function EnhancedPanchang() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
             {/* Navigation Tabs */}
-            <div className="bg-white shadow-sm sticky top-0 z-10">
-                <div className="max-w-7xl mx-auto px-4">
+            <div className="sticky top-0 z-10 bg-white shadow-sm">
+                <div className="mx-auto max-w-7xl px-4">
                     <div className="flex space-x-8 overflow-x-auto">
                         {tabs.map(tab => (
                             <button
                                 key={tab.id}
                                 onClick={() => setSelectedTab(tab.id)}
-                                className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
+                                className={`flex items-center space-x-2 border-b-2 px-2 py-4 text-sm font-medium whitespace-nowrap transition-colors ${
                                     selectedTab === tab.id
                                         ? "border-purple-500 text-purple-600"
-                                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                                 }`}>
                                 <tab.icon size={16} />
                                 <span>{tab.label}</span>
@@ -87,23 +87,23 @@ export default function EnhancedPanchang() {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 py-6">
+            <div className="mx-auto max-w-7xl px-4 py-6">
                 {/* Overview Tab */}
                 {selectedTab === "overview" && (
                     <div className="space-y-6">
                         {/* Main Panchang Elements */}
-                        <div className="grid lg:grid-cols-2 gap-6">
+                        <div className="grid gap-6 lg:grid-cols-2">
                             {/* Panchang Elements Card */}
-                            <div className="bg-white rounded-xl shadow-lg p-6 border border-purple-100">
-                                <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                                    <Star className="w-5 h-5 mr-2 text-purple-600" />
+                            <div className="rounded-xl border border-purple-100 bg-white p-6 shadow-lg">
+                                <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
+                                    <Star className="mr-2 h-5 w-5 text-purple-600" />
                                     पंचांग तत्व (Panchang Elements)
                                 </h3>
 
                                 <div className="space-y-4">
                                     {/* Tithi */}
-                                    <div className="bg-gradient-to-r from-orange-50 to-red-50 p-4 rounded-lg border-l-4 border-orange-400">
-                                        <div className="flex justify-between items-start">
+                                    <div className="rounded-lg border-l-4 border-orange-400 bg-gradient-to-r from-orange-50 to-red-50 p-4">
+                                        <div className="flex items-start justify-between">
                                             <div>
                                                 <div className="font-semibold text-orange-700">
                                                     तिथि (Tithi)
@@ -122,7 +122,7 @@ export default function EnhancedPanchang() {
                                                             .paksha_name.english
                                                     }
                                                 </div>
-                                                <div className="text-xs text-orange-500 mt-1">
+                                                <div className="mt-1 text-xs text-orange-500">
                                                     {panchanga.tithi.end_dt.toFormat(
                                                         "MMMM dd, yyyy hh:mm a"
                                                     )}
@@ -137,7 +137,7 @@ export default function EnhancedPanchang() {
                                             </button>
                                         </div>
                                         {showDetails.tithi && (
-                                            <div className="mt-3 pt-3 border-t border-orange-200 text-sm">
+                                            <div className="mt-3 border-t border-orange-200 pt-3 text-sm">
                                                 <div className="grid grid-cols-2 gap-2 text-xs">
                                                     <span>
                                                         Start:{" "}
@@ -165,8 +165,8 @@ export default function EnhancedPanchang() {
                                     </div>
 
                                     {/* Nakshatra */}
-                                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border-l-4 border-green-400">
-                                        <div className="flex justify-between items-start">
+                                    <div className="rounded-lg border-l-4 border-green-400 bg-gradient-to-r from-green-50 to-emerald-50 p-4">
+                                        <div className="flex items-start justify-between">
                                             <div>
                                                 <div className="font-semibold text-green-700">
                                                     नक्षत्र (Nakshatra)
@@ -183,7 +183,7 @@ export default function EnhancedPanchang() {
                                                             .english
                                                     }
                                                 </div>
-                                                <div className="text-xs text-green-500 mt-1">
+                                                <div className="mt-1 text-xs text-green-500">
                                                     {panchanga.nakshatra.end_dt.toFormat(
                                                         "MMMM dd, yyyy hh:mm a"
                                                     )}
@@ -198,7 +198,7 @@ export default function EnhancedPanchang() {
                                             </button>
                                         </div>
                                         {showDetails.nakshatra && (
-                                            <div className="mt-3 pt-3 border-t border-green-200 text-sm">
+                                            <div className="mt-3 border-t border-green-200 pt-3 text-sm">
                                                 <div className="grid grid-cols-2 gap-2 text-xs">
                                                     <span>
                                                         Lord:{" "}
@@ -230,8 +230,8 @@ export default function EnhancedPanchang() {
                                     </div>
 
                                     {/* Yoga */}
-                                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border-l-4 border-blue-400">
-                                        <div className="flex justify-between items-start">
+                                    <div className="rounded-lg border-l-4 border-blue-400 bg-gradient-to-r from-blue-50 to-indigo-50 p-4">
+                                        <div className="flex items-start justify-between">
                                             <div>
                                                 <div className="font-semibold text-blue-700">
                                                     योग (Yoga)
@@ -245,7 +245,7 @@ export default function EnhancedPanchang() {
                                                             .english
                                                     }
                                                 </div>
-                                                <div className="text-xs text-blue-500 mt-1">
+                                                <div className="mt-1 text-xs text-blue-500">
                                                     {panchanga.yoga.end_dt.toFormat(
                                                         "MMMM dd, yyyy hh:mm a"
                                                     )}
@@ -262,8 +262,8 @@ export default function EnhancedPanchang() {
                                     </div>
 
                                     {/* Karana */}
-                                    <div className="bg-gradient-to-r from-red-50 to-pink-50 p-4 rounded-lg border-l-4 border-red-400">
-                                        <div className="flex justify-between items-start">
+                                    <div className="rounded-lg border-l-4 border-red-400 bg-gradient-to-r from-red-50 to-pink-50 p-4">
+                                        <div className="flex items-start justify-between">
                                             <div>
                                                 <div className="font-semibold text-red-700">
                                                     करण (Karana)
@@ -280,7 +280,7 @@ export default function EnhancedPanchang() {
                                                             .english
                                                     }
                                                 </div>
-                                                <div className="text-xs text-red-500 mt-1">
+                                                <div className="mt-1 text-xs text-red-500">
                                                     {panchanga.karana.end_dt.toFormat(
                                                         "MMMM dd, yyyy hh:mm a"
                                                     )}
@@ -301,14 +301,14 @@ export default function EnhancedPanchang() {
                             {/* Calendar Information */}
                             <div className="space-y-6">
                                 {/* Date Info Card */}
-                                <div className="bg-white rounded-xl shadow-lg p-6 border border-blue-100">
-                                    <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                                        <Calendar className="w-5 h-5 mr-2 text-blue-600" />
+                                <div className="rounded-xl border border-blue-100 bg-white p-6 shadow-lg">
+                                    <h3 className="mb-4 flex items-center text-xl font-bold text-gray-800">
+                                        <Calendar className="mr-2 h-5 w-5 text-blue-600" />
                                         कैलेंडर जानकारी (Calendar Info)
                                     </h3>
 
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="text-center p-4 bg-purple-50 rounded-lg">
+                                        <div className="rounded-lg bg-purple-50 p-4 text-center">
                                             <div className="text-2xl font-bold text-purple-600">
                                                 {panchanga.datetime.toFormat(
                                                     "MMMM dd, yyyy hh:mm a"
@@ -350,12 +350,12 @@ export default function EnhancedPanchang() {
                                 </div>
 
                                 {/* Samvat Info */}
-                                <div className="bg-white rounded-xl shadow-lg p-6 border border-green-100">
-                                    <h3 className="text-lg font-bold text-gray-800 mb-4">
+                                <div className="rounded-xl border border-green-100 bg-white p-6 shadow-lg">
+                                    <h3 className="mb-4 text-lg font-bold text-gray-800">
                                         संवत्सर (Era Years)
                                     </h3>
                                     <div className="grid grid-cols-1 gap-3">
-                                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg">
+                                        <div className="flex items-center justify-between rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50 p-3">
                                             <span className="font-medium">
                                                 Vikrama Samvat:
                                             </span>
@@ -363,7 +363,7 @@ export default function EnhancedPanchang() {
                                                 {panchanga.vikrama_samvat}
                                             </span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
+                                        <div className="flex items-center justify-between rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 p-3">
                                             <span className="font-medium">
                                                 Shaka Samvat:
                                             </span>
@@ -371,7 +371,7 @@ export default function EnhancedPanchang() {
                                                 {panchanga.saka_samvat}
                                             </span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+                                        <div className="flex items-center justify-between rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-3">
                                             <span className="font-medium">
                                                 Kali Yuga:
                                             </span>
@@ -388,16 +388,16 @@ export default function EnhancedPanchang() {
 
                 {/* Timings Tab */}
                 {selectedTab === "timings" && (
-                    <div className="grid lg:grid-cols-2 gap-6">
+                    <div className="grid gap-6 lg:grid-cols-2">
                         {/* Sunrise/Sunset Card */}
-                        <div className="bg-white rounded-xl shadow-lg p-6 border border-yellow-100">
-                            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                                <Sun className="w-5 h-5 mr-2 text-yellow-500" />
+                        <div className="rounded-xl border border-yellow-100 bg-white p-6 shadow-lg">
+                            <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
+                                <Sun className="mr-2 h-5 w-5 text-yellow-500" />
                                 सूर्य और चंद्र उदय/अस्त (Sun & Moon Timings)
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="flex items-center space-x-4 p-4 bg-yellow-50 rounded-lg">
-                                    <Sun className="w-8 h-8 text-yellow-500" />
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div className="flex items-center space-x-4 rounded-lg bg-yellow-50 p-4">
+                                    <Sun className="h-8 w-8 text-yellow-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Sunrise
@@ -409,9 +409,9 @@ export default function EnhancedPanchang() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg">
+                                <div className="flex items-center justify-between rounded-lg bg-gradient-to-r from-orange-50 to-red-50 p-4">
                                     <div className="flex items-center space-x-3">
-                                        <Sun className="w-8 h-8 text-orange-400" />
+                                        <Sun className="h-8 w-8 text-orange-400" />
                                         <div>
                                             <div className="font-semibold text-orange-700">
                                                 Sunset
@@ -429,8 +429,8 @@ export default function EnhancedPanchang() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center space-x-4 p-4 bg-purple-50 rounded-lg">
-                                    <Moon className="w-8 h-8 text-purple-500" />
+                                <div className="flex items-center space-x-4 rounded-lg bg-purple-50 p-4">
+                                    <Moon className="h-8 w-8 text-purple-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Moonrise
@@ -442,8 +442,8 @@ export default function EnhancedPanchang() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center space-x-4 p-4 bg-purple-50 rounded-lg">
-                                    <Moon className="w-8 h-8 text-purple-500" />
+                                <div className="flex items-center space-x-4 rounded-lg bg-purple-50 p-4">
+                                    <Moon className="h-8 w-8 text-purple-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Moonset
@@ -458,13 +458,13 @@ export default function EnhancedPanchang() {
                             </div>
                         </div>
                         {/* Day/Night Duration Card */}
-                        <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100">
-                            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                                <Clock className="w-5 h-5 mr-2 text-orange-500" />
+                        <div className="rounded-xl border border-orange-100 bg-white p-6 shadow-lg">
+                            <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
+                                <Clock className="mr-2 h-5 w-5 text-orange-500" />
                                 दिन और रात की अवधि (Day & Night Duration)
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="text-center p-4 bg-orange-50 rounded-lg">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div className="rounded-lg bg-orange-50 p-4 text-center">
                                     <div className="text-sm text-gray-500">
                                         Day Duration
                                     </div>
@@ -475,7 +475,7 @@ export default function EnhancedPanchang() {
                                         {panchanga.day_duration.split(" ")[1]}
                                     </div>
                                 </div>
-                                <div className="text-center p-4 bg-blue-50 rounded-lg">
+                                <div className="rounded-lg bg-blue-50 p-4 text-center">
                                     <div className="text-sm text-gray-500">
                                         Night Duration
                                     </div>
@@ -494,15 +494,15 @@ export default function EnhancedPanchang() {
                 {/* Planetary Tab */}
                 {selectedTab === "planetary" && (
                     <div className="space-y-6">
-                        <div className="bg-white rounded-xl shadow-lg p-6 border border-pink-100">
-                            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                                <Globe className="w-5 h-5 mr-2 text-pink-600" />
+                        <div className="rounded-xl border border-pink-100 bg-white p-6 shadow-lg">
+                            <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
+                                <Globe className="mr-2 h-5 w-5 text-pink-600" />
                                 ग्रह स्थिति (Planetary Positions)
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 {/* Sun Info */}
-                                <div className="flex items-center space-x-4 p-4 bg-red-50 rounded-lg">
-                                    <Sun className="w-8 h-8 text-red-500" />
+                                <div className="flex items-center space-x-4 rounded-lg bg-red-50 p-4">
+                                    <Sun className="h-8 w-8 text-red-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Sun Sign
@@ -516,8 +516,8 @@ export default function EnhancedPanchang() {
                                     </div>
                                 </div>
                                 {/* Moon Info */}
-                                <div className="flex items-center space-x-4 p-4 bg-indigo-50 rounded-lg">
-                                    <Moon className="w-8 h-8 text-indigo-500" />
+                                <div className="flex items-center space-x-4 rounded-lg bg-indigo-50 p-4">
+                                    <Moon className="h-8 w-8 text-indigo-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Moon Sign
@@ -538,27 +538,27 @@ export default function EnhancedPanchang() {
                 {/* Muhurat Tab */}
                 {selectedTab === "muhurat" && (
                     <div className="space-y-6">
-                        <div className="bg-white rounded-xl shadow-lg p-6 border border-purple-100">
-                            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                                <Star className="w-5 h-5 mr-2 text-purple-600" />
+                        <div className="rounded-xl border border-purple-100 bg-white p-6 shadow-lg">
+                            <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
+                                <Star className="mr-2 h-5 w-5 text-purple-600" />
                                 शुभ/अशुभ मुहूर्त (Auspicious/Inauspicious
                                 Timings)
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 {/* Auspicious timings (Example - Abhijit) */}
-                                <div className="bg-green-50 rounded-lg p-4">
-                                    <div className="flex items-center space-x-2 text-green-700 font-semibold mb-2">
+                                <div className="rounded-lg bg-green-50 p-4">
+                                    <div className="mb-2 flex items-center space-x-2 font-semibold text-green-700">
                                         <Star size={18} />
                                         <span>Shubh Muhurat</span>
                                     </div>
                                     <div className="space-y-3 text-sm">
-                                        <div className="flex justify-between items-center bg-white rounded-md p-3 shadow-sm">
+                                        <div className="flex items-center justify-between rounded-md bg-white p-3 shadow-sm">
                                             <span>Abhijit Muhurat</span>
                                             <span className="font-medium text-gray-700">
                                                 12:00 PM - 12:45 PM
                                             </span>
                                         </div>
-                                        <div className="flex justify-between items-center bg-white rounded-md p-3 shadow-sm">
+                                        <div className="flex items-center justify-between rounded-md bg-white p-3 shadow-sm">
                                             <span>Brahma Muhurat</span>
                                             <span className="font-medium text-gray-700">
                                                 04:30 AM - 05:15 AM
@@ -567,8 +567,8 @@ export default function EnhancedPanchang() {
                                     </div>
                                 </div>
                                 {/* Inauspicious timings (Example - Rahu Kalam) */}
-                                <div className="bg-red-50 rounded-lg p-4">
-                                    <div className="flex items-center space-x-2 text-red-700 font-semibold mb-2">
+                                <div className="rounded-lg bg-red-50 p-4">
+                                    <div className="mb-2 flex items-center space-x-2 font-semibold text-red-700">
                                         <Moon
                                             className="rotate-180"
                                             size={18}
@@ -576,7 +576,7 @@ export default function EnhancedPanchang() {
                                         <span>Ashubh Muhurat</span>
                                     </div>
                                     <div className="space-y-3 text-sm">
-                                        <div className="flex justify-between items-center bg-white rounded-md p-3 shadow-sm">
+                                        <div className="flex items-center justify-between rounded-md bg-white p-3 shadow-sm">
                                             <span>Rahu Kalam</span>
                                             <span className="font-medium text-red-700">
                                                 {panchanga.rahu_kalam.start_dt.toFormat(
@@ -588,7 +588,7 @@ export default function EnhancedPanchang() {
                                                 )}
                                             </span>
                                         </div>
-                                        <div className="flex justify-between items-center bg-white rounded-md p-3 shadow-sm">
+                                        <div className="flex items-center justify-between rounded-md bg-white p-3 shadow-sm">
                                             <span>Yamaganda Kalam</span>
                                             <span className="font-medium text-gray-700">
                                                 09:00 AM - 10:30 AM

@@ -1,10 +1,10 @@
 // Import utility functions
-import { DateTime } from "luxon";
+import type { DateTime } from "luxon";
 import { calcSunRiseSunSet } from "src/backend/calcSunRiseSunSet";
 import { DayKalavelasCalculation } from "src/backend/KalavelasCalculation";
 import { Planet, type PlanetEn } from "src/backend/Planet";
 import { getVara } from "src/backend/Varas";
-import { calcVimsottariDasa, Dasha } from "src/backend/VimsottariDasa";
+import { calcVimsottariDasa, type Dasha } from "src/backend/VimsottariDasa";
 import { calcYogPhala } from "src/backend/YogPhala";
 import type SwissEPH from "sweph-wasm/index";
 

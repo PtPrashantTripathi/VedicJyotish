@@ -28,7 +28,7 @@ export default function App() {
             <div
                 onClick={() => session.updateData({ nav: false })}
                 className={
-                    "fixed inset-0 bg-black/40 opacity-0 transition-opacity duration-300 z-40" +
+                    "fixed inset-0 z-40 bg-black/40 opacity-0 transition-opacity duration-300" +
                     (session.data.nav ? " opacity-100" : " pointer-events-none")
                 }></div>
             <Navigation />

@@ -61,16 +61,16 @@ export default ts.config([
             "no-var": "warn",
             "object-shorthand": ["warn", "properties"],
 
-            eqeqeq: ["error", "always", { null: "ignore" }],
+            eqeqeq: ["warn", "always", { null: "ignore" }],
 
             "lines-between-class-members": [
-                "error",
+                "warn",
                 "always",
                 { exceptAfterSingleLine: true },
             ],
 
             "spaced-comment": [
-                "error",
+                "warn",
                 "always",
                 {
                     line: { markers: ["*package", "!", "/", ",", "="] },
@@ -88,7 +88,36 @@ export default ts.config([
                     },
                 },
             ],
-            // "symbol-description": "error",
+            "no-unexpected-multiline": "warn",
+            "no-warning-comments": [
+                "warn",
+                { terms: ["FIXME"], location: "anywhere" },
+            ],
+            "@typescript-eslint/no-unused-vars": [
+                "warn",
+                {
+                    args: "after-used",
+                    argsIgnorePattern: "^_",
+                    ignoreRestSiblings: true,
+                    varsIgnorePattern: "^ignored",
+                },
+            ],
+            "@typescript-eslint/no-import-type-side-effects": "warn",
+            "@typescript-eslint/consistent-type-imports": [
+                "warn",
+                {
+                    prefer: "type-imports",
+                    disallowTypeAnnotations: true,
+                    fixStyle: "inline-type-imports",
+                },
+            ],
+
+            "@typescript-eslint/no-misused-promises": [
+                "warn",
+                { checksVoidReturn: false },
+            ],
+
+            // "symbol-description": "warn",
         },
     },
 ]);

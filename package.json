@@ -42,9 +42,9 @@
         "@eslint/js": "latest",
         "@tailwindcss/vite": "latest",
         "@types/luxon": "latest",
-        "@types/pako": "^2.0.4",
+        "@types/pako": "latest",
         "@types/react": "latest",
-        "@types/react-dom": "^19.1.7",
+        "@types/react-dom": "latest",
         "@typescript-eslint/parser": "latest",
         "@vitejs/plugin-react": "latest",
         "autoprefixer": "latest",
@@ -55,9 +55,10 @@
         "eslint-plugin-simple-import-sort": "latest",
         "eslint-plugin-unused-imports": "latest",
         "globals": "latest",
-        "lucide-react": "^0.539.0",
+        "lucide-react": "latest",
         "prettier": "latest",
         "prettier-plugin-jsdoc": "latest",
+        "prettier-plugin-tailwindcss": "latest",
         "react": "latest",
         "react-dom": "latest",
         "react-icons": "latest",
@@ -66,7 +67,7 @@
         "typescript": "latest",
         "typescript-eslint": "latest",
         "vite": "latest",
-        "vite-tsconfig-paths": "^5.1.4"
+        "vite-tsconfig-paths": "latest"
     },
     "engines": {
         "node": ">=22"

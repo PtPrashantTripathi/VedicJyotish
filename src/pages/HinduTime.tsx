@@ -73,7 +73,7 @@ export default function HinduTime() {
     const largeArcFlag = arcSpan > 180 ? 1 : 0;
 
     return (
-        <div className="flex flex-col items-center justify-center p-4 min-h-screen bg-gray-100">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width={settings.size}
@@ -266,7 +266,7 @@ export default function HinduTime() {
 
                 <span
                     id="time"
-                    className="block text-xl font-mono text-gray-600">
+                    className="block font-mono text-xl text-gray-600">
                     {currentTime.toLocaleTimeString()}
                 </span>
 

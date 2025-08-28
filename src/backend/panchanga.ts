@@ -13,7 +13,7 @@
 import { toFixedLengthArray } from "fixed-len-array/index";
 import { DateTime } from "luxon";
 import { getKarana } from "src/backend/Karana";
-import { getMaaha, MaahaNumber } from "src/backend/Maaha";
+import { getMaaha, type MaahaNumber } from "src/backend/Maaha";
 import { getNakshatra } from "src/backend/Nakshatra";
 import { getRasi } from "src/backend/Rasi";
 import { getSamvatsara } from "src/backend/Samvatsara";

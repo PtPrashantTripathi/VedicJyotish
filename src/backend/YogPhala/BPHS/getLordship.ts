@@ -3,7 +3,7 @@ import type { Planet, PlanetEn } from "src/backend/Planet";
 import { RasiDetails } from "src/backend/Rasi";
 import type { Translation } from "src/backend/types";
 import { reorderArray } from "src/backend/utils";
-import { Phala } from "src/backend/YogPhala";
+import type { Phala } from "src/backend/YogPhala";
 
 /**
  * Get the BPHS (Brihat Parashara Hora Shastra) phala for each house lord's

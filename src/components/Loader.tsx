@@ -2,18 +2,18 @@ import { FaSpinner } from "react-icons/fa";
 
 export default function Loader() {
     return (
-        <div className="fixed inset-0 bg-opacity-80 backdrop-blur-sm z-50 flex items-center justify-center">
-            <div className="p-8 flex flex-col items-center space-y-4 max-w-sm mx-4">
+        <div className="bg-opacity-80 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
+            <div className="mx-4 flex max-w-sm flex-col items-center space-y-4 p-8">
                 {/* Spinning Icon */}
                 <div className="relative">
-                    <FaSpinner className="text-6xl text-purple-600 animate-spin" />
+                    <FaSpinner className="animate-spin text-6xl text-purple-600" />
                     {/* Optional: Add a pulse effect background */}
-                    <div className="absolute inset-0 rounded-full bg-purple-100 opacity-20 animate-pulse -z-10"></div>
+                    <div className="absolute inset-0 -z-10 animate-pulse rounded-full bg-purple-100 opacity-20"></div>
                 </div>
 
                 {/* Loading Message */}
                 <div className="text-center">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                    <h3 className="mb-1 text-lg font-semibold text-gray-800">
                         Loading...
                     </h3>
                 </div>

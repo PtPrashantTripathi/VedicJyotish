@@ -7,14 +7,14 @@ interface Props {
 export default function KundliYogPhala({ yogPhala }: Props) {
     return (
         <section className="container my-4">
-            <h1 className="mb-4 border-bottom pb-2">Yoga Phala</h1>
+            <h1 className="border-bottom mb-4 pb-2">Yoga Phala</h1>
 
             {Object.entries(yogPhala).map(([source, phalas]) => {
                 if (!phalas || phalas.length === 0) return null;
 
                 return (
                     <div key={source} className="card mb-4 shadow-sm">
-                        <div className="card-header bg-primary text-white fw-bold">
+                        <div className="card-header bg-primary fw-bold text-white">
                             {source}
                         </div>
                         <ul className="list-group list-group-flush">

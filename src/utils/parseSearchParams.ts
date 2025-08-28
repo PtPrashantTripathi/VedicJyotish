@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
-import { type IErrorType } from "src/components/Errors";
-import { type ValidPageType } from "src/pages/pageDetails";
+import type { IErrorType } from "src/components/Errors";
+import type { ValidPageType } from "src/pages/pageDetails";
 import { parseValidTimezoneOffset } from "src/utils/parseTimezoneOffset";
 import { parseValidAyanamsaName } from "src/utils/parseValidAyanamsaName";
 import { parseValidDate } from "src/utils/parseValidDate";

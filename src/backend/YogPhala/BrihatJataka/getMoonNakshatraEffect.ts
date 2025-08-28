@@ -1,7 +1,7 @@
 import type { NakshatraEn } from "src/backend/Nakshatra";
 import type { Planet, PlanetEn } from "src/backend/Planet";
 import type { Translation } from "src/backend/types";
-import { Phala } from "src/backend/YogPhala";
+import type { Phala } from "src/backend/YogPhala";
 
 /**
  * Returns Moon Nakshatra effects from Brihat Jataka data.

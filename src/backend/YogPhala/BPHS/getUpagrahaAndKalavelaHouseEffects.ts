@@ -7,7 +7,7 @@ import type {
     UpagrahaEn,
 } from "src/backend/Planet";
 import type { Translation } from "src/backend/types";
-import { Phala } from "src/backend/YogPhala";
+import type { Phala } from "src/backend/YogPhala";
 
 /**
  * Retrieves house effect descriptions for each planet or upagraha based on its

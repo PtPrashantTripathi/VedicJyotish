@@ -83,15 +83,15 @@ export default function KundliForm() {
     return (
         <div id="kundli-form" className="min-h-screen bg-gray-50">
             <div className="container mx-auto px-4 py-8">
-                <div className="max-w-2xl mx-auto">
-                    <div className="bg-white rounded-xl shadow-lg p-8">
-                        <div className="flex items-center mb-6">
+                <div className="mx-auto max-w-2xl">
+                    <div className="rounded-xl bg-white p-8 shadow-lg">
+                        <div className="mb-6 flex items-center">
                             <button
                                 onClick={() =>
                                     session.updateData({ page: "Home" })
                                 }
-                                className="mr-4 text-purple-600 hover:text-purple-800 transition-colors">
-                                <FaChevronLeft className="text-xl w-6 h-6" />
+                                className="mr-4 text-purple-600 transition-colors hover:text-purple-800">
+                                <FaChevronLeft className="h-6 w-6 text-xl" />
                             </button>
                             <h2 className="text-2xl font-bold text-gray-800">
                                 Create Kundli
@@ -99,7 +99,7 @@ export default function KundliForm() {
                         </div>
 
                         <form className="space-y-6" method="GET" action="">
-                            <div className="text-base font-medium text-gray-700 mb-4 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                            <div className="mb-4 rounded-lg border-l-4 border-purple-500 bg-purple-50 p-4 text-base font-medium text-gray-700">
                                 <span className="block">Enter Birthdata</span>
                                 <span className="text-sm text-gray-600">
                                     कुंडली के लिए जन्म विवरण
@@ -114,36 +114,36 @@ export default function KundliForm() {
                             />
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="mb-2 block text-sm font-medium text-gray-700">
                                     Full Name
                                 </label>
                                 <input
                                     type="text"
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                    className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
                                     placeholder="Enter your full name"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="mb-2 block text-sm font-medium text-gray-700">
                                     Gender
                                 </label>
-                                <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors">
+                                <select className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500">
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="mb-2 block text-sm font-medium text-gray-700">
                                         Date of Birth
                                     </label>
                                     <input
                                         type="date"
                                         id="date"
                                         name="date"
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                        className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
                                         value={session.data.date}
                                         onChange={e =>
                                             session.updateData({
@@ -154,14 +154,14 @@ export default function KundliForm() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="mb-2 block text-sm font-medium text-gray-700">
                                         Time of Birth
                                     </label>
                                     <input
                                         type="time"
                                         id="time"
                                         name="time"
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                        className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
                                         value={session.data.time}
                                         onChange={e =>
                                             session.updateData({
@@ -174,11 +174,11 @@ export default function KundliForm() {
                             </div>
 
                             <div className="relative">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="mb-2 block text-sm font-medium text-gray-700">
                                     Place of Birth
                                 </label>
                                 <input
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                    className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
                                     id="city"
                                     type="search"
                                     name="city"
@@ -196,13 +196,13 @@ export default function KundliForm() {
                                 />
 
                                 {state.filteredCities.length > 0 && (
-                                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                    <div className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg">
                                         {state.filteredCities.map(
                                             ([city, lat, lon, tz], idx) => (
                                                 <div
                                                     key={idx}
                                                     id={`${city}|${lat}|${lon}|${tz}`}
-                                                    className="p-3 hover:bg-purple-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                                                    className="cursor-pointer border-b border-gray-100 p-3 last:border-b-0 hover:bg-purple-50"
                                                     onClick={e => {
                                                         const [
                                                             city,
@@ -257,7 +257,7 @@ export default function KundliForm() {
                                     </div>
                                 )}
 
-                                <div className="mt-3 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
+                                <div className="mt-3 rounded-lg bg-blue-50 p-3 text-sm text-gray-600">
                                     <p className="mb-1">
                                         🏙️ <strong>Tip:</strong> Type your city
                                         in <strong>English</strong> and choose
@@ -287,26 +287,26 @@ export default function KundliForm() {
                                         onChange={e =>
                                             setShowAdvanced(e.target.checked)
                                         }
-                                        className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
+                                        className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-purple-600 focus:ring-2 focus:ring-purple-500"
                                     />
                                     <label
                                         htmlFor="advanced_options_switch"
-                                        className="text-sm font-medium text-gray-700 cursor-pointer">
+                                        className="cursor-pointer text-sm font-medium text-gray-700">
                                         Advanced Options
                                     </label>
                                 </div>
 
                                 {showAdvanced && (
-                                    <div className="mt-6 space-y-6 p-4 bg-gray-50 rounded-lg">
+                                    <div className="mt-6 space-y-6 rounded-lg bg-gray-50 p-4">
                                         <div>
                                             <label
                                                 htmlFor="tz"
-                                                className="block text-sm font-medium text-gray-700 mb-2">
+                                                className="mb-2 block text-sm font-medium text-gray-700">
                                                 TimeZone
                                             </label>
                                             <select
                                                 id="tz"
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                                className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
                                                 value={formatTimezoneOffset(
                                                     session.data.tz_name,
                                                     session.data.tz
@@ -348,16 +348,16 @@ export default function KundliForm() {
                                             </select>
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                <label className="mb-2 block text-sm font-medium text-gray-700">
                                                     Latitude
                                                 </label>
                                                 <input
                                                     id="lat"
                                                     name="lat"
                                                     type="number"
-                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                                    className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
                                                     placeholder="26.0685"
                                                     value={
                                                         session.data.lat || ""
@@ -375,14 +375,14 @@ export default function KundliForm() {
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                <label className="mb-2 block text-sm font-medium text-gray-700">
                                                     Longitude
                                                 </label>
                                                 <input
                                                     id="lon"
                                                     name="lon"
                                                     type="number"
-                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                                    className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
                                                     placeholder="83.0108"
                                                     value={
                                                         session.data.lon || ""
@@ -404,7 +404,7 @@ export default function KundliForm() {
                                         <div>
                                             <label
                                                 htmlFor="ayanamsa"
-                                                className="block text-sm font-medium text-gray-700 mb-2">
+                                                className="mb-2 block text-sm font-medium text-gray-700">
                                                 Choose Ayanamsa
                                             </label>
                                             <select
@@ -419,7 +419,7 @@ export default function KundliForm() {
                                                 }
                                                 id="ayanamsa"
                                                 name="ayanamsa"
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors">
+                                                className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500">
                                                 {ayanamsaNames.map(name => (
                                                     <option
                                                         key={name}
@@ -436,12 +436,12 @@ export default function KundliForm() {
                             <div className="flex space-x-4">
                                 <button
                                     type="submit"
-                                    className="flex-1 bg-purple-600 text-white py-3 px-6 rounded-lg hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors font-semibold">
+                                    className="flex-1 rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                                     Generate Kundli
                                 </button>
                                 <button
                                     type="reset"
-                                    className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors font-medium">
+                                    className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                                     Reset
                                 </button>
                             </div>

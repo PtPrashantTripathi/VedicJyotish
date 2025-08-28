@@ -36,7 +36,7 @@ export function toFixedLengthArray<N extends number, T>(
     const output: T[] = input.slice(0, fixedLength);
 
     while (output.length < fixedLength) {
-        output.push(defaultValue ?? null as T);
+        output.push(defaultValue ?? (null as T));
     }
 
     return output as FixedLengthArray<N, T>;
