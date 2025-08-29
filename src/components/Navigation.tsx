@@ -9,7 +9,7 @@ export default function Navigation() {
         <aside
             className={
                 "fixed inset-y-0 left-0 z-50 w-72 max-w-[80vw] transform bg-white shadow-xl transition-transform duration-300" +
-                (session.data.nav ? "" : " -translate-x-full")
+                (session.nav ? "" : " -translate-x-full")
             }>
             {/* Header */}
             <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
@@ -24,7 +24,7 @@ export default function Navigation() {
                 </a>
                 <button
                     id="closeDrawerBtn"
-                    onClick={() => session.updateData({ nav: false })}
+                    onClick={() => session.setNav(false)}
                     className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none"
                     aria-label="Close menu">
                     <FaTimes className="h-5 w-5" />

@@ -16,41 +16,40 @@ import KundliResult from "src/pages/KundliResult";
 import MonthlyCalendar from "src/pages/MonthlyCalendar";
 import Panchang from "src/pages/Panchang";
 import Settings from "src/pages/Settings";
+import type SwissEPH from "sweph-wasm/index";
 
 // const KundliResult = lazy(() => import("src/pages/KundliResult"));
 
-export default function App() {
+export default function App({ swe }: { swe: SwissEPH }) {
     const session = useSessionState();
-
     return (
         <SessionContext value={session}>
             <Header />
             <div
-                onClick={() => session.updateData({ nav: false })}
+                onClick={() => session.setNav(false)}
                 className={
                     "fixed inset-0 z-40 bg-black/40 opacity-0 transition-opacity duration-300" +
-                    (session.data.nav ? " opacity-100" : " pointer-events-none")
+                    (session.nav ? " opacity-100" : " pointer-events-none")
                 }></div>
             <Navigation />
-
             <main>
                 <Errors />
                 {session.data.page === "KundliForm" ? (
                     <KundliForm />
                 ) : session.data.page === "KundliResult" ? (
-                    <KundliResult />
+                    <KundliResult swe={swe} />
                 ) : session.data.page === "KundliMatching" ? (
                     <KundliMatching />
                 ) : session.data.page === "About" ? (
                     <About />
                 ) : session.data.page === "Panchang" ? (
-                    <Panchang />
+                    <Panchang swe={swe} />
                 ) : session.data.page === "MonthlyCalendar" ? (
                     <MonthlyCalendar />
                 ) : session.data.page === "Settings" ? (
                     <Settings />
                 ) : session.data.page === "HinduTime" ? (
-                    <HinduTime />
+                    <HinduTime swe={swe} />
                 ) : session.data.page === "Home" ? (
                     <Home />
                 ) : (

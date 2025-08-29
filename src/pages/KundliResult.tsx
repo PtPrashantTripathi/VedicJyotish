@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { Kundli } from "src/backend/Kundli";
+import { Kundli, type KundliData } from "src/backend/Kundli";
 import { DMS } from "src/backend/utils";
 import ChartInfoTable from "src/components/ChartInfoTable";
 import KundliChartSVG from "src/components/KundliChartSVG";
@@ -8,32 +8,28 @@ import KundliYogPhala from "src/components/KundliYogPhala";
 import Loader from "src/components/Loader";
 import VimsottariDasa from "src/components/VimsottariDasa";
 import { useSessionContext } from "src/contexts/SessionContext";
-import { useWASMContext } from "src/contexts/WASMContext";
+import type SwissEPH from "sweph-wasm/index";
 
-export default function KundliResult() {
-    const {
-        data: { date, time, lat, lon, tz_name, ayanamsa },
-    } = useSessionContext();
-    const swe = useWASMContext();
-    const [kundliData, setKundliData] = useState<Awaited<
-        ReturnType<typeof Kundli>
-    > | null>(null);
+export default function KundliResult({ swe }: { swe: SwissEPH }) {
+    const session = useSessionContext();
+
+    const [kundliData, setKundliData] = useState<KundliData | null>(null);
 
     useEffect(() => {
         async function fetchKundli() {
             const result = await Kundli(
                 swe,
-                DateTime.fromISO(`${date}T${time}`, {
-                    zone: tz_name,
+                DateTime.fromISO(`${session.data.date}T${session.data.time}`, {
+                    zone: session.data.tz_name,
                 }) as DateTime<true>,
-                lat,
-                lon
+                session.data.lon,
+                session.data.lat
             );
             setKundliData(result);
         }
 
         fetchKundli();
-    }, [swe, date, time, lat, lon, tz_name]);
+    }, [swe, session.data]);
 
     if (kundliData) {
         return (
@@ -50,11 +46,11 @@ export default function KundliResult() {
                         <tbody>
                             <tr>
                                 <td>datetime</td>
-                                <td>{kundliData.datetime.toISO()}</td>
+                                <td>{kundliData.panchanga.datetime.toISO()}</td>
                             </tr>
                             <tr>
                                 <td>weekday</td>
-                                <td>{kundliData.vara.name.hindi}</td>
+                                <td>{kundliData.panchanga.vara.name.hindi}</td>
                             </tr>
                             <tr>
                                 <td>daybirth</td>
@@ -62,30 +58,39 @@ export default function KundliResult() {
                             </tr>
                             <tr>
                                 <td>latitude</td>
-                                <td>{DMS(kundliData.latitude).toString()}</td>
+                                <td>
+                                    {DMS(
+                                        kundliData.panchanga.latitude
+                                    ).toString()}
+                                </td>
                             </tr>
                             <tr>
                                 <td>longitude</td>
-                                <td>{DMS(kundliData.longitude).toString()}</td>
+                                <td>
+                                    {DMS(
+                                        kundliData.panchanga.longitude
+                                    ).toString()}
+                                </td>
                             </tr>
                             <tr>
                                 <td>julian_datetime</td>
-                                <td>{kundliData.julian_datetime}</td>
+                                <td>{kundliData.panchanga.tjd_ut}</td>
                             </tr>
                             <tr>
                                 <td>sunrise</td>
-                                <td>{kundliData.sunrise.toISO()}</td>
+                                <td>
+                                    {kundliData.panchanga.sunrise.dt.toISO()}
+                                </td>
                             </tr>
                             <tr>
                                 <td>sunset</td>
-                                <td>{kundliData.sunset.toISO()}</td>
+                                <td>
+                                    {kundliData.panchanga.sunset.dt.toISO()}
+                                </td>
                             </tr>
                             <tr>
                                 <td>ayanamsa</td>
-                                <td>
-                                    {ayanamsa} (
-                                    {DMS(kundliData.ayanamsa).toString()})
-                                </td>
+                                <td>{DMS(kundliData.ayanamsa).toString()}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -151,9 +156,9 @@ export default function KundliResult() {
                     />
                 </section>
 
-                <KundliYogPhala yogPhala={kundliData.yogPhala} />
+                <KundliYogPhala kundliData={kundliData} />
 
-                <VimsottariDasa dasaData={kundliData.vimsottari_dasa} />
+                <VimsottariDasa kundliData={kundliData} />
             </>
         );
     } else {

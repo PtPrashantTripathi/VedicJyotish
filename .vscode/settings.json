@@ -18,20 +18,12 @@
         "source.fixAll": "explicit"
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.configPath": "prettier.config.js",
     // TypeScript settings
     "typescript.preferences.importModuleSpecifier": "non-relative",
     // File-specific formatters
-    "[ignore]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
-    },
-    "[html]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter"
-    },
-    "[properties]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
     },
     "[c]": {
         "editor.defaultFormatter": "ms-vscode.cpptools"
@@ -39,11 +31,9 @@
     "[shellscript]": {
         "editor.defaultFormatter": "foxundermoon.shell-format"
     },
-    "[cpp]": {
-        "editor.defaultFormatter": "ms-vscode.cpptools"
-    },
     "files.associations": {
-        "[h]": "c"
+        "[h]": "c",
+        "[cpp]": "c"
     },
     "cSpell.words": [
         "Akshaya",
@@ -448,7 +438,7 @@
         "हेमन्त",
         "हेविळम्बि"
     ],
-    "[typescriptreact]": {
+    "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
 }

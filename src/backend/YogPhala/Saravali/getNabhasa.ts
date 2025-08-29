@@ -1,5 +1,5 @@
-import type { HouseNumber } from "src/backend/Houses";
-import type { Planet, PlanetEn } from "src/backend/Planet";
+import type { HouseNumber } from "src/backend/constants/Houses";
+import type { Planet, PlanetEn } from "src/backend/constants/Planet";
 import { memoizeFunction, MOD360 } from "src/backend/utils";
 import type { Phala } from "src/backend/YogPhala";
 

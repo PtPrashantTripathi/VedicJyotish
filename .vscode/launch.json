@@ -4,10 +4,11 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Debug App",
-            "url": "http://localhost:5173", // Adjust if your Vite dev server uses a different port
-            "webRoot": "${workspaceFolder}", // Or the root of your source files
-            "sourceMaps": true
+            "name": "Launch Chrome with Profile",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}",
+            "sourceMaps": true,
+            "runtimeArgs": ["--profile-directory=Default"]
         }
     ]
 }

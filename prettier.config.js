@@ -1,4 +1,7 @@
-/** @type {import("prettier").Options} */
+/**
+ * @type {import("prettier").Config}
+ * @see https://prettier.io/docs/configuration
+ */
 export default {
     plugins: ["prettier-plugin-jsdoc", "prettier-plugin-tailwindcss"],
     arrowParens: "avoid",

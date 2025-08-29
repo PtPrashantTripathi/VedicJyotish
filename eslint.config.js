@@ -1,4 +1,4 @@
-// eslint.config.ts
+// eslint.config.js
 import prettier from "eslint-config-prettier";
 import unusedImports from "eslint-plugin-unused-imports";
 import simpleImportSort from "eslint-plugin-simple-import-sort";

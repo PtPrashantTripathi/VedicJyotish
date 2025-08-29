@@ -1,5 +1,5 @@
-import type { Planet, PlanetEn } from "src/backend/Planet";
-import type { RasiEn } from "src/backend/Rasi";
+import type { Planet, PlanetEn } from "src/backend/constants/Planet";
+import type { RasiEn } from "src/backend/constants/Rasi";
 import type { Translation } from "src/backend/types";
 import type { Phala } from "src/backend/YogPhala";
 

@@ -1,12 +1,19 @@
 import { DateTime } from "luxon";
-import type { Dasha } from "src/backend/VimsottariDasa";
+import { calcVimsottariDasa } from "src/backend/calcVimsottariDasa";
+import type { KundliData } from "src/backend/Kundli";
 import { DasaTable } from "src/components/DasaTable";
-interface Props {
-    dasaData: Dasha[];
-}
 
-export default function VimsottariDasa({ dasaData }: Props) {
+export default function VimsottariDasa({
+    kundliData,
+}: {
+    kundliData: KundliData;
+}) {
     const now = DateTime.now();
+    const dasaData = calcVimsottariDasa(
+        kundliData.panchanga.tjd_ut,
+        kundliData.planets.Moon.nakshatra,
+        kundliData.panchanga.datetime
+    );
     const mahadasa = dasaData.filter(
         d => d.StartDate <= now && now <= d.EndDate
     )[0];

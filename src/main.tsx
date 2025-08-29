@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "src/app";
-import { WASMContext } from "src/contexts/WASMContext";
 import SwissEPH from "sweph-wasm/index";
 
 const swe = await SwissEPH.init();
@@ -16,8 +15,6 @@ await swe.swe_set_ephe_path("./ephe", [
 
 createRoot(document.body).render(
     <StrictMode>
-        <WASMContext value={swe}>
-            <App />
-        </WASMContext>
+        <App swe={swe} />
     </StrictMode>
 );

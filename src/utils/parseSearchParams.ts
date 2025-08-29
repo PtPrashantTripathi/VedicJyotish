@@ -1,5 +1,4 @@
 import { DateTime } from "luxon";
-import type { IErrorType } from "src/components/Errors";
 import type { ValidPageType } from "src/pages/pageDetails";
 import { parseValidTimezoneOffset } from "src/utils/parseTimezoneOffset";
 import { parseValidAyanamsaName } from "src/utils/parseValidAyanamsaName";
@@ -8,26 +7,32 @@ import { parseValidDegree } from "src/utils/parseValidDegree";
 import { parseValidPageName } from "src/utils/parseValidPageName";
 import { parseValidTime } from "src/utils/parseValidTime";
 
-// Defines the structure of valid URL search parameters.
+/** Defines the structure of valid URL search parameters and component state. */
 export interface ISearchParams {
+    /** Page - Current page type/name */
     page: ValidPageType;
+    /** Date - Date in YYYY-MM-DD format */
     date: string;
+    /** Time - Time in HH:mm:ss format */
     time: string;
+    /** Tz - Timezone offset in hours (e.g., 5.5 for +05:30) */
     tz: number;
+    /** Tz_name - Timezone name (e.g., "Asia/Kolkata") */
     tz_name: string;
+    /** City - City name with location details */
     city: string;
+    /** Lat - Latitude coordinate */
     lat: number;
+    /** Lon - Longitude coordinate */
     lon: number;
+    /** Ayanamsa - Ayanamsa calculation method */
     ayanamsa: string;
 }
 
-// Defines the full session data structure, including errors and navigation state.
-export interface ISessionData extends ISearchParams {
-    error: IErrorType[];
-    nav: boolean;
-    updated?: boolean;
-}
-// An array of search parameter keys to ensure consistent parsing and URL generation.
+/**
+ * Array of search parameter keys for consistent parsing and URL generation.
+ * Used to maintain order and ensure all parameters are processed.
+ */
 export const searchParamKeys: (keyof ISearchParams)[] = [
     "page",
     "city",
@@ -41,26 +46,18 @@ export const searchParamKeys: (keyof ISearchParams)[] = [
 ];
 
 /**
- * Parses URL search parameters and returns a parsed SessionData object. This
- * function handles both direct search params and base64-encoded `id`.
+ * Parses URL search parameters into an ISearchParams object. Handles both
+ * direct search params and base64-encoded `id` parameter. Explicit query params
+ * take precedence over decoded ones.
  *
- * @returns {ISessionData} A SessionData object populated from the URL or
- *   defaults.
+ * @returns {ISearchParams} Parsed search parameters with fallback defaults
  */
-export function parseSearchParams(): ISessionData {
-    let searchParams = new URLSearchParams(window.location.search);
-    const id = searchParams.get("id");
-
-    if (id) {
-        try {
-            searchParams = new URLSearchParams(atob(id));
-        } catch (e) {
-            console.error("Failed to decode URL 'id' parameter:", e);
-        }
-    }
-
-    // Default values for the session state.
-    const sessionData: ISessionData = {
+export function parseURLSearchParams(): ISearchParams {
+    /**
+     * Default search parameters with sensible fallback values. Used when URL
+     * parameters are missing or invalid.
+     */
+    const searchParams: ISearchParams = {
         page: "Home",
         date: DateTime.now().toFormat("yyyy-MM-dd"),
         time: DateTime.now().toFormat("HH:mm:ss"),
@@ -70,51 +67,80 @@ export function parseSearchParams(): ISessionData {
         lat: 23.1793,
         lon: 75.784912,
         ayanamsa: "Lahiri",
-        error: [],
-        nav: false,
     };
 
+    // Only parse URL on client side to avoid SSR issues
+    if (typeof window === "undefined") {
+        return searchParams;
+    }
+
+    let currentSearchParams = new URLSearchParams(window.location.search);
+    const id = currentSearchParams.get("id");
+
+    // Handle base64-encoded id parameter
+    if (id) {
+        currentSearchParams.delete("id");
+
+        try {
+            const decodedParams = new URLSearchParams(window.atob(id));
+
+            // Merge explicit params (they override decoded ones)
+            for (const [key, value] of currentSearchParams.entries()) {
+                decodedParams.set(key, value);
+            }
+
+            currentSearchParams = decodedParams;
+
+            // Update URL to expanded form
+            const searchString = decodedParams.toString();
+            const newUrl = `${window.location.pathname}?${searchString}`;
+            if (newUrl !== window.location.pathname + window.location.search) {
+                window.history.replaceState(null, "", newUrl);
+            }
+        } catch (error) {
+            console.error("Failed to decode URL 'id' parameter:", error);
+        }
+    }
+
     searchParamKeys.forEach(key => {
-        const value = searchParams.get(key);
+        const value = currentSearchParams.get(key);
         if (value) {
             try {
                 switch (key) {
                     case "page":
-                        sessionData.page = parseValidPageName(value);
+                        searchParams.page = parseValidPageName(value);
                         break;
                     case "lat":
-                        sessionData.lat = parseValidDegree(value, "lat");
+                        searchParams.lat = parseValidDegree(value, "lat");
                         break;
                     case "lon":
-                        sessionData.lon = parseValidDegree(value, "lon");
+                        searchParams.lon = parseValidDegree(value, "lon");
                         break;
                     case "ayanamsa":
-                        sessionData.ayanamsa = parseValidAyanamsaName(value);
+                        searchParams.ayanamsa = parseValidAyanamsaName(value);
                         break;
                     case "date":
-                        sessionData.date = parseValidDate(value);
+                        searchParams.date = parseValidDate(value);
                         break;
                     case "time":
-                        sessionData.time = parseValidTime(value);
+                        searchParams.time = parseValidTime(value);
                         break;
                     case "tz":
-                        sessionData.tz = parseValidTimezoneOffset(value);
+                        searchParams.tz = parseValidTimezoneOffset(value);
                         break;
                     case "city":
-                        sessionData.city = value;
-                        break;
                     case "tz_name":
-                        sessionData.tz_name = value;
+                        searchParams[key] = value;
                         break;
                 }
-            } catch (e) {
-                sessionData.error.push({
-                    message: `${key}: ${e instanceof Error ? e.message : String(e)}`,
+            } catch (error) {
+                console.warn({
+                    message: `Invalid ${key} parameter: ${error instanceof Error ? error.message : String(error)}`,
                     type: "warning",
                 });
             }
         }
     });
 
-    return sessionData;
+    return searchParams;
 }

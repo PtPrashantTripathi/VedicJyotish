@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { percentage } from "src/backend/utils";
+import type SwissEPH from "sweph-wasm/index";
 
-export default function HinduTime() {
+export default function HinduTime({ swe }: { swe: SwissEPH }) {
+    console.log(swe.swe_version());
     const settings = {
         size: 400,
     };

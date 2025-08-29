@@ -1,4 +1,4 @@
-import type { Planet, PlanetEn } from "src/backend/Planet";
+import type { Planet, PlanetEn } from "src/backend/constants/Planet";
 import { NORMALIZE12 } from "src/backend/utils";
 import type { Phala } from "src/backend/YogPhala";
 export function getSaravaliLunarYogPhala(

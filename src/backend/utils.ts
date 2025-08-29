@@ -1,4 +1,5 @@
-import type { RasiNumber } from "src/backend/Rasi";
+import { DateTime } from "luxon";
+import type { RasiNumber } from "src/backend/constants/Rasi";
 
 // --- Math Utility Functions ---
 
@@ -86,40 +87,6 @@ export const deg2hms = (x: number): string => {
         .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 };
 
-/** Convert decimal to formatted HMS string */
-export const dec2hms = (x: number): string => {
-    const sign = x < 0 ? "-" : "";
-    x = Math.abs(x);
-    const h = Math.floor(x);
-    const m = Math.floor((x - h) * 60);
-    const s = Math.floor(((x - h) * 60 - m) * 60);
-    return `${sign}${h.toString().padStart(2, "0")}:${m
-        .toString()
-        .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-};
-
-/** Convert decimal year time to date (approximate), based on given DOB */
-export const age2date = (
-    etime: number,
-    DOB: { year: number; month: number; date: number } = {
-        year: 2000,
-        month: 1,
-        date: 1,
-    }
-): string => {
-    if (isNaN(etime)) return "00/00/0000";
-
-    const year = DOB.year - Math.floor(etime);
-    const remMonths = (etime % 1) * 12;
-    const month = Math.max(1, 12 - Math.round(remMonths) + DOB.month - 12);
-    const remDays = (remMonths % 1) * 30;
-    const day = Math.abs(30 - DOB.date - Math.round(remDays));
-
-    return `${day.toString().padStart(2, "0")}/${month
-        .toString()
-        .padStart(2, "0")}/${year}`;
-};
-
 //  Helper Functions
 
 /**
@@ -200,4 +167,14 @@ export function memoizeFunction<T extends (...args: any[]) => any>(fn: T): T {
         cache.set(key, result);
         return result;
     } as T;
+}
+
+/** Convert decimal to formatted HMS string */
+export function decimalToHMS(days: number) {
+    return DateTime.fromObject(
+        { hour: 0, minute: 0, second: 0 },
+        { zone: "utc" }
+    )
+        .plus({ days })
+        .toFormat("HH'h' mm'm' ss's'");
 }

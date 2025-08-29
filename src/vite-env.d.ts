@@ -29,3 +29,8 @@ interface ObjectConstructor {
      */
     keys<T extends object>(obj: T): Array<keyof T>;
 }
+
+interface TimeSpan {
+    start: number;
+    end: number;
+}

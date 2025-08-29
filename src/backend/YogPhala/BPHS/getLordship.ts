@@ -1,6 +1,6 @@
-import { HouseDetails, type HouseNumber } from "src/backend/Houses";
-import type { Planet, PlanetEn } from "src/backend/Planet";
-import { RasiDetails } from "src/backend/Rasi";
+import { HouseDetails, type HouseNumber } from "src/backend/constants/Houses";
+import type { Planet, PlanetEn } from "src/backend/constants/Planet";
+import { RasiDetails } from "src/backend/constants/Rasi";
 import type { Translation } from "src/backend/types";
 import { reorderArray } from "src/backend/utils";
 import type { Phala } from "src/backend/YogPhala";

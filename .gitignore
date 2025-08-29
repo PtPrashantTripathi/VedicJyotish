@@ -122,3 +122,16 @@ pids/
 
 # Chrome devtools
 com.chrome.devtools.json
+
+# Dependencies
+node_modules/
+
+# pnpm store
+.pnpm-store/
+
+# pnpm virtual store (if configured locally)
+.pnpm/
+
+# pnpm lockfile (if not committed)
+pnpm-lock.yaml
+pnpm-workspace.yaml

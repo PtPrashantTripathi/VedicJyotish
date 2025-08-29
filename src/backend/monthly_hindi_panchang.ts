@@ -13,7 +13,7 @@
 
 // gcc -O0 -Wno-deprecated-declarations  -fsanitize=address -g tools/test/monthly_hindi_panchang.c src/backend/swisseph-wasm/lib/*.c -o main && ./main
 
-import { toFixedLengthArray } from "fixed-len-array/index";
+import { toFixedLengthArray } from "fixed-len-array";
 import SwissEPH from "sweph-wasm/index";
 
 // Configuration

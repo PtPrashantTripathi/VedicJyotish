@@ -1,7 +1,7 @@
 import pako from "pako";
 import { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
-import { ayanamsaNames } from "src/backend/Ayanamsa";
+import { ayanamsaNames } from "src/backend/constants/Ayanamsa";
 import { useSessionContext } from "src/contexts/SessionContext";
 import { formatTimezoneOffset } from "src/utils/formatTimezoneOffset";
 

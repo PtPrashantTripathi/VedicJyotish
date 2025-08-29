@@ -4,8 +4,8 @@ import {
     type PlanetDetail,
     PlanetDetails,
     type PlanetEn,
-} from "src/backend/Planet";
-import type { RasiNumber } from "src/backend/Rasi";
+} from "src/backend/constants/Planet";
+import type { RasiNumber } from "src/backend/constants/Rasi";
 import type { LanguageTypes } from "src/backend/types";
 import { NORMALIZE12, percentage } from "src/backend/utils";
 

@@ -1,66 +1,51 @@
-import {
-    Calendar,
-    Clock,
-    Globe,
-    Info,
-    Moon,
-    Star,
-    Sun,
-    Users,
-} from "lucide-react";
+import { Calendar, Clock, Globe, Moon, Star, Sun, Users } from "lucide-react";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { getPanchanga } from "src/backend/panchanga";
+import { getPanchanga } from "src/backend/calcPanchanga";
 import Loader from "src/components/Loader";
 import { useSessionContext } from "src/contexts/SessionContext";
-import { useWASMContext } from "src/contexts/WASMContext";
+import type SwissEPH from "sweph-wasm/index";
 
-export default function EnhancedPanchang() {
-    const {
-        data: { date, time, lat, lon, tz_name },
-    } = useSessionContext();
-    const swe = useWASMContext();
+export default function Panchang({ swe }: { swe: SwissEPH }) {
+    const session = useSessionContext();
+
     const [panchanga, setPanchanga] = useState<Awaited<
         ReturnType<typeof getPanchanga>
     > | null>(null);
 
     useEffect(() => {
-        async function fetchKundli() {
+        async function fetchPanchanga() {
             const result = await getPanchanga(
                 swe,
-                DateTime.fromISO(`${date}T${time}`, {
-                    zone: tz_name,
+                DateTime.fromISO(session.data.date, {
+                    zone: session.data.tz_name,
                 }) as DateTime<true>,
-                lat,
-                lon
+                session.data.lon,
+                session.data.lat
             );
             setPanchanga(result);
+            console.log(result);
         }
-        fetchKundli();
-    }, [swe, date, time, lat, lon, tz_name]);
+        fetchPanchanga();
+    }, [swe, session.data]);
 
-    const [selectedTab, setSelectedTab] = useState("overview");
-    const [showDetails, setShowDetails] = useState<Record<string, boolean>>({});
-
-    const toggleDetails = (key: string) => {
-        setShowDetails(prev => ({ ...prev, [key]: !prev[key] }));
-    };
-
-    const tabs = [
-        {
-            id: "overview",
+    const tabs = {
+        overview: {
             label: "Overview",
             icon: Calendar,
         },
-        { id: "timings", label: "Timings", icon: Clock },
-        {
-            id: "planetary",
+        timings: { label: "Timings", icon: Clock },
+        planetary: {
             label: "Planetary",
             icon: Globe,
         },
-        { id: "muhurat", label: "Muhurat", icon: Star },
-        { id: "calendar", label: "Calendar", icon: Users },
-    ];
+        muhurat: { label: "Muhurat", icon: Star },
+        calendar: { label: "Calendar", icon: Users },
+    };
+
+    const [selectedTab, setSelectedTab] =
+        useState<keyof typeof tabs>("overview");
+
     if (!panchanga) {
         return <Loader />;
     }
@@ -70,12 +55,12 @@ export default function EnhancedPanchang() {
             <div className="sticky top-0 z-10 bg-white shadow-sm">
                 <div className="mx-auto max-w-7xl px-4">
                     <div className="flex space-x-8 overflow-x-auto">
-                        {tabs.map(tab => (
+                        {Object.entries(tabs).map(([id, tab]) => (
                             <button
-                                key={tab.id}
-                                onClick={() => setSelectedTab(tab.id)}
+                                key={id}
+                                onClick={() => setSelectedTab(id)}
                                 className={`flex items-center space-x-2 border-b-2 px-2 py-4 text-sm font-medium whitespace-nowrap transition-colors ${
-                                    selectedTab === tab.id
+                                    selectedTab === id
                                         ? "border-purple-500 text-purple-600"
                                         : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                                 }`}>
@@ -122,46 +107,31 @@ export default function EnhancedPanchang() {
                                                             .paksha_name.english
                                                     }
                                                 </div>
-                                                <div className="mt-1 text-xs text-orange-500">
-                                                    {panchanga.tithi.end_dt.toFormat(
-                                                        "MMMM dd, yyyy hh:mm a"
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <button
-                                                onClick={() =>
-                                                    toggleDetails("tithi")
-                                                }
-                                                className="p-1 text-orange-400 hover:text-orange-600">
-                                                <Info size={16} />
-                                            </button>
-                                        </div>
-                                        {showDetails.tithi && (
-                                            <div className="mt-3 border-t border-orange-200 pt-3 text-sm">
-                                                <div className="grid grid-cols-2 gap-2 text-xs">
-                                                    <span>
+                                                <div className="flex justify-between text-sm">
+                                                    <span className="text-xs text-orange-500">
                                                         Start:{" "}
-                                                        {panchanga.tithi.start_dt.toFormat(
-                                                            "MMMM dd, yyyy hh:mm a"
+                                                        {panchanga.tithi.start.dt.toFormat(
+                                                            "dd MMM yyyy hh:mm a"
                                                         )}
                                                     </span>
-                                                    <span>
+                                                    <span className="text-xs text-orange-500">
                                                         End:{" "}
-                                                        {panchanga.tithi.end_dt.toFormat(
-                                                            "MMMM dd, yyyy hh:mm a"
+                                                        {panchanga.tithi.end.dt.toFormat(
+                                                            "dd MMM yyyy hh:mm a"
                                                         )}
                                                     </span>
-                                                </div>
-                                                <div className="mt-2 text-xs text-gray-600">
-                                                    Lunar phase:{" "}
-                                                    {Math.round(
-                                                        panchanga.tithi
-                                                            .lunarphase
-                                                    )}
-                                                    °
                                                 </div>
                                             </div>
-                                        )}
+                                        </div>
+                                        <div className="mt-3 border-t border-orange-200 pt-3 text-sm">
+                                            <div className="mt-2 text-xs text-gray-600">
+                                                Lunar phase:{" "}
+                                                {Math.round(
+                                                    panchanga.tithi.lunarphase
+                                                )}
+                                                °
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/* Nakshatra */}
@@ -184,49 +154,37 @@ export default function EnhancedPanchang() {
                                                     }
                                                 </div>
                                                 <div className="mt-1 text-xs text-green-500">
-                                                    {panchanga.nakshatra.end_dt.toFormat(
-                                                        "MMMM dd, yyyy hh:mm a"
+                                                    {panchanga.nakshatra.end.dt.toFormat(
+                                                        "dd MMM yyyy hh:mm a"
                                                     )}
                                                 </div>
                                             </div>
-                                            <button
-                                                onClick={() =>
-                                                    toggleDetails("nakshatra")
-                                                }
-                                                className="p-1 text-green-400 hover:text-green-600">
-                                                <Info size={16} />
-                                            </button>
                                         </div>
-                                        {showDetails.nakshatra && (
-                                            <div className="mt-3 border-t border-green-200 pt-3 text-sm">
-                                                <div className="grid grid-cols-2 gap-2 text-xs">
-                                                    <span>
-                                                        Lord:{" "}
-                                                        {
-                                                            panchanga.nakshatra
-                                                                .lord
-                                                        }
-                                                    </span>
-                                                    <span>
-                                                        Symbol:{" "}
-                                                        {
-                                                            panchanga.nakshatra
-                                                                .name.hindi
-                                                        }
-                                                    </span>
-                                                </div>
-                                                <div className="mt-1 text-xs text-gray-600">
-                                                    Duration:{" "}
-                                                    {panchanga.nakshatra.start_dt.toFormat(
-                                                        "MMMM dd, yyyy hh:mm a"
-                                                    )}{" "}
-                                                    -{" "}
-                                                    {panchanga.nakshatra.end_dt.toFormat(
-                                                        "MMMM dd, yyyy hh:mm a"
-                                                    )}
-                                                </div>
+                                        <div className="mt-3 border-t border-green-200 pt-3 text-sm">
+                                            <div className="grid grid-cols-2 gap-2 text-xs">
+                                                <span>
+                                                    Lord:{" "}
+                                                    {panchanga.nakshatra.lord}
+                                                </span>
+                                                <span>
+                                                    Symbol:{" "}
+                                                    {
+                                                        panchanga.nakshatra.name
+                                                            .hindi
+                                                    }
+                                                </span>
                                             </div>
-                                        )}
+                                            <div className="mt-1 text-xs text-gray-600">
+                                                Duration:{" "}
+                                                {panchanga.nakshatra.start.dt.toFormat(
+                                                    "dd MMM yyyy hh:mm a"
+                                                )}{" "}
+                                                -{" "}
+                                                {panchanga.nakshatra.end.dt.toFormat(
+                                                    "dd MMM yyyy hh:mm a"
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/* Yoga */}
@@ -246,18 +204,11 @@ export default function EnhancedPanchang() {
                                                     }
                                                 </div>
                                                 <div className="mt-1 text-xs text-blue-500">
-                                                    {panchanga.yoga.end_dt.toFormat(
-                                                        "MMMM dd, yyyy hh:mm a"
+                                                    {panchanga.yoga.end.dt.toFormat(
+                                                        "dd MMM yyyy hh:mm a"
                                                     )}
                                                 </div>
                                             </div>
-                                            <button
-                                                onClick={() =>
-                                                    toggleDetails("yoga")
-                                                }
-                                                className="p-1 text-blue-400 hover:text-blue-600">
-                                                <Info size={16} />
-                                            </button>
                                         </div>
                                     </div>
 
@@ -281,18 +232,11 @@ export default function EnhancedPanchang() {
                                                     }
                                                 </div>
                                                 <div className="mt-1 text-xs text-red-500">
-                                                    {panchanga.karana.end_dt.toFormat(
-                                                        "MMMM dd, yyyy hh:mm a"
+                                                    {panchanga.karana.end.dt.toFormat(
+                                                        "dd MMM yyyy hh:mm a"
                                                     )}
                                                 </div>
                                             </div>
-                                            <button
-                                                onClick={() =>
-                                                    toggleDetails("karana")
-                                                }
-                                                className="p-1 text-red-400 hover:text-red-600">
-                                                <Info size={16} />
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -311,12 +255,12 @@ export default function EnhancedPanchang() {
                                         <div className="rounded-lg bg-purple-50 p-4 text-center">
                                             <div className="text-2xl font-bold text-purple-600">
                                                 {panchanga.datetime.toFormat(
-                                                    "MMMM dd, yyyy hh:mm a"
+                                                    "dd MMM yyyy hh:mm a"
                                                 )}
                                             </div>
                                             <div className="text-sm text-purple-500">
                                                 {panchanga.datetime.toFormat(
-                                                    "MMMM dd, yyyy hh:mm a"
+                                                    "dd MMM yyyy hh:mm a"
                                                 )}
                                             </div>
                                         </div>
@@ -360,7 +304,10 @@ export default function EnhancedPanchang() {
                                                 Vikrama Samvat:
                                             </span>
                                             <span className="font-bold text-orange-600">
-                                                {panchanga.vikrama_samvat}
+                                                {
+                                                    panchanga.samvatsara
+                                                        .vikrama_samvat
+                                                }
                                             </span>
                                         </div>
                                         <div className="flex items-center justify-between rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 p-3">
@@ -368,7 +315,10 @@ export default function EnhancedPanchang() {
                                                 Shaka Samvat:
                                             </span>
                                             <span className="font-bold text-green-600">
-                                                {panchanga.saka_samvat}
+                                                {
+                                                    panchanga.samvatsara
+                                                        .saka_samvat
+                                                }
                                             </span>
                                         </div>
                                         <div className="flex items-center justify-between rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-3">
@@ -376,7 +326,7 @@ export default function EnhancedPanchang() {
                                                 Kali Yuga:
                                             </span>
                                             <span className="font-bold text-blue-600">
-                                                {panchanga.kali}
+                                                {panchanga.samvatsara.kali}
                                             </span>
                                         </div>
                                     </div>
@@ -403,8 +353,8 @@ export default function EnhancedPanchang() {
                                             Sunrise
                                         </div>
                                         <div className="text-xl font-bold text-yellow-600">
-                                            {panchanga.sunrise.toFormat(
-                                                "MMMM dd, yyyy hh:mm a"
+                                            {panchanga.sunrise.dt.toFormat(
+                                                "dd MMM yyyy hh:mm a"
                                             )}
                                         </div>
                                     </div>
@@ -423,8 +373,8 @@ export default function EnhancedPanchang() {
                                     </div>
                                     <div className="text-right">
                                         <div className="font-bold text-orange-600">
-                                            {panchanga.sunset.toFormat(
-                                                "MMMM dd, yyyy hh:mm a"
+                                            {panchanga.sunset.dt.toFormat(
+                                                "dd MMM yyyy hh:mm a"
                                             )}
                                         </div>
                                     </div>
@@ -436,8 +386,8 @@ export default function EnhancedPanchang() {
                                             Moonrise
                                         </div>
                                         <div className="text-xl font-bold text-purple-600">
-                                            {panchanga.moonrise.toFormat(
-                                                "MMMM dd, yyyy hh:mm a"
+                                            {panchanga.moonrise.dt.toFormat(
+                                                "dd MMM yyyy hh:mm a"
                                             )}
                                         </div>
                                     </div>
@@ -449,8 +399,8 @@ export default function EnhancedPanchang() {
                                             Moonset
                                         </div>
                                         <div className="text-xl font-bold text-purple-600">
-                                            {panchanga.moonset.toFormat(
-                                                "MMMM dd, yyyy hh:mm a"
+                                            {panchanga.moonset.dt.toFormat(
+                                                "dd MMM yyyy hh:mm a"
                                             )}
                                         </div>
                                     </div>
@@ -469,10 +419,18 @@ export default function EnhancedPanchang() {
                                         Day Duration
                                     </div>
                                     <div className="text-3xl font-bold text-orange-600">
-                                        {panchanga.day_duration.split(" ")[0]}
+                                        {
+                                            panchanga.kalavelas.day_duration.split(
+                                                " "
+                                            )[0]
+                                        }
                                     </div>
                                     <div className="text-sm text-orange-500">
-                                        {panchanga.day_duration.split(" ")[1]}
+                                        {
+                                            panchanga.kalavelas.day_duration.split(
+                                                " "
+                                            )[1]
+                                        }
                                     </div>
                                 </div>
                                 <div className="rounded-lg bg-blue-50 p-4 text-center">
@@ -480,10 +438,18 @@ export default function EnhancedPanchang() {
                                         Night Duration
                                     </div>
                                     <div className="text-3xl font-bold text-blue-600">
-                                        {panchanga.night_duration.split(" ")[0]}
+                                        {
+                                            panchanga.kalavelas.night_duration.split(
+                                                " "
+                                            )[0]
+                                        }
                                     </div>
                                     <div className="text-sm text-blue-500">
-                                        {panchanga.night_duration.split(" ")[1]}
+                                        {
+                                            panchanga.kalavelas.night_duration.split(
+                                                " "
+                                            )[1]
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -579,13 +545,8 @@ export default function EnhancedPanchang() {
                                         <div className="flex items-center justify-between rounded-md bg-white p-3 shadow-sm">
                                             <span>Rahu Kalam</span>
                                             <span className="font-medium text-red-700">
-                                                {panchanga.rahu_kalam.start_dt.toFormat(
-                                                    "MMMM dd, yyyy hh:mm a"
-                                                )}{" "}
-                                                -{" "}
-                                                {panchanga.rahu_kalam.end_dt.toFormat(
-                                                    "MMMM dd, yyyy hh:mm a"
-                                                )}
+                                                {panchanga.rahu_kalam.start} -{" "}
+                                                {panchanga.rahu_kalam.end}
                                             </span>
                                         </div>
                                         <div className="flex items-center justify-between rounded-md bg-white p-3 shadow-sm">

@@ -1,5 +1,9 @@
-import type { HouseNumber } from "src/backend/Houses";
-import type { Planet, PlanetEn, SaptagrahaEn } from "src/backend/Planet";
+import type { HouseNumber } from "src/backend/constants/Houses";
+import type {
+    Planet,
+    PlanetEn,
+    SaptagrahaEn,
+} from "src/backend/constants/Planet";
 import type { Translation } from "src/backend/types";
 import type { Phala } from "src/backend/YogPhala";
 /**

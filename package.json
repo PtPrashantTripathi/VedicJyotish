@@ -35,8 +35,7 @@
     },
     "dependencies": {
         "luxon": "latest",
-        "pako": "latest",
-        "ts-deepmerge": "latest"
+        "pako": "latest"
     },
     "devDependencies": {
         "@eslint/js": "latest",
@@ -45,15 +44,14 @@
         "@types/pako": "latest",
         "@types/react": "latest",
         "@types/react-dom": "latest",
-        "@typescript-eslint/parser": "latest",
         "@vitejs/plugin-react": "latest",
-        "autoprefixer": "latest",
         "eslint": "latest",
         "eslint-config-prettier": "latest",
         "eslint-plugin-react-hooks": "latest",
         "eslint-plugin-react-refresh": "latest",
         "eslint-plugin-simple-import-sort": "latest",
         "eslint-plugin-unused-imports": "latest",
+        "fixed-len-array": "latest",
         "globals": "latest",
         "lucide-react": "latest",
         "prettier": "latest",
@@ -70,7 +68,9 @@
         "vite-tsconfig-paths": "latest"
     },
     "engines": {
-        "node": ">=22"
+        "node": ">=22",
+        "pnpm": ">=10"
     },
-    "typeScriptVersion": "latest"
+    "typeScriptVersion": "latest",
+    "packageManager": "pnpm@10.15.0"
 }

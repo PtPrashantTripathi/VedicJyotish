@@ -1,10 +1,12 @@
-import type { Phala } from "src/backend/YogPhala";
+import type { KundliData } from "src/backend/Kundli";
+import { calcYogPhala } from "src/backend/YogPhala";
 
-interface Props {
-    yogPhala: Record<string, Phala[]>;
-}
-
-export default function KundliYogPhala({ yogPhala }: Props) {
+export default function KundliYogPhala({
+    kundliData,
+}: {
+    kundliData: KundliData;
+}) {
+    const yogPhala = calcYogPhala(kundliData.planets);
     return (
         <section className="container my-4">
             <h1 className="border-bottom mb-4 pb-2">Yoga Phala</h1>

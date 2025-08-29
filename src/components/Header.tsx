@@ -23,9 +23,9 @@ export default function Header() {
                         <button
                             className="rounded-lg bg-white/10 p-2 backdrop-blur-sm"
                             id="openDrawerBtn"
-                            onClick={() => session.updateData({ nav: true })}
+                            onClick={() => session.setNav(true)}
                             type="button"
-                            aria-expanded={!session.data.nav}
+                            aria-expanded={!session.nav}
                             aria-controls="drawer"
                             aria-label="Open main menu">
                             <Menu size={24} />
