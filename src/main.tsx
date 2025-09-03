@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "src/app";
 import SwissEPH from "sweph-wasm/index";
 
-const swe = await SwissEPH.init();
+globalThis.swe = await SwissEPH.init();
 
 // Path to Swiss Ephemeris data files.
 await swe.swe_set_ephe_path("./ephe", [
@@ -13,8 +13,9 @@ await swe.swe_set_ephe_path("./ephe", [
     "sefstars.txt",
 ]);
 
+// Use createRoot to render the React application to the DOM.
 createRoot(document.body).render(
     <StrictMode>
-        <App swe={swe} />
+        <App />
     </StrictMode>
 );

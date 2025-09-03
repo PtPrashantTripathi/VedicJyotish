@@ -1,57 +1,12 @@
-import { useEffect, useState } from "react";
+import { useSessionContext } from "src/contexts/SessionContext";
 import { percentage } from "src/services/utils";
 
 export default function HinduTime() {
+    const session = useSessionContext();
     console.log(swe.swe_version());
     const settings = {
         size: 400,
     };
-
-    // for now i am keeping hardcode
-    const times = {
-        sunrise: { Hours: 6, Minutes: 8, Seconds: 0 },
-        sunset: { Hours: 18, Minutes: 51, Seconds: 0 },
-    };
-
-    const sunriseDecimal =
-        times.sunrise.Hours / 24 +
-        times.sunrise.Minutes / (24 * 60) +
-        times.sunrise.Seconds / (24 * 3600);
-
-    const sunsetDecimal =
-        times.sunset.Hours / 24 +
-        times.sunset.Minutes / (24 * 60) +
-        times.sunset.Seconds / (24 * 3600);
-
-    const [hinduTime, setHinduTime] = useState({
-        ghati: 0,
-        pal: 0,
-        vipal: 0,
-    });
-
-    const [currentTime, setCurrentTime] = useState(new Date());
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            const now = new Date();
-
-            let t =
-                now.getHours() / 24 +
-                now.getMinutes() / (24 * 60) +
-                (now.getSeconds() + now.getMilliseconds() / 1000) /
-                    (24 * 3600) -
-                sunriseDecimal;
-            if (t < 0) t += 1;
-
-            const ghati = Math.floor(t * 60);
-            const pal = Math.floor((t * 60 - ghati) * 60);
-            const vipal = Math.floor((t * 3600 - ghati * 60 - pal) * 60);
-            setHinduTime({ ghati, pal, vipal });
-
-            setCurrentTime(now);
-        }, 400);
-        return () => clearInterval(timer);
-    }, [sunriseDecimal]);
 
     const padding = percentage(5, settings.size);
     const outer_most_radius = percentage(50, settings.size);
@@ -61,7 +16,8 @@ export default function HinduTime() {
 
     // Calculate arc path (more complex, requires trigonometry)
     const startAngle =
-        2 * Math.PI * (sunsetDecimal - sunriseDecimal) - Math.PI / 2;
+        2 * Math.PI * session.sunset.diff(session.sunrise).as("days") -
+        Math.PI / 2;
     const endAngle = 2 * Math.PI - Math.PI / 2;
     // Calculate arc coordinates
     const startX = center + inner_radius * Math.cos(startAngle);
@@ -189,7 +145,7 @@ export default function HinduTime() {
                 {/* Ghati hand (hour equivalent) */}
                 <g
                     id="Ghati-hand"
-                    transform={`translate(${center}, ${center}) rotate(${hinduTime.ghati * 6})`}>
+                    transform={`translate(${center}, ${center}) rotate(${session.hinduTime.ghati * 6})`}>
                     <line
                         x1="0"
                         y1="0"
@@ -210,7 +166,7 @@ export default function HinduTime() {
                 {/* Pal hand (minute equivalent) */}
                 <g
                     id="Pal-hand"
-                    transform={`translate(${center}, ${center}) rotate(${hinduTime.pal * 6})`}>
+                    transform={`translate(${center}, ${center}) rotate(${session.hinduTime.pal * 6})`}>
                     <line
                         x1="0"
                         y1="0"
@@ -231,7 +187,7 @@ export default function HinduTime() {
                 {/* Vipal hand (second equivalent) */}
                 <g
                     id="vipal-hand"
-                    transform={`translate(${center}, ${center}) rotate(${hinduTime.vipal * 6})`}>
+                    transform={`translate(${center}, ${center}) rotate(${session.hinduTime.vipal * 6})`}>
                     <line
                         x1="0"
                         y1={percentage(5, settings.size)}
@@ -262,27 +218,12 @@ export default function HinduTime() {
                 <span
                     id="hindutime"
                     className="block text-2xl font-bold text-gray-800">
-                    {`${String(hinduTime.ghati).padStart(2, "0")}:${String(hinduTime.pal).padStart(2, "0")}:${String(hinduTime.vipal).padStart(2, "0")}`}
-                </span>
-
-                <span
-                    id="time"
-                    className="block font-mono text-xl text-gray-600">
-                    {currentTime.toLocaleTimeString()}
+                    {`${String(session.hinduTime.ghati).padStart(2, "0")}:${String(session.hinduTime.pal).padStart(2, "0")}:${String(session.hinduTime.vipal).padStart(2, "0")}`}
                 </span>
 
                 <div className="mt-2 text-sm text-gray-500">
-                    <div>
-                        Sunrise:{" "}
-                        {times.sunrise.Hours.toString().padStart(2, "0")}:
-                        {times.sunrise.Minutes.toString().padStart(2, "0")}:
-                        {times.sunrise.Seconds.toString().padStart(2, "0")}
-                    </div>
-                    <div>
-                        Sunset: {times.sunset.Hours.toString().padStart(2, "0")}
-                        :{times.sunset.Minutes.toString().padStart(2, "0")}:
-                        {times.sunset.Seconds.toString().padStart(2, "0")}
-                    </div>
+                    <div>Sunrise: {session.sunrise.toISO()}</div>
+                    <div>Sunset: {session.sunset.toISO()}</div>
                 </div>
             </div>
         </div>

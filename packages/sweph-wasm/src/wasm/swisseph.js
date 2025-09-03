@@ -300,54 +300,7 @@ async function Module(moduleArg = {}) {
         );
     }
 
-    /**
-     * Intercept access to a global symbol. This enables us to give informative
-     * warnings/errors when folks attempt to use symbols they did not include in
-     * their build, or no symbols that no longer exist.
-     */ function hookGlobalSymbolAccess(sym, func) {
-        if (
-            typeof globalThis != "undefined" &&
-            !Object.getOwnPropertyDescriptor(globalThis, sym)
-        ) {
-            Object.defineProperty(globalThis, sym, {
-                configurable: true,
-                get() {
-                    func();
-                    return undefined;
-                },
-            });
-        }
-    }
-
-    function missingGlobal(sym, msg) {
-        hookGlobalSymbolAccess(sym, () => {
-            warnOnce(`\`${sym}\` is not longer defined by emscripten. ${msg}`);
-        });
-    }
-
-    missingGlobal("buffer", "Please use HEAP8.buffer or wasmMemory.buffer");
-
-    missingGlobal("asm", "Please use wasmExports instead");
-
     function missingLibrarySymbol(sym) {
-        hookGlobalSymbolAccess(sym, () => {
-            // Can't `abort()` here because it would break code that does runtime
-            // checks.  e.g. `if (typeof SDL === 'undefined')`.
-            var msg = `\`${sym}\` is a library symbol and not included by default; add it to your library.js __deps or to DEFAULT_LIBRARY_FUNCS_TO_INCLUDE on the command line`;
-            // DEFAULT_LIBRARY_FUNCS_TO_INCLUDE requires the name as it appears in
-            // library.js, which means $name for a JS name with no prefix, or name
-            // for a JS name like _name.
-            var librarySymbol = sym;
-            if (!librarySymbol.startsWith("_")) {
-                librarySymbol = "$" + sym;
-            }
-            msg += ` (e.g. -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE='${librarySymbol}')`;
-            if (isExportedByForceFilesystem(sym)) {
-                msg +=
-                    ". Alternatively, forcing filesystem support (-sFORCE_FILESYSTEM) can export this for you";
-            }
-            warnOnce(msg);
-        });
         // Any symbol that is not included from the JS library is also (by definition)
         // not exported on the Module object.
         unexportedRuntimeSymbol(sym);
@@ -501,73 +454,6 @@ async function Module(moduleArg = {}) {
         callRuntimeCallbacks(onPostRuns);
     }
 
-    // A counter of dependencies for calling run(). If we need to
-    // do asynchronous work before running, increment this and
-    // decrement it. Incrementing must happen in a place like
-    // Module.preRun (used by emcc to add file preloading).
-    // Note that you can add dependencies in preRun, even though
-    // it happens right before run - run will be postponed until
-    // the dependencies are met.
-    var runDependencies = 0;
-
-    var dependenciesFulfilled = null;
-
-    // overridden to take different actions when all run dependencies are fulfilled
-    var runDependencyTracking = {};
-
-    var runDependencyWatcher = null;
-
-    function addRunDependency(id) {
-        runDependencies++;
-        Module["monitorRunDependencies"]?.(runDependencies);
-        assert(id, "addRunDependency requires an ID");
-        assert(!runDependencyTracking[id]);
-        runDependencyTracking[id] = 1;
-        if (
-            runDependencyWatcher === null &&
-            typeof setInterval != "undefined"
-        ) {
-            // Check for missing dependencies every few seconds
-            runDependencyWatcher = setInterval(() => {
-                if (ABORT) {
-                    clearInterval(runDependencyWatcher);
-                    runDependencyWatcher = null;
-                    return;
-                }
-                var shown = false;
-                for (var dep in runDependencyTracking) {
-                    if (!shown) {
-                        shown = true;
-                        err("still waiting on run dependencies:");
-                    }
-                    err(`dependency: ${dep}`);
-                }
-                if (shown) {
-                    err("(end of list)");
-                }
-            }, 1e4);
-        }
-    }
-
-    function removeRunDependency(id) {
-        runDependencies--;
-        Module["monitorRunDependencies"]?.(runDependencies);
-        assert(id, "removeRunDependency requires an ID");
-        assert(runDependencyTracking[id]);
-        delete runDependencyTracking[id];
-        if (runDependencies == 0) {
-            if (runDependencyWatcher !== null) {
-                clearInterval(runDependencyWatcher);
-                runDependencyWatcher = null;
-            }
-            if (dependenciesFulfilled) {
-                var callback = dependenciesFulfilled;
-                dependenciesFulfilled = null;
-                callback();
-            }
-        }
-    }
-
     /** @param {string | number} [what] */ function abort(what) {
         Module["onAbort"]?.(what);
         what = "Aborted(" + what + ")";
@@ -707,11 +593,8 @@ async function Module(moduleArg = {}) {
             assert(wasmMemory, "memory not found in wasm exports");
             updateMemoryViews();
             assignWasmExports(wasmExports);
-            removeRunDependency("wasm-instantiate");
             return wasmExports;
         }
-        // wait for the pthread pool (if any)
-        addRunDependency("wasm-instantiate");
         // Prefer streaming instantiation if available.
         // Async compilation can be confusing when an error on the page overwrites Module
         // (for example, if the order of elements is wrong, and the one defining Module is
@@ -820,7 +703,7 @@ async function Module(moduleArg = {}) {
 
     var ptrToString = ptr => {
         assert(typeof ptr === "number");
-        // With CAN_ADDRESS_2GB or MEMORY64, pointers are already unsigned.
+        // Convert to 32-bit unsigned value
         ptr >>>= 0;
         return "0x" + ptr.toString(16).padStart(8, "0");
     };
@@ -1037,15 +920,15 @@ async function Module(moduleArg = {}) {
     };
 
     /**
-     * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the
-     * given array that contains uint8 values, returns a copy of that string as
-     * a Javascript String object. heapOrArray is either a regular array, or a
+     * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the given
+     * array that contains uint8 values, returns a copy of that string as a
+     * Javascript String object. heapOrArray is either a regular array, or a
      * JavaScript typed array view.
      *
      * @param {number} [idx]
      * @param {number} [maxBytesToRead]
-     * @param {boolean} [ignoreNul] - If true, the function will not stop on a
-     *   NUL character.
+     * @param {boolean} [ignoreNul] - If true, the function will not stop on a NUL
+     *   character.
      * @returns {string}
      */ var UTF8ArrayToString = (
         heapOrArray,
@@ -1764,12 +1647,12 @@ async function Module(moduleArg = {}) {
      *
      * @param {number} ptr
      * @param {number} [maxBytesToRead] - An optional length that specifies the
-     *   maximum number of bytes to read. You can omit this parameter to scan
-     *   the string until the first 0 byte. If maxBytesToRead is passed, and the
-     *   string at [ptr, ptr+maxBytesToReadr[ contains a null byte in the
-     *   middle, then the string will cut short at that byte index.
-     * @param {boolean} [ignoreNul] - If true, the function will not stop on a
-     *   NUL character.
+     *   maximum number of bytes to read. You can omit this parameter to scan the
+     *   string until the first 0 byte. If maxBytesToRead is passed, and the string
+     *   at [ptr, ptr+maxBytesToReadr[ contains a null byte in the middle, then the
+     *   string will cut short at that byte index.
+     * @param {boolean} [ignoreNul] - If true, the function will not stop on a NUL
+     *   character.
      * @returns {string}
      */ var UTF8ToString = (ptr, maxBytesToRead, ignoreNul) => {
         assert(
@@ -1923,6 +1806,65 @@ async function Module(moduleArg = {}) {
         while (1) {
             if (!runDependencyTracking[id]) return id;
             id = orig + Math.random();
+        }
+    };
+
+    var runDependencies = 0;
+
+    var dependenciesFulfilled = null;
+
+    var runDependencyTracking = {};
+
+    var runDependencyWatcher = null;
+
+    var removeRunDependency = id => {
+        runDependencies--;
+        Module["monitorRunDependencies"]?.(runDependencies);
+        assert(id, "removeRunDependency requires an ID");
+        assert(runDependencyTracking[id]);
+        delete runDependencyTracking[id];
+        if (runDependencies == 0) {
+            if (runDependencyWatcher !== null) {
+                clearInterval(runDependencyWatcher);
+                runDependencyWatcher = null;
+            }
+            if (dependenciesFulfilled) {
+                var callback = dependenciesFulfilled;
+                dependenciesFulfilled = null;
+                callback();
+            }
+        }
+    };
+
+    var addRunDependency = id => {
+        runDependencies++;
+        Module["monitorRunDependencies"]?.(runDependencies);
+        assert(id, "addRunDependency requires an ID");
+        assert(!runDependencyTracking[id]);
+        runDependencyTracking[id] = 1;
+        if (
+            runDependencyWatcher === null &&
+            typeof setInterval != "undefined"
+        ) {
+            // Check for missing dependencies every few seconds
+            runDependencyWatcher = setInterval(() => {
+                if (ABORT) {
+                    clearInterval(runDependencyWatcher);
+                    runDependencyWatcher = null;
+                    return;
+                }
+                var shown = false;
+                for (var dep in runDependencyTracking) {
+                    if (!shown) {
+                        shown = true;
+                        err("still waiting on run dependencies:");
+                    }
+                    err(`dependency: ${dep}`);
+                }
+                if (shown) {
+                    err("(end of list)");
+                }
+            }, 1e4);
         }
     };
 
@@ -3564,7 +3506,6 @@ async function Module(moduleArg = {}) {
                 // Command-line.
                 try {
                     obj.contents = readBinary(obj.url);
-                    obj.usedBytes = obj.contents.length;
                 } catch (e) {
                     throw new FS.ErrnoError(29);
                 }
@@ -4484,6 +4425,14 @@ async function Module(moduleArg = {}) {
             typeof Module["INITIAL_MEMORY"] == "undefined",
             "Detected runtime INITIAL_MEMORY setting.  Use -sIMPORTED_MEMORY to define wasmMemory dynamically"
         );
+        if (Module["preInit"]) {
+            if (typeof Module["preInit"] == "function")
+                Module["preInit"] = [Module["preInit"]];
+            while (Module["preInit"].length > 0) {
+                Module["preInit"].shift()();
+            }
+        }
+        consumedModuleProp("preInit");
     }
 
     // Begin runtime exports
@@ -4668,8 +4617,6 @@ async function Module(moduleArg = {}) {
 
     var unexportedSymbols = [
         "run",
-        "addRunDependency",
-        "removeRunDependency",
         "out",
         "err",
         "callMain",
@@ -4711,6 +4658,8 @@ async function Module(moduleArg = {}) {
         "wasmTable",
         "getUniqueRunDependency",
         "noExitRuntime",
+        "addRunDependency",
+        "removeRunDependency",
         "addOnPreRun",
         "addOnPostRun",
         "freeTableIndexes",
@@ -5648,8 +5597,6 @@ async function Module(moduleArg = {}) {
         /** @export */ segfault,
     };
 
-    var wasmExports = await createWasm();
-
     // include: postamble.js
     // === Auto-generated postamble setup entry stuff ===
     var calledRun;
@@ -5746,18 +5693,11 @@ async function Module(moduleArg = {}) {
         }
     }
 
-    function preInit() {
-        if (Module["preInit"]) {
-            if (typeof Module["preInit"] == "function")
-                Module["preInit"] = [Module["preInit"]];
-            while (Module["preInit"].length > 0) {
-                Module["preInit"].shift()();
-            }
-        }
-        consumedModuleProp("preInit");
-    }
+    var wasmExports;
 
-    preInit();
+    // In modularize mode the generated code is within a factory function so we
+    // can use await here (since it's not top-level-await).
+    wasmExports = await createWasm();
 
     run();
 

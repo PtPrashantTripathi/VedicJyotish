@@ -58,9 +58,6 @@ export default function App() {
                 )}
             </main>
 
-            {/* <DASHAPAGE showPage={showPage} /> */}
-            {/* <PHALADESHPAGE showPage={showPage} /> */}
-
             {/* <DATEDETAILSPAGE /> */}
 
             <Footer />

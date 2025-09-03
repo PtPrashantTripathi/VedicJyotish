@@ -1,6 +1,9 @@
 // src/hooks/useSessionState.ts
+import { DateTime } from "luxon";
 import { useCallback, useEffect, useState } from "react";
 import type { IErrorType } from "src/components/Errors";
+import { calcHinduTime } from "src/hooks/hinduTime";
+import { calcRiseSet } from "src/services/calcRiseSet";
 import {
     type ISearchParams,
     parseURLSearchParams as parseSearchParams,
@@ -12,6 +15,9 @@ export interface ISessionData {
     nav: boolean;
     data: ISearchParams;
     error: IErrorType[];
+    hinduTime: HinduTime;
+    sunrise: DateTime<true>;
+    sunset: DateTime<true>;
 }
 
 /**
@@ -47,13 +53,48 @@ function updateURL(params: ISearchParams): void {
  * @returns Object containing state and control functions
  */
 export function useSessionState() {
+    const data = parseSearchParams();
+
+    swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
+
+    // Location settings
+    swe.swe_set_topo(data.lon, data.lat, 0);
+
+    // Convert current system time to Julian Day UT
+    const datetime = DateTime.fromISO(data.date, {
+        zone: data.tz_name,
+    });
+    const utc_dt = datetime.toUTC();
+    const tjd_ut = swe.swe_utc_to_jd(
+        utc_dt.year,
+        utc_dt.month,
+        utc_dt.day,
+        utc_dt.hour,
+        utc_dt.minute,
+        utc_dt.second,
+        swe.SE_GREG_CAL
+    )[1];
+
+    // Calculate Hindu Today Sunrise and SunSet
+    const today_sun = calcRiseSet(swe, tjd_ut, swe.SE_SUN, [
+        data.lon,
+        data.lat,
+        0,
+    ]);
+
     // Initialize state from URL parameters
     const [session, setSession] = useState<ISessionData>({
-        data: parseSearchParams(),
+        data,
+        hinduTime: calcHinduTime(today_sun.rise_jd - tjd_ut),
+        sunrise: datetime.plus({
+            days: today_sun.rise_jd - tjd_ut,
+        }) as DateTime<true>,
+        sunset: datetime.plus({
+            days: today_sun.set_jd - tjd_ut,
+        }) as DateTime<true>,
         nav: false,
         error: [],
     });
-
     /**
      * Updates search parameters state and synchronizes with URL. Performs
      * partial updates, merging with existing state.
@@ -115,7 +156,21 @@ export function useSessionState() {
         return () => window.removeEventListener("popstate", handlePopState);
     }, []);
 
-    console.log("session:", JSON.stringify(session, null, 4));
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setSession(prev => ({
+                ...prev,
+                hinduTime: calcHinduTime(
+                    prev.sunrise.hour / 24 +
+                        prev.sunrise.minute / (24 * 60) +
+                        prev.sunrise.second / (24 * 3600)
+                ),
+            }));
+        }, 400);
+        return () => clearInterval(timer);
+    }, []);
+
+    // console.log("session:", JSON.stringify(session, null, 4));
 
     // console.time(session.getSortURL());
     return {

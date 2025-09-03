@@ -15,24 +15,21 @@ export default function KundliYogPhala({
                 if (!phalas || phalas.length === 0) return null;
 
                 return (
-                    <div key={source} className="card mb-4 shadow-sm">
-                        <div className="card-header bg-primary fw-bold text-white">
+                    <div
+                        key={source}
+                        className="card-shadow rounded-xl bg-white p-6">
+                        <h3 className="mb-4 text-xl font-semibold text-purple-600">
                             {source}
-                        </div>
-                        <ul className="list-group list-group-flush">
+                        </h3>
+                        <div className="prose max-w-none">
                             {phalas.map(({ description, effect }, index) => (
-                                <li
+                                <p
                                     key={index}
-                                    className="list-group-item d-flex flex-column">
-                                    <span className="fw-semibold">
-                                        {description.hindi}
-                                    </span>
-                                    <small className="text-muted">
-                                        ➡ {effect.hindi}
-                                    </small>
-                                </li>
+                                    className="mb-4 leading-relaxed text-gray-700">
+                                    {description.hindi} ➡ {effect.hindi}
+                                </p>
                             ))}
-                        </ul>
+                        </div>
                     </div>
                 );
             })}
