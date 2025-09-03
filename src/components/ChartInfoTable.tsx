@@ -1,5 +1,5 @@
-import type { Planet, PlanetEn } from "src/backend/constants/Planet";
-import { DMS } from "src/backend/utils";
+import type { Planet, PlanetEn } from "src/services/constants/Planet";
+import { DMS } from "src/services/utils";
 
 interface Props {
     grahaData: Record<PlanetEn, Planet>;

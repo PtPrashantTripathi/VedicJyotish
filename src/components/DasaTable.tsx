@@ -1,4 +1,4 @@
-import type { Dasha } from "src/backend/calcVimsottariDasa";
+import type { Dasha } from "src/services/calcVimsottariDasa";
 
 interface Props {
     dasa: Dasha;

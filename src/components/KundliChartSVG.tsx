@@ -4,10 +4,10 @@ import {
     type PlanetDetail,
     PlanetDetails,
     type PlanetEn,
-} from "src/backend/constants/Planet";
-import type { RasiNumber } from "src/backend/constants/Rasi";
-import type { LanguageTypes } from "src/backend/types";
-import { NORMALIZE12, percentage } from "src/backend/utils";
+} from "src/services/constants/Planet";
+import type { RasiNumber } from "src/services/constants/Rasi";
+import type { LanguageTypes } from "src/services/types";
+import { NORMALIZE12, percentage } from "src/services/utils";
 
 interface PlanetInfo {
     planet: PlanetDetail;

@@ -1,8 +1,8 @@
 import pako from "pako";
 import { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
-import { ayanamsaNames } from "src/backend/constants/Ayanamsa";
 import { useSessionContext } from "src/contexts/SessionContext";
+import { ayanamsaNames } from "src/services/constants/Ayanamsa";
 import { formatTimezoneOffset } from "src/utils/formatTimezoneOffset";
 
 export default function KundliForm() {

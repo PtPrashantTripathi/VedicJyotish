@@ -1,5 +1,5 @@
-import type { KundliData } from "src/backend/Kundli";
-import { calcYogPhala } from "src/backend/YogPhala";
+import type { KundliData } from "src/services/Kundli";
+import { calcYogPhala } from "src/services/YogPhala";
 
 export default function KundliYogPhala({
     kundliData,

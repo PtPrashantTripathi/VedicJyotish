@@ -38,6 +38,7 @@
         "pako": "latest"
     },
     "devDependencies": {
+        "@types/emscripten": "latest",
         "@eslint/js": "latest",
         "@tailwindcss/vite": "latest",
         "@types/luxon": "latest",

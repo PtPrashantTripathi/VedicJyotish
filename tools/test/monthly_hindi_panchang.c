@@ -11,7 +11,7 @@
  * Output in Hindi with Devanagari script support
  */
 
-// gcc -O0 -Wno-deprecated-declarations  -fsanitize=address -g tools/test/monthly_hindi_panchang.c src/backend/swisseph-wasm/lib/*.c -o main && ./main
+// gcc -O0 -Wno-deprecated-declarations  -fsanitize=address -g tools/test/monthly_hindi_panchang.c src/services/swisseph-wasm/lib/*.c -o main && ./main
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +19,7 @@
 #include <time.h>
 #include <math.h>
 #include <locale.h>
-#include "../../src/backend/swisseph-wasm/lib/swephexp.h"
+#include "../../src/services/swisseph-wasm/lib/swephexp.h"
 
 // Configuration
 #define GEO_LON 80.37 // Default: Mandla, MP, India

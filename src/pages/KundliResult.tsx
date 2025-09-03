@@ -1,13 +1,13 @@
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { Kundli, type KundliData } from "src/backend/Kundli";
-import { DMS } from "src/backend/utils";
 import ChartInfoTable from "src/components/ChartInfoTable";
 import KundliChartSVG from "src/components/KundliChartSVG";
 import KundliYogPhala from "src/components/KundliYogPhala";
 import Loader from "src/components/Loader";
 import VimsottariDasa from "src/components/VimsottariDasa";
 import { useSessionContext } from "src/contexts/SessionContext";
+import { Kundli, type KundliData } from "src/services/Kundli";
+import { DMS } from "src/services/utils";
 import type SwissEPH from "sweph-wasm/index";
 
 export default function KundliResult({ swe }: { swe: SwissEPH }) {

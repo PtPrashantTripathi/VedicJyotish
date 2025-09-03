@@ -133,5 +133,4 @@ node_modules/
 .pnpm/
 
 # pnpm lockfile (if not committed)
-pnpm-lock.yaml
 pnpm-workspace.yaml

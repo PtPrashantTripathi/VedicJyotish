@@ -1,9 +1,9 @@
 import { Calendar, Clock, Globe, Moon, Star, Sun, Users } from "lucide-react";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { getPanchanga } from "src/backend/calcPanchanga";
 import Loader from "src/components/Loader";
 import { useSessionContext } from "src/contexts/SessionContext";
+import { getPanchanga } from "src/services/calcPanchanga";
 import type SwissEPH from "sweph-wasm/index";
 
 export default function Panchang({ swe }: { swe: SwissEPH }) {

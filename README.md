@@ -57,7 +57,7 @@ These datasets are licensed under the
 This project uses the **Swiss Ephemeris** (compiled to WebAssembly) for
 astronomical calculations. The source C code for Swiss Ephemeris is located at:
 
-- `src/backend/swisseph-wasm/swisseph-lib/`
+- `src/services/swisseph-wasm/swisseph-lib/`
 
 Swiss Ephemeris is developed and maintained by **Astrodienst AG** and is made
 available under a **dual licensing model**:

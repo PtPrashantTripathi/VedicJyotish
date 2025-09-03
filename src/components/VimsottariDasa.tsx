@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
-import { calcVimsottariDasa } from "src/backend/calcVimsottariDasa";
-import type { KundliData } from "src/backend/Kundli";
 import { DasaTable } from "src/components/DasaTable";
+import { calcVimsottariDasa } from "src/services/calcVimsottariDasa";
+import type { KundliData } from "src/services/Kundli";
 
 export default function VimsottariDasa({
     kundliData,

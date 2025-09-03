@@ -1,4 +1,4 @@
-import { ayanamsaNames } from "src/backend/constants/Ayanamsa";
+import { ayanamsaNames } from "src/services/constants/Ayanamsa";
 
 /**
  * Validates and parses an Ayanamsa name.

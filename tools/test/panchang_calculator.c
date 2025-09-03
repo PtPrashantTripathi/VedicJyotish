@@ -11,14 +11,14 @@
  * 5. Karana (Half of a Tithi)
  */
 
-// gcc -O0 -Wno-deprecated-declarations  -fsanitize=address -g tools/test/panchang_calculator.c src/backend/swisseph-wasm/lib/*.c -o main && ./main
+// gcc -O0 -Wno-deprecated-declarations  -fsanitize=address -g tools/test/panchang_calculator.c src/services/swisseph-wasm/lib/*.c -o main && ./main
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <math.h>
-#include "../../src/backend/swisseph-wasm/lib/swephexp.h"
+#include "../../src/services/swisseph-wasm/lib/swephexp.h"
 
 // Configuration
 // Location: Mandla, Madhya Pradesh, India

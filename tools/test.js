@@ -7,7 +7,7 @@ import * as fs from "fs";
 const project = new Project();
 
 const sourceFile = project.addSourceFileAtPath(
-    "src/backend/YogPhala/Saravali/getRasiPosition.ts"
+    "src/services/YogPhala/Saravali/getRasiPosition.ts"
 );
 
 const dataVar = sourceFile.getVariableDeclarationOrThrow("effectTable");
