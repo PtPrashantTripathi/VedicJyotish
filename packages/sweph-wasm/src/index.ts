@@ -1880,8 +1880,8 @@ export default class SwissEPH {
             jd_cross.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return jd_cross.readAndFree();
     }
 
@@ -2018,8 +2018,8 @@ export default class SwissEPH {
             ascmc_speed.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
 
         const ret = {} as ConditionalReturnType<
             HS,
@@ -2188,8 +2188,8 @@ export default class SwissEPH {
             ascmc_speed.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
 
         const ret = {} as ConditionalReturnType<
             HS,
@@ -2389,8 +2389,8 @@ export default class SwissEPH {
             tjd_lmt.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return tjd_lmt.readAndFree();
     }
 
@@ -2411,8 +2411,8 @@ export default class SwissEPH {
             tjd_lat.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return tjd_lat.readAndFree();
     }
 
@@ -2452,8 +2452,8 @@ export default class SwissEPH {
             attr.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return toFixedLengthArray(attr.readAndFree(), 11);
     }
 
@@ -2512,8 +2512,8 @@ export default class SwissEPH {
             serr.ptr
         );
         geoposPtr.free();
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return {
             data: ret.readAndFree(),
             Array: toFixedLengthArray(attr.readAndFree(), 11),
@@ -2806,8 +2806,8 @@ export default class SwissEPH {
             xlat.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return {
             jd,
             longitude: xlon.readAndFree(),
@@ -2851,8 +2851,8 @@ export default class SwissEPH {
             xlat.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return {
             jd,
             longitude: xlon.readAndFree(),
@@ -2873,8 +2873,8 @@ export default class SwissEPH {
     swe_mooncross_ut(x2cross: number, jd_ut: number, flag: number): number {
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const jd = this.wasm._swe_mooncross_ut(x2cross, jd_ut, flag, serr.ptr);
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return jd;
     }
 
@@ -2892,8 +2892,8 @@ export default class SwissEPH {
     swe_mooncross(x2cross: number, jd_et: number, flag: number): number {
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const jd = this.wasm._swe_mooncross(x2cross, jd_et, flag, serr.ptr);
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return jd;
     }
 
@@ -2947,8 +2947,8 @@ export default class SwissEPH {
             aph.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return {
             ascending: asc.readAndFree(),
             descending: dsc.readAndFree(),
@@ -3007,8 +3007,8 @@ export default class SwissEPH {
             aph.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return {
             ascending: asc.readAndFree(),
             descending: dsc.readAndFree(),
@@ -3052,8 +3052,8 @@ export default class SwissEPH {
             dtrue.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return {
             max: dmax.readAndFree(),
             min: dmin.readAndFree(),
@@ -3099,8 +3099,8 @@ export default class SwissEPH {
             attr.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return toFixedLengthArray(attr.readAndFree(), 5);
     }
 
@@ -3142,8 +3142,8 @@ export default class SwissEPH {
             attr.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return toFixedLengthArray(attr.readAndFree(), 5);
     }
 
@@ -3328,8 +3328,8 @@ export default class SwissEPH {
         );
         geoposPtr.free();
         starnamePtr.free();
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return ret.readAndFree();
     }
 
@@ -3380,8 +3380,8 @@ export default class SwissEPH {
             ret.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return ret.readAndFree();
     }
 
@@ -3609,8 +3609,8 @@ export default class SwissEPH {
             serr.ptr
         );
         geoposPtr.free();
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return toFixedLengthArray(attr.readAndFree(), 11);
     }
 
@@ -3653,8 +3653,8 @@ export default class SwissEPH {
             TypeConverter.boolToC(backwards),
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return ret.readAndFree();
     }
 
@@ -3776,8 +3776,8 @@ export default class SwissEPH {
             attr.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return {
             data: geopos.readAndFree(),
             Array: toFixedLengthArray(attr.readAndFree(), 11),
@@ -3797,8 +3797,8 @@ export default class SwissEPH {
     swe_solcross_ut(x2cross: number, jd_ut: number, flag: number): number {
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const jd = this.wasm._swe_solcross_ut(x2cross, jd_ut, flag, serr.ptr);
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return jd;
     }
 
@@ -3816,8 +3816,8 @@ export default class SwissEPH {
     swe_solcross(x2cross: number, jd_et: number, flag: number): number {
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const jd = this.wasm._swe_solcross(x2cross, jd_et, flag, serr.ptr);
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return jd;
     }
 
@@ -3880,8 +3880,8 @@ export default class SwissEPH {
         const e = NumberPointer.alloc(this.wasm, "double");
         const serr = StringPointer.alloc(this.wasm, this.AS_MAXCH);
         const flag = this.wasm._swe_time_equ(tjd_ut, e.ptr, serr.ptr);
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return e.readAndFree();
     }
 
@@ -3983,8 +3983,8 @@ export default class SwissEPH {
             ret.ptr,
             serr.ptr
         );
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return ret.readAndFree();
     }
 
@@ -4083,8 +4083,8 @@ export default class SwissEPH {
         datmPtr.free();
         dobsPtr.free();
         objectnamePtr.free();
-        const error = serr.readAndFree();
-        if (flag < this.OK) throw new SWEerror(error, flag);
+        if (flag < this.OK) throw new SWEerror(serr.readAndFree(), flag);
+        serr.free();
         return ret.readAndFree();
     }
 }

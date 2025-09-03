@@ -703,6 +703,7 @@ async function Module(moduleArg = {}) {
         ) {
             wasmExports = instance.exports;
             wasmMemory = wasmExports["memory"];
+            Module["wasmMemory"] = wasmMemory;
             assert(wasmMemory, "memory not found in wasm exports");
             updateMemoryViews();
             assignWasmExports(wasmExports);
@@ -4486,6 +4487,8 @@ async function Module(moduleArg = {}) {
     }
 
     // Begin runtime exports
+    Module["wasmMemory"] = wasmMemory;
+
     Module["setValue"] = setValue;
 
     Module["getValue"] = getValue;
@@ -4671,7 +4674,6 @@ async function Module(moduleArg = {}) {
         "err",
         "callMain",
         "abort",
-        "wasmMemory",
         "wasmExports",
         "HEAPF32",
         "HEAPF64",

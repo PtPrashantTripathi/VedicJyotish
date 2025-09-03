@@ -26,11 +26,9 @@ import { getTithi } from "src/services/constants/Tithi";
 import { type DayEn, VarasDetails } from "src/services/constants/Varas";
 import { getYoga } from "src/services/constants/Yoga";
 import { MOD360 } from "src/services/utils";
-import type SwissEPH from "sweph-wasm/index";
 
 /** Main calculation function */
 export async function getPanchanga(
-    swe: SwissEPH,
     datetime: DateTime<true>,
     longitude: number, // north positive
     latitude: number, // east positive
@@ -139,9 +137,6 @@ export async function getPanchanga(
     const m1 = Math.floor(slast / 30.0) + 1;
     const m2 = Math.floor(snext / 30.0) + 1;
     const masa_num = m1 === m2 ? (m1 % 12) + 1 : (m1 % 12) + 1;
-
-    // Cleanup
-    swe.swe_close();
 
     // Converts a Julian Day to DateTime with original timezone
     const jdToDateTime = (jd: number) => {

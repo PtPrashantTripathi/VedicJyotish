@@ -16,11 +16,10 @@ import KundliResult from "src/pages/KundliResult";
 import MonthlyCalendar from "src/pages/MonthlyCalendar";
 import Panchang from "src/pages/Panchang";
 import Settings from "src/pages/Settings";
-import type SwissEPH from "sweph-wasm/index";
 
 // const KundliResult = lazy(() => import("src/pages/KundliResult"));
 
-export default function App({ swe }: { swe: SwissEPH }) {
+export default function App() {
     const session = useSessionState();
     return (
         <SessionContext value={session}>
@@ -37,19 +36,19 @@ export default function App({ swe }: { swe: SwissEPH }) {
                 {session.data.page === "KundliForm" ? (
                     <KundliForm />
                 ) : session.data.page === "KundliResult" ? (
-                    <KundliResult swe={swe} />
+                    <KundliResult />
                 ) : session.data.page === "KundliMatching" ? (
                     <KundliMatching />
                 ) : session.data.page === "About" ? (
                     <About />
                 ) : session.data.page === "Panchang" ? (
-                    <Panchang swe={swe} />
+                    <Panchang />
                 ) : session.data.page === "MonthlyCalendar" ? (
                     <MonthlyCalendar />
                 ) : session.data.page === "Settings" ? (
                     <Settings />
                 ) : session.data.page === "HinduTime" ? (
-                    <HinduTime swe={swe} />
+                    <HinduTime />
                 ) : session.data.page === "Home" ? (
                     <Home />
                 ) : (

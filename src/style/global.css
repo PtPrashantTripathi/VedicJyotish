@@ -3,16 +3,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@theme {
-    --font-sans:
-        "Noto Sans Devanagari", sans-serif, "Inter", "Geist", ui-sans-serif,
-        system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-        "Segoe UI Symbol", "Noto Color Emoji";
-}
-
 @layer base {
     html {
-        font-family: var(--font-sans);
+        font-family:
+            "Noto Sans Devanagari", sans-serif, "Inter", "Geist", ui-sans-serif,
+            system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+            "Segoe UI Symbol", "Noto Color Emoji";
     }
 
     .panchang-bg {

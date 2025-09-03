@@ -8,9 +8,8 @@ import VimsottariDasa from "src/components/VimsottariDasa";
 import { useSessionContext } from "src/contexts/SessionContext";
 import { Kundli, type KundliData } from "src/services/Kundli";
 import { DMS } from "src/services/utils";
-import type SwissEPH from "sweph-wasm/index";
 
-export default function KundliResult({ swe }: { swe: SwissEPH }) {
+export default function KundliResult() {
     const session = useSessionContext();
 
     const [kundliData, setKundliData] = useState<KundliData | null>(null);
@@ -18,7 +17,6 @@ export default function KundliResult({ swe }: { swe: SwissEPH }) {
     useEffect(() => {
         async function fetchKundli() {
             const result = await Kundli(
-                swe,
                 DateTime.fromISO(`${session.data.date}T${session.data.time}`, {
                     zone: session.data.tz_name,
                 }) as DateTime<true>,
@@ -29,7 +27,7 @@ export default function KundliResult({ swe }: { swe: SwissEPH }) {
         }
 
         fetchKundli();
-    }, [swe, session.data]);
+    }, [session.data]);
 
     if (kundliData) {
         return (

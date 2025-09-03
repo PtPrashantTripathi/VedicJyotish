@@ -206,6 +206,9 @@ class Builder:
  */
 export interface SwissephModule extends EmscriptenModule {
     // --- Standard Emscripten Runtime Methods ---
+    /* [MDN Reference](https://developer.mozilla.org/docs/WebAssembly/Reference/JavaScript_interface/Memory) */
+    wasmMemory: WebAssembly.Memory;
+
     /** Sets a value in the WebAssembly heap memory. */
     setValue: typeof setValue;
 

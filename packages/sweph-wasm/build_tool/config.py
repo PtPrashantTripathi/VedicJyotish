@@ -73,4 +73,5 @@ EXPORTED_RUNTIME_METHODS = [
     "UTF8ToString",
     "lengthBytesUTF8",
     "FS",
+    "wasmMemory",
 ]

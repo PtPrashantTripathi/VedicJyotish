@@ -3,11 +3,9 @@ import type { DateTime } from "luxon";
 import { getPanchanga } from "src/services/calcPanchanga";
 import { Planet, type PlanetEn } from "src/services/constants/Planet";
 import { MOD360 } from "src/services/utils";
-import type SwissEPH from "sweph-wasm/index";
 
 // getPlanetaryPosition
 export async function Kundli(
-    swe: SwissEPH,
     datetime: DateTime<true>,
     longitude: number, // north positive
     latitude: number, // east positive
@@ -136,7 +134,6 @@ export async function Kundli(
     );
 
     const panchanga = await getPanchanga(
-        swe,
         datetime
             .minus({
                 days: planets.Ascendant.degree - planets.Sun.degree < 0 ? 1 : 0,

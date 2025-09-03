@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import Loader from "src/components/Loader";
 import { useSessionContext } from "src/contexts/SessionContext";
 import { getPanchanga } from "src/services/calcPanchanga";
-import type SwissEPH from "sweph-wasm/index";
 
-export default function Panchang({ swe }: { swe: SwissEPH }) {
+export default function Panchang() {
     const session = useSessionContext();
 
     const [panchanga, setPanchanga] = useState<Awaited<
@@ -16,7 +15,6 @@ export default function Panchang({ swe }: { swe: SwissEPH }) {
     useEffect(() => {
         async function fetchPanchanga() {
             const result = await getPanchanga(
-                swe,
                 DateTime.fromISO(session.data.date, {
                     zone: session.data.tz_name,
                 }) as DateTime<true>,
@@ -27,7 +25,7 @@ export default function Panchang({ swe }: { swe: SwissEPH }) {
             console.log(result);
         }
         fetchPanchanga();
-    }, [swe, session.data]);
+    }, [session.data]);
 
     const tabs = {
         overview: {

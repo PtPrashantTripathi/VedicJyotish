@@ -38,9 +38,9 @@
         "pako": "latest"
     },
     "devDependencies": {
-        "@types/emscripten": "latest",
         "@eslint/js": "latest",
         "@tailwindcss/vite": "latest",
+        "@types/emscripten": "latest",
         "@types/luxon": "latest",
         "@types/pako": "latest",
         "@types/react": "latest",
