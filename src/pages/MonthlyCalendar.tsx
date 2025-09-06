@@ -2,7 +2,6 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export default function MonthlyCalendar() {
     return (
-
         <div className="container mx-auto pt-4">
             {/* Main Content */}
 
@@ -17,7 +16,12 @@ export default function MonthlyCalendar() {
                                 Sat Sep 06 2025
                             </h4>
                             <div className="mt-2 flex items-center">
-                                <img className="mr-2" height={32} width={32} src='./assets/moon/moon8.png' />
+                                <img
+                                    className="mr-2"
+                                    height={32}
+                                    width={32}
+                                    src="./assets/moon/moon8.png"
+                                />
                                 <div
                                     className="text-sm text-gray-600"
                                     id="selected_tithi">
@@ -185,104 +189,113 @@ export default function MonthlyCalendar() {
                                     <div className="text-sm">31</div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
-                                    <div className="text-sm font-medium">
-                                        1
-                                    </div>
+                                    <div className="text-sm font-medium">1</div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            अष्टमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">अष्टमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
-                                    <div className="text-sm font-medium">
-                                        2
-                                    </div>
+                                    <div className="text-sm font-medium">2</div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            नवमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">नवमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
-                                    <div className="text-sm font-medium">
-                                        3
-                                    </div>
+                                    <div className="text-sm font-medium">3</div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            दशमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">दशमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
-                                    <div className="text-sm font-medium">
-                                        4
-                                    </div>
+                                    <div className="text-sm font-medium">4</div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            एकादशी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">एकादशी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
-                                    <div className="text-sm font-medium">
-                                        5
-                                    </div>
+                                    <div className="text-sm font-medium">5</div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            द्वादशी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">द्वादशी</div>
                                     </div>
                                 </div>
                                 <div className="today-highlight h-20 cursor-pointer rounded border border-yellow-300 p-1 hover:bg-gray-50">
-                                    <div className="text-sm font-medium">
-                                        6
-                                    </div>
+                                    <div className="text-sm font-medium">6</div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            चतुर्दशी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">चतुर्दशी</div>
                                     </div>
                                 </div>
 
                                 {/* Week 2 */}
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
-                                    <div className="text-sm font-medium">
-                                        7
-                                    </div>
+                                    <div className="text-sm font-medium">7</div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            प्रथम
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">प्रथम</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
-                                    <div className="text-sm font-medium">
-                                        8
-                                    </div>
+                                    <div className="text-sm font-medium">8</div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            द्वितीया
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">द्वितीया</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
-                                    <div className="text-sm font-medium">
-                                        9
-                                    </div>
+                                    <div className="text-sm font-medium">9</div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            तृतीया
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">तृतीया</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -290,10 +303,13 @@ export default function MonthlyCalendar() {
                                         10
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            चतुर्थी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">चतुर्थी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -301,10 +317,13 @@ export default function MonthlyCalendar() {
                                         11
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            पंचमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">पंचमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -312,10 +331,13 @@ export default function MonthlyCalendar() {
                                         12
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            षष्ठी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">षष्ठी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -323,10 +345,13 @@ export default function MonthlyCalendar() {
                                         13
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            सप्तमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">सप्तमी</div>
                                     </div>
                                 </div>
 
@@ -336,10 +361,13 @@ export default function MonthlyCalendar() {
                                         14
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            अष्टमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">अष्टमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -347,10 +375,13 @@ export default function MonthlyCalendar() {
                                         15
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            नवमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">नवमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -358,10 +389,13 @@ export default function MonthlyCalendar() {
                                         16
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            दशमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">दशमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -369,10 +403,13 @@ export default function MonthlyCalendar() {
                                         17
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            द्वादशी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">द्वादशी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -380,10 +417,13 @@ export default function MonthlyCalendar() {
                                         18
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            त्रयोदशी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">त्रयोदशी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -391,10 +431,13 @@ export default function MonthlyCalendar() {
                                         19
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            चतुर्दशी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">चतुर्दशी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -402,10 +445,13 @@ export default function MonthlyCalendar() {
                                         20
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            चतुर्दशी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">चतुर्दशी</div>
                                     </div>
                                 </div>
 
@@ -415,10 +461,13 @@ export default function MonthlyCalendar() {
                                         21
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            अमावस्या
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">अमावस्या</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -426,10 +475,13 @@ export default function MonthlyCalendar() {
                                         22
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            प्रथम
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">प्रथम</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -437,10 +489,13 @@ export default function MonthlyCalendar() {
                                         23
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            द्वितीया
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">द्वितीया</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -448,10 +503,13 @@ export default function MonthlyCalendar() {
                                         24
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            तृतीया
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">तृतीया</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -459,10 +517,13 @@ export default function MonthlyCalendar() {
                                         25
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            चतुर्थी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">चतुर्थी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -470,10 +531,13 @@ export default function MonthlyCalendar() {
                                         26
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            पंचमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">पंचमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -481,10 +545,13 @@ export default function MonthlyCalendar() {
                                         27
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            षष्ठी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">षष्ठी</div>
                                     </div>
                                 </div>
 
@@ -494,10 +561,13 @@ export default function MonthlyCalendar() {
                                         28
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            सप्तमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">सप्तमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -505,10 +575,13 @@ export default function MonthlyCalendar() {
                                         29
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            अष्टमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">अष्टमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
@@ -516,10 +589,13 @@ export default function MonthlyCalendar() {
                                         30
                                     </div>
                                     <div className="text-center text-xs">
-                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
-                                        <div className="text-xs">
-                                            नवमी
-                                        </div>
+                                        <img
+                                            className="mx-auto mb-1 scale-75"
+                                            height={32}
+                                            width={32}
+                                            src="./assets/moon/moon8.png"
+                                        />
+                                        <div className="text-xs">नवमी</div>
                                     </div>
                                 </div>
                                 <div className="h-20 cursor-pointer rounded border p-1 text-gray-400 hover:bg-gray-50">
@@ -537,12 +613,8 @@ export default function MonthlyCalendar() {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
-
-
-        </div >
+        </div>
     );
 }

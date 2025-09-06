@@ -1,5 +1,5 @@
 body {
-    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-family: "Noto Sans Devanagari", sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,7 +60,7 @@ h1 {
 
 .nakshatra-divider {
     stroke: #ccc;
-    stroke-width: 0.5;  
+    stroke-width: 0.5;
 }
 
 .rashi-text {
@@ -69,7 +69,7 @@ h1 {
     fill: #444;
     text-anchor: middle; /* Center text horizontally */
     dominant-baseline: middle; /* Center text vertically */
-    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-family: "Noto Sans Devanagari", sans-serif;
 }
 
 .nakshatra-text {
@@ -77,7 +77,7 @@ h1 {
     fill: #666;
     text-anchor: middle;
     dominant-baseline: middle;
-    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-family: "Noto Sans Devanagari", sans-serif;
 }
 
 .planet-text {
@@ -96,11 +96,11 @@ h1 {
 }
 .selected-rashi-text {
     font-size: 18px;
-    fill: #838;   
-    text-shadow: 0px 0px 2px #88aa99 ;
+    fill: #838;
+    text-shadow: 0px 0px 2px #88aa99;
 }
 .selected-nakshatra-text {
-    fill: #388;   
+    fill: #388;
     text-shadow: 0px 0px 2px #88aa99;
 }
 .selection-line {
@@ -111,28 +111,27 @@ h1 {
     pointer-events: none; /* Prevent the line itself from intercepting clicks */
 }
 
-
 .orbit {
     fill: none;
     stroke: #444;
     stroke-width: 0.5px;
-    stroke-dasharray: 2 2; 
+    stroke-dasharray: 2 2;
 }
 
 .planet-label {
     font-family: sans-serif;
-    fill: #000; 
+    fill: #000;
     cursor: pointer;
 }
 
-.planet-clickable .planet-body{
+.planet-clickable .planet-body {
     cursor: pointer;
 }
-.planet-clickable:hover{
+.planet-clickable:hover {
     filter: drop-shadow(0 0 2px #888);
 }
 
-.planet-clickable:hover .planet-body  {
+.planet-clickable:hover .planet-body {
     stroke: black;
     stroke-width: 1px;
     filter: brightness(1.2);
@@ -144,7 +143,8 @@ h1 {
     font-family: sans-serif;
 }
 
-.kundali-grid polygon, .kundali-grid line {
+.kundali-grid polygon,
+.kundali-grid line {
     stroke: #656;
     stroke-width: 1.5;
 }
@@ -157,14 +157,14 @@ h1 {
 }
 
 .kundali-house-labels .ascendant-marker {
-    fill: #FF0000;
+    fill: #ff0000;
 }
 
 .planet-symbol {
-    font-size:14px;
+    font-size: 14px;
     text-anchor: middle;
     dominant-baseline: central;
-    cursor: pointer; 
+    cursor: pointer;
 }
 .selected-planet {
     filter: drop-shadow(0 0 3px yellow);
@@ -223,7 +223,9 @@ h1 {
     font-size: 1.1em;
     color: #333;
 }
-#controls #year-input { width: 56px;}
+#controls #year-input {
+    width: 56px;
+}
 #controls #hour-input,
 #controls #minute-input {
     width: 40px; /* Example: Make time inputs slightly narrower */
@@ -266,4 +268,3 @@ h1 {
     background-color: #fff;
     opacity: 1;
 }
-

@@ -15,9 +15,7 @@ export default function KundliYogPhala({
                 if (!phalas || phalas.length === 0) return null;
 
                 return (
-                    <div
-                        key={source}
-                        className="rounded-xl bg-white p-6">
+                    <div key={source} className="rounded-xl bg-white p-6">
                         <h3 className="mb-4 text-xl font-semibold text-purple-600">
                             {source}
                         </h3>

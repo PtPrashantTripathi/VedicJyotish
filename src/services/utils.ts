@@ -178,3 +178,7 @@ export function decimalToHMS(days: number) {
         .plus({ days })
         .toFormat("HH'h' mm'm' ss's'");
 }
+
+export function convertDegreesToRadians(degrees: number) {
+    return degrees * (Math.PI / 180);
+}

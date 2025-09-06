@@ -1,229 +1,312 @@
+import { DateTime } from "luxon";
+import { useEffect, useMemo, useState } from "react";
 import { useSessionContext } from "src/contexts/SessionContext";
-import { percentage } from "src/services/utils";
+import { calcHinduTime } from "src/services/calcHinduTime";
+import { calcRiseSet } from "src/services/calcRiseSet";
+import { MOD360 } from "src/services/utils";
 
 export default function HinduTime() {
     const session = useSessionContext();
-    console.log(swe.swe_version());
-    const settings = {
-        size: 400,
-    };
 
-    const padding = percentage(5, settings.size);
-    const outer_most_radius = percentage(50, settings.size);
-    const outer_radius = percentage(47.5, settings.size);
-    const inner_radius = percentage(45, settings.size);
-    const center = percentage(50, settings.size);
+    swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
+
+    // Location settings
+    swe.swe_set_topo(session.data.lon, session.data.lat, 0);
+
+    // Convert current system time to Julian Day UT
+    const datetime = DateTime.fromISO(session.data.date, {
+        zone: session.data.tz_name,
+    });
+    const utc_dt = datetime.toUTC();
+    const tjd_ut = swe.swe_utc_to_jd(
+        utc_dt.year,
+        utc_dt.month,
+        utc_dt.day,
+        utc_dt.hour,
+        utc_dt.minute,
+        utc_dt.second,
+        swe.SE_GREG_CAL
+    )[1];
+
+    // Calculate Hindu Today Sunrise and SunSet
+    const today_sun = useMemo(
+        () =>
+            calcRiseSet(tjd_ut, swe.SE_SUN, [
+                session.data.lon,
+                session.data.lat,
+                0,
+            ]),
+        [session.data.lat, session.data.lon, tjd_ut]
+    );
+    const [hinduTime, setHinduTime] = useState(
+        calcHinduTime(today_sun.rise_jd - tjd_ut)
+    );
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setHinduTime(calcHinduTime(today_sun.rise_jd - tjd_ut));
+        }, 400);
+        return () => clearInterval(timer);
+    }, [tjd_ut, today_sun.rise_jd]);
+
+    const settings = { size: 400 };
+    const padding = settings.size * 0.01;
+    const outerRadius = settings.size * 0.5;
+    const innerRadius = settings.size * 0.475;
+    const center = settings.size / 2;
 
     // Calculate arc path (more complex, requires trigonometry)
     const startAngle =
-        2 * Math.PI * session.sunset.diff(session.sunrise).as("days") -
-        Math.PI / 2;
+        2 * Math.PI * (today_sun.set_jd - today_sun.rise_jd) - Math.PI / 2;
     const endAngle = 2 * Math.PI - Math.PI / 2;
-    // Calculate arc coordinates
-    const startX = center + inner_radius * Math.cos(startAngle);
-    const startY = center + inner_radius * Math.sin(startAngle);
-    const endX = center + inner_radius * Math.cos(endAngle);
-    const endY = center + inner_radius * Math.sin(endAngle);
-    // Determine if we need the large arc flag
-    let arcSpan = endAngle - startAngle;
-    if (arcSpan < 0) arcSpan += 360;
-    const largeArcFlag = arcSpan > 180 ? 1 : 0;
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={settings.size}
-                height={settings.size}
-                viewBox={`${-padding} ${-padding} ${settings.size + padding * 2} ${settings.size + padding * 2}`}
-                shapeRendering="geometricPrecision"
-                textRendering="geometricPrecision"
-                imageRendering="optimizeQuality"
-                fillRule="evenodd"
-                clipRule="evenodd">
-                {/* Time period labels */}
-                <g
-                    id="time_period_labels"
-                    transform={`translate(${center}, ${center})`}>
-                    {[
-                        "Ushaa",
-                        "Purvaanha",
-                        "Madhyaanha",
-                        "Aparaahnha",
-                        "Saayankala",
-                        "Pradosha",
-                        "Nishitha",
-                        "Triyaama",
-                    ].map((period_name, i) => (
-                        <text
-                            key={period_name}
-                            x="0"
-                            y={-outer_most_radius}
-                            fill="#000000"
-                            textAnchor="middle"
-                            fontSize={12}
-                            transform={`rotate(${i * 45 - 20})`}>
-                            {period_name}
-                        </text>
-                    ))}
-                </g>
+        <div className="font-inter flex flex-col items-center justify-center bg-gray-50 p-4">
+            <div className="flex w-full max-w-lg flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-6 shadow-xl">
+                <h1 className="mb-4 text-2xl font-semibold text-gray-800">
+                    Hindu Time
+                </h1>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={settings.size}
+                    height={settings.size}
+                    viewBox={`${-padding} ${-padding} ${settings.size + padding * 2} ${settings.size + padding * 2}`}
+                    shapeRendering="geometricPrecision"
+                    textRendering="geometricPrecision"
+                    imageRendering="optimizeQuality"
+                    fillRule="evenodd"
+                    clipRule="evenodd">
+                    {/* Time Period Labels (8 parts of the day) */}
+                    <g id="time_period_labels">
+                        {[
+                            "Ushaa",
+                            "Purvaanha",
+                            "Madhyaanha",
+                            "Aparaahnha",
+                            "Saayankala",
+                            "Pradosha",
+                            "Nishitha",
+                            "Triyaama",
+                        ].map((period_name, i) => (
+                            <text
+                                key={period_name}
+                                x={
+                                    center +
+                                    innerRadius *
+                                        0.75 *
+                                        Math.sin(((2 * i - 1) * Math.PI) / 8)
+                                }
+                                y={
+                                    center -
+                                    innerRadius *
+                                        0.75 *
+                                        Math.cos(((2 * i - 1) * Math.PI) / 8)
+                                }
+                                fill="#000000"
+                                textAnchor="middle"
+                                fontSize={10}
+                                alignmentBaseline="middle">
+                                {period_name}
+                            </text>
+                        ))}
+                    </g>
 
-                {/* Outer circle */}
-                <circle
-                    cx={center}
-                    cy={center}
-                    r={outer_radius}
-                    fill="none"
-                    stroke="#000000"
-                    strokeWidth="2"
-                />
+                    {/* Outer Circle */}
+                    <circle
+                        id="outer_circle"
+                        cx={center}
+                        cy={center}
+                        r={outerRadius}
+                        fill="none"
+                        stroke="#2D3748"
+                        strokeWidth={2}
+                    />
+                    {/* Inner circle */}
+                    <circle
+                        id="inner_circle"
+                        cx={center}
+                        cy={center}
+                        r={innerRadius}
+                        fill="none"
+                        stroke="#000000"
+                        strokeWidth={1}
+                    />
 
-                {/* Inner circle */}
-                <circle
-                    cx={center}
-                    cy={center}
-                    r={inner_radius}
-                    fill="none"
-                    stroke="#000000"
-                    strokeWidth="1"
-                />
-
-                {/* Numbers (12-hour format) */}
-                <g id="numbers" transform={`translate(${center}, ${center})`}>
-                    {Array.from({ length: 12 }, (_, i) => {
-                        i += 1;
-                        return (
-                            <g key={i} transform={`rotate(${i * 30})`}>
+                    {/* Numbers (12-hour format) */}
+                    <g id="numbers">
+                        {Array.from({ length: 12 }, (_, i) => {
+                            const angle = (i * 30 + 180) % 360;
+                            const r = innerRadius * 0.9;
+                            return (
                                 <text
-                                    x="0"
-                                    y={-percentage(36.25, settings.size)}
+                                    key={i}
+                                    x={
+                                        center +
+                                        r * Math.sin((angle * Math.PI) / 180)
+                                    }
+                                    y={
+                                        center +
+                                        r * Math.cos((angle * Math.PI) / 180)
+                                    }
                                     textAnchor="middle"
-                                    fontSize={percentage(4.5, settings.size)}
+                                    alignmentBaseline="middle"
+                                    fontSize={12}
                                     fontWeight="bold"
                                     fill="#000000">
-                                    {i * 5}
+                                    {60 - i * 5}
                                 </text>
-                            </g>
-                        );
-                    })}
-                </g>
+                            );
+                        })}
+                    </g>
 
-                {/* Tick marks */}
-                <g id="ticks" transform={`translate(${center}, ${center})`}>
-                    {Array.from({ length: 60 }, (_, i) => {
-                        return (
-                            <g key={`tick-${i}`} transform={`rotate(${i * 6})`}>
+                    {/* Tick Marks (60 ticks for Ghati/Pal) */}
+                    <g id="ticks">
+                        {Array.from({ length: 60 }, (_, i) => {
+                            const isMajor = i % 5 === 0;
+                            const length =
+                                innerRadius * (1 - (isMajor ? 0.05 : 0.035));
+
+                            return (
                                 <line
-                                    x1="0"
-                                    y1={-percentage(45, settings.size)}
-                                    x2="0"
+                                    key={`tick-${i}`}
+                                    x1={
+                                        center +
+                                        innerRadius *
+                                            Math.sin((i * Math.PI) / 30)
+                                    }
+                                    y1={
+                                        center -
+                                        innerRadius *
+                                            Math.cos((i * Math.PI) / 30)
+                                    }
+                                    x2={
+                                        center +
+                                        length * Math.sin((i * Math.PI) / 30)
+                                    }
                                     y2={
-                                        i % 5
-                                            ? -percentage(42.5, settings.size)
-                                            : -percentage(40, settings.size)
+                                        center -
+                                        length * Math.cos((i * Math.PI) / 30)
                                     }
-                                    stroke="#000000"
-                                    strokeWidth={
-                                        i % 5
-                                            ? percentage(0.25, settings.size)
-                                            : percentage(0.5, settings.size)
-                                    }
+                                    stroke="#2D3748"
+                                    strokeWidth={isMajor ? 1.5 : 0.75}
+                                    strokeLinecap="round"
                                 />
-                            </g>
-                        );
-                    })}
-                </g>
+                            );
+                        })}
+                    </g>
 
-                {/* Day/Night Arc (Night time shaded) */}
-                <path
-                    d={`M ${center} ${center} L ${startX} ${startY} A ${inner_radius} ${inner_radius} 0 ${largeArcFlag} 1 ${endX} ${endY} Z`}
-                    fill="#00000030"
-                    stroke="#000000"
-                    strokeWidth={percentage(0.5, settings.size)}
-                />
-
-                {/* Ghati hand (hour equivalent) */}
-                <g
-                    id="Ghati-hand"
-                    transform={`translate(${center}, ${center}) rotate(${session.hinduTime.ghati * 6})`}>
-                    <line
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2={-percentage(20, settings.size)}
+                    {/* Day/Night Arc (Night time shaded) */}
+                    <path
+                        d={
+                            `M ${center},${center} ` +
+                            `L ${center + innerRadius * Math.cos(startAngle)},${center + innerRadius * Math.sin(startAngle)} ` +
+                            `A ${innerRadius},${innerRadius} ` +
+                            `0 ${MOD360(endAngle - startAngle) > 180 ? 1 : 0} 1 ` +
+                            `${center + innerRadius * Math.cos(endAngle)} ${center + innerRadius * Math.sin(endAngle)} ` +
+                            `Z`
+                        }
+                        fill="#33333333"
                         stroke="#000000"
-                        strokeWidth={percentage(1.5, settings.size)}
+                        strokeWidth={2}
+                    />
+
+                    {/* Ghati Hand */}
+                    <line
+                        x1={center}
+                        y1={center}
+                        x2={
+                            center +
+                            innerRadius *
+                                0.7 *
+                                Math.sin((hinduTime.ghati * 6 * Math.PI) / 180)
+                        }
+                        y2={
+                            center -
+                            innerRadius *
+                                0.7 *
+                                Math.cos((hinduTime.ghati * 6 * Math.PI) / 180)
+                        }
+                        stroke="#2D3748"
+                        strokeWidth="3"
                         strokeLinecap="round"
                     />
-                    <circle
-                        cx="0"
-                        cy="0"
-                        r={percentage(2, settings.size)}
-                        fill="#000000"
-                    />
-                </g>
-
-                {/* Pal hand (minute equivalent) */}
-                <g
-                    id="Pal-hand"
-                    transform={`translate(${center}, ${center}) rotate(${session.hinduTime.pal * 6})`}>
+                    {/* Pal Hand */}
                     <line
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2={-percentage(30, settings.size)}
-                        stroke="#000000"
-                        strokeWidth={percentage(1, settings.size)}
+                        x1={center}
+                        y1={center}
+                        x2={
+                            center +
+                            innerRadius *
+                                0.8 *
+                                Math.sin((hinduTime.pal * 6 * Math.PI) / 180)
+                        }
+                        y2={
+                            center -
+                            innerRadius *
+                                0.8 *
+                                Math.cos((hinduTime.pal * 6 * Math.PI) / 180)
+                        }
+                        stroke="#2D3748"
+                        strokeWidth="2"
                         strokeLinecap="round"
                     />
-                    <circle
-                        cx="0"
-                        cy="0"
-                        r={percentage(1.5, settings.size)}
-                        fill="#000000"
-                    />
-                </g>
-
-                {/* Vipal hand (second equivalent) */}
-                <g
-                    id="vipal-hand"
-                    transform={`translate(${center}, ${center}) rotate(${session.hinduTime.vipal * 6})`}>
+                    {/* Vipal Hand */}
                     <line
-                        x1="0"
-                        y1={percentage(5, settings.size)}
-                        x2="0"
-                        y2={-percentage(35, settings.size)}
-                        stroke="#000000"
-                        strokeWidth={percentage(0.5, settings.size)}
+                        x1={center}
+                        y1={center}
+                        x2={
+                            center +
+                            innerRadius *
+                                0.9 *
+                                Math.sin((hinduTime.vipal * Math.PI) / 180)
+                        }
+                        y2={
+                            center -
+                            innerRadius *
+                                0.9 *
+                                Math.cos((hinduTime.vipal * Math.PI) / 180)
+                        }
+                        stroke="#DC2626"
+                        strokeWidth="1.5"
                         strokeLinecap="round"
                     />
+
+                    {/* Center Cap */}
                     <circle
-                        cx="0"
-                        cy="0"
-                        r={percentage(1, settings.size)}
-                        fill="#000000"
+                        cx={center}
+                        cy={center}
+                        r="6"
+                        fill="#fff"
+                        stroke="#2D3748"
+                        strokeWidth="2"
                     />
-                </g>
+                </svg>
 
-                {/* Center dot */}
-                <circle
-                    cx={center}
-                    cy={center}
-                    r={percentage(1.5, settings.size)}
-                    fill="#fff"
-                />
-            </svg>
-
-            <div className="mt-4 text-center">
-                <span
-                    id="hindutime"
-                    className="block text-2xl font-bold text-gray-800">
-                    {`${String(session.hinduTime.ghati).padStart(2, "0")}:${String(session.hinduTime.pal).padStart(2, "0")}:${String(session.hinduTime.vipal).padStart(2, "0")}`}
-                </span>
-
-                <div className="mt-2 text-sm text-gray-500">
-                    <div>Sunrise: {session.sunrise.toISO()}</div>
-                    <div>Sunset: {session.sunset.toISO()}</div>
+                <div className="mt-6 flex flex-col items-center gap-2 text-center">
+                    <span className="text-4xl font-extrabold text-gray-900 drop-shadow">
+                        {`${String(hinduTime.ghati).padStart(2, "0")}:${String(hinduTime.pal).padStart(2, "0")}:${String(hinduTime.vipal).padStart(2, "0")}`}
+                    </span>
+                    <div className="text-sm font-medium text-gray-500">
+                        <div>
+                            Sunrise:{" "}
+                            <span className="font-semibold text-gray-700">
+                                {datetime
+                                    .plus({
+                                        days: today_sun.rise_jd - tjd_ut,
+                                    })
+                                    .toISO()}
+                            </span>
+                        </div>
+                        <div>
+                            Sunset:{" "}
+                            <span className="font-semibold text-gray-700">
+                                {datetime
+                                    .plus({
+                                        days: today_sun.set_jd - tjd_ut,
+                                    })
+                                    .toISO()}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
