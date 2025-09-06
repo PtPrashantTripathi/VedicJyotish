@@ -6,7 +6,7 @@ export default function KundliMatching() {
         <div id="matching-form">
             <div className="container mx-auto px-4 py-8">
                 <div className="mx-auto max-w-4xl">
-                    <div className="card-shadow rounded-xl bg-white p-8">
+                    <div className="rounded-xl bg-white p-8">
                         <div className="mb-6 flex items-center">
                             <button
                                 onClick={() =>

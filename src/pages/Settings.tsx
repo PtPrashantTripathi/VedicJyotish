@@ -17,7 +17,7 @@ export default function Settings() {
 
                 <div className="mx-auto max-w-2xl space-y-6">
                     {/* <!-- Location Settings  --> */}
-                    <div className="card-shadow rounded-xl bg-white p-6">
+                    <div className="rounded-xl bg-white p-6">
                         <h3 className="mb-4 text-xl font-semibold text-purple-600">
                             Location Settings
                         </h3>
@@ -71,7 +71,7 @@ export default function Settings() {
                     </div>
 
                     {/* <!-- Language & Display  --> */}
-                    <div className="card-shadow rounded-xl bg-white p-6">
+                    <div className="rounded-xl bg-white p-6">
                         <h3 className="mb-4 text-xl font-semibold text-blue-600">
                             Language & Display
                         </h3>
@@ -127,7 +127,7 @@ export default function Settings() {
                     </div>
 
                     {/* <!-- Calculation Settings  --> */}
-                    <div className="card-shadow rounded-xl bg-white p-6">
+                    <div className="rounded-xl bg-white p-6">
                         <h3 className="mb-4 text-xl font-semibold text-green-600">
                             Calculation Settings
                         </h3>
@@ -171,7 +171,7 @@ export default function Settings() {
                     </div>
 
                     {/* <!-- Notifications  --> */}
-                    <div className="card-shadow rounded-xl bg-white p-6">
+                    <div className="rounded-xl bg-white p-6">
                         <h3 className="mb-4 text-xl font-semibold text-orange-600">
                             Notifications
                         </h3>

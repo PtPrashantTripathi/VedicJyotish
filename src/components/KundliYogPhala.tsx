@@ -17,7 +17,7 @@ export default function KundliYogPhala({
                 return (
                     <div
                         key={source}
-                        className="card-shadow rounded-xl bg-white p-6">
+                        className="rounded-xl bg-white p-6">
                         <h3 className="mb-4 text-xl font-semibold text-purple-600">
                             {source}
                         </h3>

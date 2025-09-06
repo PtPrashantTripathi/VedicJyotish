@@ -11,38 +11,6 @@
             "Segoe UI Symbol", "Noto Color Emoji";
     }
 
-    .panchang-bg {
-        background: linear-gradient(
-            135deg,
-            #ff9a9e 0%,
-            #fecfef 50%,
-            #fecfef 100%
-        );
-    }
-
-    .card-shadow {
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    }
-
-    .feature-card {
-        transition: all 0.3s ease;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .glow-text {
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    }
-
-    .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 1px;
-    }
-
     .pulse-animation {
         animation: pulse 2s infinite;
     }

@@ -16,7 +16,7 @@ export default function Home() {
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {/* <!-- Kundli Creation  --> */}
                         <div
-                            className="feature-card card-shadow cursor-pointer rounded-xl bg-white p-6"
+                            className="cursor-pointer rounded-xl bg-white p-6"
                             onClick={() =>
                                 session.updateData({ page: "KundliForm" })
                             }>
@@ -39,7 +39,7 @@ export default function Home() {
 
                         {/* <!-- Kundli Matching  --> */}
                         <div
-                            className="feature-card card-shadow cursor-pointer rounded-xl bg-white p-6"
+                            className="cursor-pointer rounded-xl bg-white p-6"
                             onClick={() =>
                                 session.updateData({ page: "KundliMatching" })
                             }>
@@ -62,7 +62,7 @@ export default function Home() {
 
                         {/* <!-- Dasha Analysis  --> */}
                         <div
-                            className="feature-card card-shadow cursor-pointer rounded-xl bg-white p-6"
+                            className="cursor-pointer rounded-xl bg-white p-6"
                             onClick={() =>
                                 session.updateData({ page: "HinduTime" })
                             }>
@@ -84,7 +84,7 @@ export default function Home() {
 
                         {/* <!-- Phaladesh  --> */}
                         <div
-                            className="feature-card card-shadow cursor-pointer rounded-xl bg-white p-6"
+                            className="cursor-pointer rounded-xl bg-white p-6"
                             onClick={() =>
                                 session.updateData({ page: "About" })
                             }>
@@ -107,7 +107,7 @@ export default function Home() {
 
                         {/* <!-- Panchang Calendar  --> */}
                         <div
-                            className="feature-card card-shadow cursor-pointer rounded-xl bg-white p-6"
+                            className="cursor-pointer rounded-xl bg-white p-6"
                             onClick={() =>
                                 session.updateData({
                                     page: "MonthlyCalendar",
@@ -131,7 +131,7 @@ export default function Home() {
 
                         {/* <!-- Settings  --> */}
                         <div
-                            className="feature-card card-shadow cursor-pointer rounded-xl bg-white p-6"
+                            className="cursor-pointer rounded-xl bg-white p-6"
                             onClick={() =>
                                 session.updateData({ page: "Settings" })
                             }>

@@ -1,0 +1,269 @@
+body {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#zodiac-container {
+    position: relative; /* Crucial: Establishes positioning context */
+    width: 100vmin; /* Use viewport units for responsiveness */
+    max-width: 800px;
+    height: 95vmin;
+    max-height: 800px;
+    margin: auto;
+    display: flex; /* Make it a flex container */
+    justify-content: center; /* Center children horizontally */
+    align-items: center; /* Center children vertically */
+}
+
+#zodiacWheel {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* SVG Element Styles */
+.wheel-background {
+    fill: #fff;
+    stroke: #ccc;
+    stroke-width: 1;
+}
+
+.rashi-circle {
+    fill: none;
+    stroke: #aaa;
+    stroke-width: 1;
+}
+
+.nakshatra-circle {
+    fill: none;
+    stroke: #bbb;
+    stroke-width: 1;
+    stroke-dasharray: 5, 3; /* Dashed line for distinction */
+}
+.inner-circle {
+    fill: rgb(0, 0, 155);
+}
+.rashi-divider {
+    stroke: #ddd;
+    stroke-width: 1;
+}
+
+.nakshatra-divider {
+    stroke: #ccc;
+    stroke-width: 0.5;  
+}
+
+.rashi-text {
+    font-size: 14px; /* Adjust as needed */
+    font-weight: bold;
+    fill: #444;
+    text-anchor: middle; /* Center text horizontally */
+    dominant-baseline: middle; /* Center text vertically */
+    font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
+.nakshatra-text {
+    font-size: 10px; /* Adjust as needed */
+    fill: #666;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
+.planet-text {
+    font-size: 12px;
+    fill: #0000cc; /* Blue for planets */
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    cursor: default; /* Indicate it's not interactive (unless you add tooltips) */
+}
+.planet-position {
+    font-size: 9px;
+    fill: #cc0000; /* Red for degrees */
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+.selected-rashi-text {
+    font-size: 18px;
+    fill: #838;   
+    text-shadow: 0px 0px 2px #88aa99 ;
+}
+.selected-nakshatra-text {
+    fill: #388;   
+    text-shadow: 0px 0px 2px #88aa99;
+}
+.selection-line {
+    stroke: rgb(201, 114, 0); /* Or any highlight color */
+    stroke-width: 1.5;
+    stroke-dasharray: 5 3; /* Dashed line */
+    stroke-linecap: round;
+    pointer-events: none; /* Prevent the line itself from intercepting clicks */
+}
+
+
+.orbit {
+    fill: none;
+    stroke: #444;
+    stroke-width: 0.5px;
+    stroke-dasharray: 2 2; 
+}
+
+.planet-label {
+    font-family: sans-serif;
+    fill: #000; 
+    cursor: pointer;
+}
+
+.planet-clickable .planet-body{
+    cursor: pointer;
+}
+.planet-clickable:hover{
+    filter: drop-shadow(0 0 2px #888);
+}
+
+.planet-clickable:hover .planet-body  {
+    stroke: black;
+    stroke-width: 1px;
+    filter: brightness(1.2);
+    cursor: pointer;
+}
+.zodiac-text {
+    fill: #224499;
+    font-size: 10px;
+    font-family: sans-serif;
+}
+
+.kundali-grid polygon, .kundali-grid line {
+    stroke: #656;
+    stroke-width: 1.5;
+}
+
+.kundali-house-labels text {
+    font-size: 12px;
+    fill: #555;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+.kundali-house-labels .ascendant-marker {
+    fill: #FF0000;
+}
+
+.planet-symbol {
+    font-size:14px;
+    text-anchor: middle;
+    dominant-baseline: central;
+    cursor: pointer; 
+}
+.selected-planet {
+    filter: drop-shadow(0 0 3px yellow);
+}
+
+.sun-label {
+    font-weight: bold;
+}
+.sun-body {
+    filter: drop-shadow(0 0 5px gold); /* Add a glow effect */
+}
+
+#controls {
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
+    background-color: #f0f0f0; /* Light background for controls */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-block; /* Center the block */
+    max-width: 90%; /* Prevent overflow on small screens */
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+#controls .button1 {
+    padding: 4px 8px; /* Slightly more padding */
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #555;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.2;
+    min-width: 30px; /* Ensure minimum width */
+    text-align: center;
+    margin: 3px; /* Add margin around buttons */
+}
+#controls .button1:hover {
+    background-color: #d0d0d0;
+}
+#controls label {
+    margin: 0 5px 0 10px;
+    vertical-align: middle;
+}
+#controls input[type="number"] {
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #888;
+    vertical-align: middle;
+    font-size: 14px;
+}
+#current-date-display {
+    display: block; /* Put date on its own line */
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+#controls #year-input { width: 56px;}
+#controls #hour-input,
+#controls #minute-input {
+    width: 40px; /* Example: Make time inputs slightly narrower */
+}
+
+#time-scrubber {
+    width: 90%; /* Adjust width as needed */
+    height: 25px;
+    background-color: #555;
+    border: 1px solid #888;
+    border-radius: 5px;
+    cursor: ew-resize; /* East-West resize cursor indicates horizontal dragging */
+    margin: 5px auto; /* Center it a bit */
+    position: relative; /* Needed for positioning the indicator */
+    touch-action: none; /* Prevent scrolling on touch devices */
+    user-select: none; /* Prevent text selection during drag */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#scrubber-indicator {
+    position: absolute;
+    left: 50%; /* Start in the middle */
+    top: 0;
+    width: 4px; /* Width of the indicator line */
+    height: 100%;
+    background-color: #eee;
+    transform: translateX(-50%); /* Center the indicator line */
+    pointer-events: none; /* Don't let the indicator interfere with dragging */
+    opacity: 0.7;
+}
+
+/* Optional: Style change during active drag */
+#time-scrubber.active {
+    background-color: #999;
+    border-color: #aaa;
+}
+#time-scrubber.active #scrubber-indicator {
+    background-color: #fff;
+    opacity: 1;
+}
+

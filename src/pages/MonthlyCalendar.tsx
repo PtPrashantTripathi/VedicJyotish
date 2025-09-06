@@ -1,394 +1,548 @@
-import { useSessionContext } from "src/contexts/SessionContext";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+
 export default function MonthlyCalendar() {
-    const session = useSessionContext();
-
-    // Calendar navigation
-    let currentMonth = 7; // August (0-based)
-    let currentYear = 2025;
-
-    function changeMonth(direction: number) {
-        currentMonth += direction;
-        if (currentMonth > 11) {
-            currentMonth = 0;
-            currentYear++;
-        } else if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
-        }
-
-        const months = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-        ];
-        const calendarmonthyear = document.getElementById(
-            "calendar-month-year"
-        );
-        if (calendarmonthyear) {
-            calendarmonthyear.textContent = `${months[currentMonth]} ${currentYear}`;
-        }
-    }
-    // Show date details
-    function showDateDetails(date: string) {
-        const [year, month, day] = date.split("-").map(parseInt);
-        const dateObj = new Date(year, month - 1, day);
-
-        const detaildate = document.getElementById("detail-date");
-        if (detaildate)
-            detaildate.textContent = dateObj.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-            });
-        session.updateData({ page: "Home" }); // date-details
-    }
     return (
-        <div id="panchang-calendar">
-            <div className="container mx-auto px-4 py-8">
-                <div className="mb-6 flex items-center justify-between">
-                    <div className="flex items-center">
-                        <button
-                            onClick={() => session.updateData({ page: "Home" })}
-                            className="mr-4 text-yellow-600 hover:text-yellow-800">
-                            <i className="fas fa-arrow-left text-xl"></i>
-                        </button>
-                        <h2 className="text-2xl font-bold text-gray-800">
-                            Panchang Calendar
-                        </h2>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <button
-                            onClick={() => changeMonth(-1)}
-                            className="p-2 text-gray-600 hover:text-gray-800">
-                            <i className="fas fa-chevron-left"></i>
-                        </button>
-                        <h3
-                            id="calendar-month-year"
-                            className="text-lg font-semibold">
-                            August 2025
-                        </h3>
-                        <button
-                            onClick={() => changeMonth(1)}
-                            className="p-2 text-gray-600 hover:text-gray-800">
-                            <i className="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
 
-                <div className="card-shadow rounded-xl bg-white p-6">
-                    {/* <!-- Calendar Header  --> */}
-                    <div className="calendar-grid mb-2">
-                        <div className="p-3 text-center font-semibold text-red-600">
-                            Sun
-                        </div>
-                        <div className="p-3 text-center font-semibold text-gray-700">
-                            Mon
-                        </div>
-                        <div className="p-3 text-center font-semibold text-gray-700">
-                            Tue
-                        </div>
-                        <div className="p-3 text-center font-semibold text-gray-700">
-                            Wed
-                        </div>
-                        <div className="p-3 text-center font-semibold text-gray-700">
-                            Thu
-                        </div>
-                        <div className="p-3 text-center font-semibold text-gray-700">
-                            Fri
-                        </div>
-                        <div className="p-3 text-center font-semibold text-blue-600">
-                            Sat
-                        </div>
-                    </div>
+        <div className="container mx-auto pt-4">
+            {/* Main Content */}
 
-                    {/* <!-- Calendar Days  --> */}
-                    <div className="calendar-grid rounded-lg bg-gray-100">
-                        {/* <!-- Week 1  --> */}
-                        <div className="bg-gray-100 p-3"></div>
-                        <div className="bg-gray-100 p-3"></div>
-                        <div className="bg-gray-100 p-3"></div>
-                        <div className="bg-gray-100 p-3"></div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-01")}>
-                            <div className="font-semibold">1</div>
-                            <div className="text-xs text-purple-600">
-                                Purnima
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-02")}>
-                            <div className="font-semibold">2</div>
-                            <div className="text-xs text-orange-600">
-                                Pratipada
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-03")}>
-                            <div className="font-semibold">3</div>
-                            <div className="text-xs text-green-600">
-                                Dwitiya
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                {/* Left Panel - Day Details */}
+                <div className="lg:col-span-1">
+                    <div className="rounded-lg border bg-white shadow-sm">
+                        <div className="border-b bg-gray-50 p-4">
+                            <h4
+                                className="text-lg font-semibold text-gray-800"
+                                id="day_info">
+                                Sat Sep 06 2025
+                            </h4>
+                            <div className="mt-2 flex items-center">
+                                <img className="mr-2" height={32} width={32} src='./assets/moon/moon8.png' />
+                                <div
+                                    className="text-sm text-gray-600"
+                                    id="selected_tithi">
+                                    चतुर्दशी, शुक्ल
+                                    <br />
+                                    भाद्रपद, 2082 विश्वावसु
+                                </div>
                             </div>
                         </div>
 
-                        {/* <!-- Week 2  --> */}
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-04")}>
-                            <div className="font-semibold text-red-600">4</div>
-                            <div className="text-xs text-blue-600">Tritiya</div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-05")}>
-                            <div className="font-semibold">5</div>
-                            <div className="text-xs text-purple-600">
-                                Chaturthi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-06")}>
-                            <div className="font-semibold">6</div>
-                            <div className="text-xs text-orange-600">
-                                Panchami
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-07")}>
-                            <div className="font-semibold">7</div>
-                            <div className="text-xs text-green-600">
-                                Shashthi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-08")}>
-                            <div className="font-semibold">8</div>
-                            <div className="text-xs text-red-600">Saptami</div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-09")}>
-                            <div className="font-semibold">9</div>
-                            <div className="text-xs text-blue-600">Ashtami</div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-blue-100 p-3 hover:bg-blue-200"
-                            onClick={() => showDateDetails("2025-08-09")}>
-                            <div className="font-semibold text-blue-700">9</div>
-                            <div className="text-xs text-blue-700">Today</div>
-                        </div>
-
-                        {/* <!-- Week 3  --> */}
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-11")}>
-                            <div className="font-semibold text-red-600">11</div>
-                            <div className="text-xs text-orange-600">
-                                Dashami
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-12")}>
-                            <div className="font-semibold">12</div>
-                            <div className="text-xs text-green-600">
-                                Ekadashi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-13")}>
-                            <div className="font-semibold">13</div>
-                            <div className="text-xs text-purple-600">
-                                Dwadashi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-14")}>
-                            <div className="font-semibold">14</div>
-                            <div className="text-xs text-red-600">
-                                Trayodashi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-15")}>
-                            <div className="font-semibold">15</div>
-                            <div className="text-xs text-orange-600">
-                                Chaturdashi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-16")}>
-                            <div className="font-semibold">16</div>
-                            <div className="text-xs text-green-600">
-                                Amavasya
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-17")}>
-                            <div className="font-semibold text-blue-600">
-                                17
-                            </div>
-                            <div className="text-xs text-blue-600">
-                                Pratipada
-                            </div>
-                        </div>
-
-                        {/* <!-- Week 4  --> */}
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-18")}>
-                            <div className="font-semibold text-red-600">18</div>
-                            <div className="text-xs text-purple-600">
-                                Dwitiya
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-19")}>
-                            <div className="font-semibold">19</div>
-                            <div className="text-xs text-orange-600">
-                                Tritiya
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-20")}>
-                            <div className="font-semibold">20</div>
-                            <div className="text-xs text-green-600">
-                                Chaturthi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-21")}>
-                            <div className="font-semibold">21</div>
-                            <div className="text-xs text-red-600">Panchami</div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-22")}>
-                            <div className="font-semibold">22</div>
-                            <div className="text-xs text-blue-600">
-                                Shashthi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-23")}>
-                            <div className="font-semibold">23</div>
-                            <div className="text-xs text-purple-600">
-                                Saptami
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-24")}>
-                            <div className="font-semibold text-blue-600">
-                                24
-                            </div>
-                            <div className="text-xs text-orange-600">
-                                Ashtami
-                            </div>
-                        </div>
-
-                        {/* <!-- Week 5  --> */}
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-25")}>
-                            <div className="font-semibold text-red-600">25</div>
-                            <div className="text-xs text-green-600">Navami</div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-26")}>
-                            <div className="font-semibold">26</div>
-                            <div className="text-xs text-red-600">Dashami</div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-27")}>
-                            <div className="font-semibold">27</div>
-                            <div className="text-xs text-blue-600">
-                                Ekadashi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-28")}>
-                            <div className="font-semibold">28</div>
-                            <div className="text-xs text-purple-600">
-                                Dwadashi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-29")}>
-                            <div className="font-semibold">29</div>
-                            <div className="text-xs text-orange-600">
-                                Trayodashi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-30")}>
-                            <div className="font-semibold">30</div>
-                            <div className="text-xs text-green-600">
-                                Chaturdashi
-                            </div>
-                        </div>
-                        <div
-                            className="calendar-day cursor-pointer border bg-white p-3 hover:bg-blue-50"
-                            onClick={() => showDateDetails("2025-08-31")}>
-                            <div className="font-semibold text-blue-600">
-                                31
-                            </div>
-                            <div className="text-xs text-red-600">Purnima</div>
+                        <div className="p-4">
+                            <table
+                                className="w-full text-sm"
+                                id="tithi_details">
+                                <tbody>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            तिथि
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            चतुर्दशी
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            नक्षत्र
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            शतभिष, गो
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            योग
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            सुकर्मा
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            करण
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            वाणिज
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            वार
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            रविवार
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            माह
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            भाद्रपद शुक्ल पक्ष
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            वर्ष
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            2082 विश्वावसु
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            चंद्रमा राशि
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            ♒ कुंभ
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            सूर्य राशि
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            ♌ सिंह
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            सूर्योदय
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            06:12:18
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-gray-50">
+                                        <td className="py-2 text-gray-600">
+                                            सूर्यास्त
+                                        </td>
+                                        <td className="py-2 font-medium text-green-700">
+                                            18:37:23
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
 
-                {/* <!-- Legend  --> */}
-                <div className="card-shadow mt-6 rounded-xl bg-white p-4">
-                    <h3 className="mb-3 font-semibold">Legend</h3>
-                    <div className="grid gap-4 text-sm md:grid-cols-4">
-                        <div className="flex items-center">
-                            <div className="mr-2 h-4 w-4 rounded bg-purple-600"></div>
-                            <span>Purnima/Amavasya</span>
+                {/* Right Panel - Calendar */}
+                <div className="lg:col-span-2">
+                    <div className="rounded-lg border bg-white shadow-sm">
+                        {/* Calendar Header */}
+                        <div className="flex items-center justify-between border-b p-4">
+                            <h2 className="text-2xl font-semibold text-gray-800">
+                                September 2025
+                            </h2>
+                            <div className="flex space-x-2">
+                                <button
+                                    className="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                                    id="prev-month">
+                                    <FaArrowLeft />
+                                </button>
+                                <button
+                                    className="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                                    id="next-month">
+                                    <FaArrowRight />
+                                </button>
+                            </div>
                         </div>
-                        <div className="flex items-center">
-                            <div className="mr-2 h-4 w-4 rounded bg-orange-600"></div>
-                            <span>Special Tithi</span>
-                        </div>
-                        <div className="flex items-center">
-                            <div className="mr-2 h-4 w-4 rounded bg-green-600"></div>
-                            <span>Auspicious Day</span>
-                        </div>
-                        <div className="flex items-center">
-                            <div className="mr-2 h-4 w-4 rounded bg-red-600"></div>
-                            <span>Festival</span>
+
+                        {/* Calendar Grid */}
+                        <div className="p-4">
+                            {/* Days of week header */}
+                            <div className="mb-2 grid grid-cols-7 gap-1">
+                                <div className="p-2 text-center text-sm font-medium text-gray-600">
+                                    Sun
+                                </div>
+                                <div className="p-2 text-center text-sm font-medium text-gray-600">
+                                    Mon
+                                </div>
+                                <div className="p-2 text-center text-sm font-medium text-gray-600">
+                                    Tue
+                                </div>
+                                <div className="p-2 text-center text-sm font-medium text-gray-600">
+                                    Wed
+                                </div>
+                                <div className="p-2 text-center text-sm font-medium text-gray-600">
+                                    Thu
+                                </div>
+                                <div className="p-2 text-center text-sm font-medium text-gray-600">
+                                    Fri
+                                </div>
+                                <div className="p-2 text-center text-sm font-medium text-gray-600">
+                                    Sat
+                                </div>
+                            </div>
+
+                            {/* Calendar days */}
+                            <div
+                                className="grid grid-cols-7 gap-1"
+                                id="calendar-grid">
+                                {/* Week 1 */}
+                                <div className="h-20 cursor-pointer rounded border p-1 text-gray-400 hover:bg-gray-50">
+                                    <div className="text-sm">31</div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        1
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            अष्टमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        2
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            नवमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        3
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            दशमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        4
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            एकादशी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        5
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            द्वादशी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="today-highlight h-20 cursor-pointer rounded border border-yellow-300 p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        6
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            चतुर्दशी
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Week 2 */}
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        7
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            प्रथम
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        8
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            द्वितीया
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        9
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            तृतीया
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        10
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            चतुर्थी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        11
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            पंचमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        12
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            षष्ठी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        13
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            सप्तमी
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Week 3 */}
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        14
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            अष्टमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        15
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            नवमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        16
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            दशमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        17
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            द्वादशी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        18
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            त्रयोदशी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        19
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            चतुर्दशी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        20
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            चतुर्दशी
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Week 4 */}
+                                <div className="amavasya-highlight h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        21
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            अमावस्या
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        22
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            प्रथम
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        23
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            द्वितीया
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        24
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            तृतीया
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        25
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            चतुर्थी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        26
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            पंचमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        27
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            षष्ठी
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Week 5 */}
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        28
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            सप्तमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        29
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            अष्टमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 hover:bg-gray-50">
+                                    <div className="text-sm font-medium">
+                                        30
+                                    </div>
+                                    <div className="text-center text-xs">
+                                        <img className="mx-auto mb-1 scale-75" height={32} width={32} src='./assets/moon/moon8.png' />
+                                        <div className="text-xs">
+                                            नवमी
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 text-gray-400 hover:bg-gray-50">
+                                    <div className="text-sm">1</div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 text-gray-400 hover:bg-gray-50">
+                                    <div className="text-sm">2</div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 text-gray-400 hover:bg-gray-50">
+                                    <div className="text-sm">3</div>
+                                </div>
+                                <div className="h-20 cursor-pointer rounded border p-1 text-gray-400 hover:bg-gray-50">
+                                    <div className="text-sm">4</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
             </div>
-        </div>
+
+
+        </div >
     );
 }

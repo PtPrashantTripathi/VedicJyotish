@@ -1,10 +1,6 @@
 // src/hooks/useSessionState.ts
-import { DateTime } from "luxon";
 import { useCallback, useEffect, useState } from "react";
 import type { IErrorType } from "src/components/Errors";
-import { calcHinduTime } from "src/hooks/hinduTime";
-import { calcRiseSet } from "src/services/calcRiseSet";
-import type { HinduTime } from "src/types";
 import {
     type ISearchParams,
     parseURLSearchParams as parseSearchParams,
@@ -16,9 +12,6 @@ export interface ISessionData {
     nav: boolean;
     data: ISearchParams;
     error: IErrorType[];
-    hinduTime: HinduTime;
-    sunrise: DateTime<true>;
-    sunset: DateTime<true>;
 }
 
 /**
@@ -56,39 +49,9 @@ function updateURL(params: ISearchParams): void {
 export function useSessionState() {
     const data = parseSearchParams();
 
-    swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
-
-    // Location settings
-    swe.swe_set_topo(data.lon, data.lat, 0);
-
-    // Convert current system time to Julian Day UT
-    const datetime = DateTime.fromISO(data.date, {
-        zone: data.tz_name,
-    });
-    const utc_dt = datetime.toUTC();
-    const tjd_ut = swe.swe_utc_to_jd(
-        utc_dt.year,
-        utc_dt.month,
-        utc_dt.day,
-        utc_dt.hour,
-        utc_dt.minute,
-        utc_dt.second,
-        swe.SE_GREG_CAL
-    )[1];
-
-    // Calculate Hindu Today Sunrise and SunSet
-    const today_sun = calcRiseSet(tjd_ut, swe.SE_SUN, [data.lon, data.lat, 0]);
-
     // Initialize state from URL parameters
     const [session, setSession] = useState<ISessionData>({
         data,
-        hinduTime: calcHinduTime(today_sun.rise_jd - tjd_ut),
-        sunrise: datetime.plus({
-            days: today_sun.rise_jd - tjd_ut,
-        }) as DateTime<true>,
-        sunset: datetime.plus({
-            days: today_sun.set_jd - tjd_ut,
-        }) as DateTime<true>,
         nav: false,
         error: [],
     });
@@ -107,8 +70,8 @@ export function useSessionState() {
                 data: { ...prev.data, ...input },
             };
 
-            // Sync with URL (using setTimeout to avoid state update batching issues)
-            setTimeout(() => updateURL(updated.data), 0);
+            // Sync with URL
+            updateURL(updated.data);
 
             return updated;
         });
@@ -118,28 +81,20 @@ export function useSessionState() {
      * Generates a short URL with all parameters base64-encoded in an `id`
      * parameter. Useful for sharing complete application state via URL.
      *
-     * @param {ISearchParams} [data] - Optional specific parameters (defaults to
-     *   current state)
      * @returns {string} Complete short URL with encoded parameters
      */
-    const getShortURL = useCallback(
-        (input?: ISearchParams): string => {
-            const params = new URLSearchParams(
-                searchParamKeys.map(key => [
-                    key,
-                    String((input || session.data)[key]),
-                ])
-            );
+    const getShortURL = useCallback((): string => {
+        const params = new URLSearchParams(
+            searchParamKeys.map(key => [key, String(session.data[key])])
+        );
 
-            return (
-                window.location.origin +
-                window.location.pathname +
-                "?id=" +
-                btoa(params.toString())
-            );
-        },
-        [session]
-    );
+        return (
+            window.location.origin +
+            window.location.pathname +
+            "?id=" +
+            btoa(params.toString())
+        );
+    }, [session]);
 
     // Handle browser navigation (back/forward buttons)
     useEffect(() => {
@@ -154,23 +109,9 @@ export function useSessionState() {
         return () => window.removeEventListener("popstate", handlePopState);
     }, []);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setSession(prev => ({
-                ...prev,
-                hinduTime: calcHinduTime(
-                    prev.sunrise.hour / 24 +
-                        prev.sunrise.minute / (24 * 60) +
-                        prev.sunrise.second / (24 * 3600)
-                ),
-            }));
-        }, 400);
-        return () => clearInterval(timer);
-    }, []);
+    console.log("session:", JSON.stringify(session, null, 4));
 
-    // console.log("session:", JSON.stringify(session, null, 4));
-
-    // console.time(session.getSortURL());
+    console.log(getShortURL());
     return {
         ...session,
         setSession,
