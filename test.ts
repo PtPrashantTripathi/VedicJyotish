@@ -1,9 +1,9 @@
 import { DateTime } from "luxon";
+import SwissEPH from "src/packages/sweph-wasm/src";
+import { StringPointer } from "src/packages/wasp-lib";
 import { Kundli } from "src/services/Kundli";
-import SwissEPH from "sweph-wasm/index";
-import { StringPointer } from "wasp-lib/index";
 
-const swe = await SwissEPH.init();
+globalThis.swe = await SwissEPH.init();
 
 // Path to Swiss Ephemeris data files.
 await swe.swe_set_ephe_path("./ephe", [

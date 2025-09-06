@@ -1,18 +1,9 @@
-import { MapPin, Menu, Settings, Share2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { FaBars } from "react-icons/fa";
 import { useSessionContext } from "src/contexts/SessionContext";
 import { pageDetails } from "src/pages/pageDetails";
 
 export default function Header() {
     const session = useSessionContext();
-    const [currentTime, setCurrentTime] = useState(new Date());
-
-    useEffect(() => {
-        const timerId = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 1000);
-        return () => clearInterval(timerId);
-    }, []);
 
     const pageDetail = pageDetails[session.data.page];
     return (
@@ -28,7 +19,7 @@ export default function Header() {
                             aria-expanded={!session.nav}
                             aria-controls="drawer"
                             aria-label="Open main menu">
-                            <Menu size={24} />
+                            <FaBars title="abc" />
                         </button>
 
                         <div className="flex items-center space-x-3">
@@ -43,31 +34,6 @@ export default function Header() {
                                     {pageDetail.subtitle}
                                 </p>
                             </div>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                        <div className="text-right">
-                            <div className="font-mono text-2xl font-bold">
-                                {currentTime.toLocaleTimeString("en-IN", {
-                                    hour12: true,
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    second: "2-digit",
-                                })}
-                            </div>
-                            <div className="flex items-center text-sm text-purple-200">
-                                <MapPin size={14} className="mr-1" />
-                                {session.data.city}
-                            </div>
-                        </div>
-                        <div className="flex space-x-2">
-                            <button className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
-                                <Share2 size={18} />
-                            </button>
-                            <button className="rounded-lg bg-white/10 p-2 transition-colors hover:bg-white/20">
-                                <Settings size={18} />
-                            </button>
                         </div>
                     </div>
                 </div>

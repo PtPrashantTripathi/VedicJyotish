@@ -20,7 +20,7 @@
     "type": "module",
     "main": "index.html",
     "scripts": {
-        "build": "python -m packages.sweph-wasm.build_tool -t web && tsc -b && vite build",
+        "build": "python3 -m packages.sweph-wasm.build_tool -t web && tsc -b && vite build",
         "build:database": "python3 tools/generate_database.py",
         "build:dev": "npm run build && npm run build:devtool",
         "build:devtool": "python3 tools/gen_devtools_json.py",
@@ -54,7 +54,6 @@
         "eslint-plugin-unused-imports": "latest",
         "fixed-len-array": "latest",
         "globals": "latest",
-        "lucide-react": "latest",
         "prettier": "latest",
         "prettier-plugin-jsdoc": "latest",
         "prettier-plugin-tailwindcss": "latest",
@@ -73,5 +72,5 @@
         "pnpm": ">=10"
     },
     "typeScriptVersion": "latest",
-    "packageManager": "pnpm@10.15.0"
+    "packageManager": "pnpm@10.15.1"
 }

@@ -1,9 +1,9 @@
-interface TimeSpan {
+export interface TimeSpan {
     start: number;
     end: number;
 }
 
-interface HinduTime {
+export interface HinduTime {
     ghati: number;
     pal: number;
     vipal: number;

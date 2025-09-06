@@ -68,13 +68,13 @@ export async function getPanchanga(
     const geopos = toFixedLengthArray([longitude, latitude, 0], 3);
 
     // Calculate Hindu Today Sunrise and SunSet
-    const today_sun = calcRiseSet(swe, tjd_ut, swe.SE_SUN, geopos);
+    const today_sun = calcRiseSet(tjd_ut, swe.SE_SUN, geopos);
 
     // Calculate Hindu Next Day Sunrise
-    const tomorrow_sun = calcRiseSet(swe, tjd_ut + 1, swe.SE_SUN, geopos);
+    const tomorrow_sun = calcRiseSet(tjd_ut + 1, swe.SE_SUN, geopos);
 
     // Calculate Hindu Day Sunrise and SunSet
-    const today_moon = calcRiseSet(swe, today_sun.rise_jd, swe.SE_MOON, geopos);
+    const today_moon = calcRiseSet(today_sun.rise_jd, swe.SE_MOON, geopos);
 
     // Vara (Weekday) - No calculation needed, direct function
     const vara = VarasDetails[datetime.weekdayLong as DayEn];
@@ -82,11 +82,10 @@ export async function getPanchanga(
     // Tithi - Optimized calculation
     const tithi = getTithi(sun_lon, moon_lon);
     const tithi_start_jd = find_lunar_event_time(
-        swe,
         tjd_ut - 0.5,
         tithi.range.start
     );
-    const tithi_end_jd = find_lunar_event_time(swe, tjd_ut, tithi.range.end);
+    const tithi_end_jd = find_lunar_event_time(tjd_ut, tithi.range.end);
 
     // Nakshatra - Use direct swe_mooncross_ut
     const nakshatra = getNakshatra(moon_lon);
@@ -104,20 +103,18 @@ export async function getPanchanga(
     // Yoga - Optimized calculation
     const yoga = getYoga(sun_lon, moon_lon);
     const yoga_start_jd = find_yoga_crossing_time(
-        swe,
         tjd_ut - 0.5,
         yoga.range.start
     );
-    const yoga_end_jd = find_yoga_crossing_time(swe, tjd_ut, yoga.range.end);
+    const yoga_end_jd = find_yoga_crossing_time(tjd_ut, yoga.range.end);
 
     // Karana - Optimized calculation
     const karana = getKarana(sun_lon, moon_lon);
     const karana_start_jd = find_lunar_event_time(
-        swe,
         tjd_ut - 0.25,
         karana.range.start
     );
-    const karana_end_jd = find_lunar_event_time(swe, tjd_ut, karana.range.end);
+    const karana_end_jd = find_lunar_event_time(tjd_ut, karana.range.end);
 
     // Masa
     const slast = MOD360(

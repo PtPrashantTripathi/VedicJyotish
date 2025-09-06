@@ -1,13 +1,10 @@
 import {
-    FaBookOpen,
     FaCalendarAlt,
     FaClock,
     FaCog,
     FaInfoCircle,
     FaOm,
     FaRegCalendarAlt,
-    FaRegCalendarCheck,
-    FaSmile,
     FaStar,
     FaStudiovinari,
     FaUsers,
@@ -20,10 +17,7 @@ export type ValidPageType =
     | "KundliForm"
     | "KundliResult"
     | "MonthlyCalendar"
-    | "Festivals"
-    | "MyTithi"
     | "KundliMatching"
-    | "Muhurta"
     | "HinduTime"
     | "Settings"
     | "About";
@@ -48,18 +42,7 @@ export const pageDetails: Record<ValidPageType, PageDetail> = {
         subtitle: "Today's Panchang Details",
         page: "Panchang",
     },
-    Festivals: {
-        icon: FaSmile,
-        title: "त्यौहार",
-        subtitle: "त्यौहार एवं उत्सव के दिन",
-        page: "Festivals",
-    },
-    MyTithi: {
-        icon: FaRegCalendarCheck,
-        title: "मेरी तिथि",
-        subtitle: "अपनी तिथि सुरक्षित करें",
-        page: "MyTithi",
-    },
+
     KundliForm: {
         icon: FaStar,
         title: "कुंडली",
@@ -71,12 +54,6 @@ export const pageDetails: Record<ValidPageType, PageDetail> = {
         title: "कुंडली मिलान",
         subtitle: "गुण मिलान, अष्टकूट",
         page: "KundliMatching",
-    },
-    Muhurta: {
-        icon: FaBookOpen,
-        title: "मुहूर्त",
-        subtitle: "मुहूर्त, चौघड़िया",
-        page: "Muhurta",
     },
     HinduTime: {
         icon: FaClock,

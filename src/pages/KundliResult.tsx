@@ -35,9 +35,7 @@ export default function KundliResult() {
                 <div className="container mx-auto px-4 py-8">
                     <div className="mb-6 flex items-center">
                         <button
-                            onClick={() =>
-                                session.updateData({ page: "Home" })
-                            }
+                            onClick={() => session.updateData({ page: "Home" })}
                             className="mr-4 text-green-600 hover:text-green-800">
                             <i className="fas fa-arrow-left text-xl"></i>
                         </button>
@@ -47,7 +45,6 @@ export default function KundliResult() {
                     </div>
 
                     <div className="space-y-6">
-
                         <section>
                             <table>
                                 <thead>
@@ -59,11 +56,18 @@ export default function KundliResult() {
                                 <tbody>
                                     <tr>
                                         <td>datetime</td>
-                                        <td>{kundliData.panchanga.datetime.toISO()}</td>
+                                        <td>
+                                            {kundliData.panchanga.datetime.toISO()}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>weekday</td>
-                                        <td>{kundliData.panchanga.vara.name.hindi}</td>
+                                        <td>
+                                            {
+                                                kundliData.panchanga.vara.name
+                                                    .hindi
+                                            }
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>daybirth</td>
@@ -103,7 +107,11 @@ export default function KundliResult() {
                                     </tr>
                                     <tr>
                                         <td>ayanamsa</td>
-                                        <td>{DMS(kundliData.ayanamsa).toString()}</td>
+                                        <td>
+                                            {DMS(
+                                                kundliData.ayanamsa
+                                            ).toString()}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -119,53 +127,56 @@ export default function KundliResult() {
 
                             <h3>Ascendant Chart</h3>
                             <KundliChartSVG
-                                chartData={Object.values(kundliData.planets).map(
-                                    planet => ({
-                                        planet_name: planet.name.english,
-                                        degree: planet.rasi.degree,
-                                        rasi_num: planet.rasi.rasi_num,
-                                    })
-                                )}
+                                chartData={Object.values(
+                                    kundliData.planets
+                                ).map(planet => ({
+                                    planet_name: planet.name.english,
+                                    degree: planet.rasi.degree,
+                                    rasi_num: planet.rasi.rasi_num,
+                                }))}
                             />
                             <h3>Hora Chart</h3>
                             <KundliChartSVG
-                                chartData={Object.values(kundliData.planets).map(
-                                    planet => ({
-                                        planet_name: planet.name.english,
-                                        degree: planet.divisional.hora.degree,
-                                        rasi_num: planet.divisional.hora.rasi_num,
-                                    })
-                                )}
+                                chartData={Object.values(
+                                    kundliData.planets
+                                ).map(planet => ({
+                                    planet_name: planet.name.english,
+                                    degree: planet.divisional.hora.degree,
+                                    rasi_num: planet.divisional.hora.rasi_num,
+                                }))}
                             />
                             <h3>Shashthamsa Chart</h3>
                             <KundliChartSVG
-                                chartData={Object.values(kundliData.planets).map(
-                                    planet => ({
-                                        planet_name: planet.name.english,
-                                        degree: planet.divisional.shashtamsa.degree,
-                                        rasi_num: planet.divisional.shashtamsa.rasi_num,
-                                    })
-                                )}
+                                chartData={Object.values(
+                                    kundliData.planets
+                                ).map(planet => ({
+                                    planet_name: planet.name.english,
+                                    degree: planet.divisional.shashtamsa.degree,
+                                    rasi_num:
+                                        planet.divisional.shashtamsa.rasi_num,
+                                }))}
                             />
                             <h3>Ashthamsa chart</h3>
                             <KundliChartSVG
-                                chartData={Object.values(kundliData.planets).map(
-                                    planet => ({
-                                        planet_name: planet.name.english,
-                                        degree: planet.divisional.ashtamsa.degree,
-                                        rasi_num: planet.divisional.ashtamsa.rasi_num,
-                                    })
-                                )}
+                                chartData={Object.values(
+                                    kundliData.planets
+                                ).map(planet => ({
+                                    planet_name: planet.name.english,
+                                    degree: planet.divisional.ashtamsa.degree,
+                                    rasi_num:
+                                        planet.divisional.ashtamsa.rasi_num,
+                                }))}
                             />
                             <h3>Navamsa chart</h3>
                             <KundliChartSVG
-                                chartData={Object.values(kundliData.planets).map(
-                                    planet => ({
-                                        planet_name: planet.name.english,
-                                        degree: planet.divisional.navamsa.degree,
-                                        rasi_num: planet.divisional.navamsa.rasi_num,
-                                    })
-                                )}
+                                chartData={Object.values(
+                                    kundliData.planets
+                                ).map(planet => ({
+                                    planet_name: planet.name.english,
+                                    degree: planet.divisional.navamsa.degree,
+                                    rasi_num:
+                                        planet.divisional.navamsa.rasi_num,
+                                }))}
                             />
                         </section>
 

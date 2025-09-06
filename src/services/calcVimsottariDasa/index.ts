@@ -164,15 +164,16 @@ function computeDasha(
                       ? AntarDashaPhal[parentLord]?.[currentLord]
                       : {},
             // Recursively compute the next level of child dashas if they exist.
-            ChildDasha: childDashaName
-                ? computeDasha(
-                      childDashaName,
-                      currentLord,
-                      cursor,
-                      solarYear,
-                      durationYears
-                  )
-                : [],
+            ChildDasha:
+                childDashaName === "AntarDasha"
+                    ? computeDasha(
+                          childDashaName,
+                          currentLord,
+                          cursor,
+                          solarYear,
+                          durationYears
+                      )
+                    : [],
         };
 
         // Advance the cursor to the end date for the next iteration.

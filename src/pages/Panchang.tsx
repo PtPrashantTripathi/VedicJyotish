@@ -1,6 +1,14 @@
-import { Calendar, Clock, Globe, Moon, Star, Sun, Users } from "lucide-react";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
+import {
+    FaCalendar,
+    FaClock,
+    FaGlobe,
+    FaMoon,
+    FaStar,
+    FaSun,
+    FaUsersSlash,
+} from "react-icons/fa";
 import Loader from "src/components/Loader";
 import { useSessionContext } from "src/contexts/SessionContext";
 import { getPanchanga } from "src/services/calcPanchanga";
@@ -30,15 +38,15 @@ export default function Panchang() {
     const tabs = {
         overview: {
             label: "Overview",
-            icon: Calendar,
+            icon: FaCalendar,
         },
-        timings: { label: "Timings", icon: Clock },
+        timings: { label: "Timings", icon: FaClock },
         planetary: {
             label: "Planetary",
-            icon: Globe,
+            icon: FaGlobe,
         },
-        muhurat: { label: "Muhurat", icon: Star },
-        calendar: { label: "Calendar", icon: Users },
+        muhurat: { label: "Muhurat", icon: FaStar },
+        calendar: { label: "Calendar", icon: FaUsersSlash },
     };
 
     const [selectedTab, setSelectedTab] =
@@ -79,7 +87,7 @@ export default function Panchang() {
                             {/* Panchang Elements Card */}
                             <div className="rounded-xl border border-purple-100 bg-white p-6 shadow-lg">
                                 <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
-                                    <Star className="mr-2 h-5 w-5 text-purple-600" />
+                                    <FaStar className="mr-2 h-5 w-5 text-purple-600" />
                                     पंचांग तत्व (Panchang Elements)
                                 </h3>
 
@@ -245,7 +253,7 @@ export default function Panchang() {
                                 {/* Date Info Card */}
                                 <div className="rounded-xl border border-blue-100 bg-white p-6 shadow-lg">
                                     <h3 className="mb-4 flex items-center text-xl font-bold text-gray-800">
-                                        <Calendar className="mr-2 h-5 w-5 text-blue-600" />
+                                        <FaCalendar className="mr-2 h-5 w-5 text-blue-600" />
                                         कैलेंडर जानकारी (Calendar Info)
                                     </h3>
 
@@ -340,12 +348,12 @@ export default function Panchang() {
                         {/* Sunrise/Sunset Card */}
                         <div className="rounded-xl border border-yellow-100 bg-white p-6 shadow-lg">
                             <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
-                                <Sun className="mr-2 h-5 w-5 text-yellow-500" />
+                                <FaSun className="mr-2 h-5 w-5 text-yellow-500" />
                                 सूर्य और चंद्र उदय/अस्त (Sun & Moon Timings)
                             </h3>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div className="flex items-center space-x-4 rounded-lg bg-yellow-50 p-4">
-                                    <Sun className="h-8 w-8 text-yellow-500" />
+                                    <FaSun className="h-8 w-8 text-yellow-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Sunrise
@@ -359,7 +367,7 @@ export default function Panchang() {
                                 </div>
                                 <div className="flex items-center justify-between rounded-lg bg-gradient-to-r from-orange-50 to-red-50 p-4">
                                     <div className="flex items-center space-x-3">
-                                        <Sun className="h-8 w-8 text-orange-400" />
+                                        <FaSun className="h-8 w-8 text-orange-400" />
                                         <div>
                                             <div className="font-semibold text-orange-700">
                                                 Sunset
@@ -378,7 +386,7 @@ export default function Panchang() {
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-4 rounded-lg bg-purple-50 p-4">
-                                    <Moon className="h-8 w-8 text-purple-500" />
+                                    <FaMoon className="h-8 w-8 text-purple-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Moonrise
@@ -391,7 +399,7 @@ export default function Panchang() {
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-4 rounded-lg bg-purple-50 p-4">
-                                    <Moon className="h-8 w-8 text-purple-500" />
+                                    <FaMoon className="h-8 w-8 text-purple-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Moonset
@@ -408,7 +416,7 @@ export default function Panchang() {
                         {/* Day/Night Duration Card */}
                         <div className="rounded-xl border border-orange-100 bg-white p-6 shadow-lg">
                             <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
-                                <Clock className="mr-2 h-5 w-5 text-orange-500" />
+                                <FaClock className="mr-2 h-5 w-5 text-orange-500" />
                                 दिन और रात की अवधि (Day & Night Duration)
                             </h3>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -460,13 +468,13 @@ export default function Panchang() {
                     <div className="space-y-6">
                         <div className="rounded-xl border border-pink-100 bg-white p-6 shadow-lg">
                             <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
-                                <Globe className="mr-2 h-5 w-5 text-pink-600" />
+                                <FaGlobe className="mr-2 h-5 w-5 text-pink-600" />
                                 ग्रह स्थिति (Planetary Positions)
                             </h3>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 {/* Sun Info */}
                                 <div className="flex items-center space-x-4 rounded-lg bg-red-50 p-4">
-                                    <Sun className="h-8 w-8 text-red-500" />
+                                    <FaSun className="h-8 w-8 text-red-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Sun Sign
@@ -481,7 +489,7 @@ export default function Panchang() {
                                 </div>
                                 {/* Moon Info */}
                                 <div className="flex items-center space-x-4 rounded-lg bg-indigo-50 p-4">
-                                    <Moon className="h-8 w-8 text-indigo-500" />
+                                    <FaMoon className="h-8 w-8 text-indigo-500" />
                                     <div>
                                         <div className="text-sm text-gray-500">
                                             Moon Sign
@@ -504,7 +512,7 @@ export default function Panchang() {
                     <div className="space-y-6">
                         <div className="rounded-xl border border-purple-100 bg-white p-6 shadow-lg">
                             <h3 className="mb-6 flex items-center text-xl font-bold text-gray-800">
-                                <Star className="mr-2 h-5 w-5 text-purple-600" />
+                                <FaStar className="mr-2 h-5 w-5 text-purple-600" />
                                 शुभ/अशुभ मुहूर्त (Auspicious/Inauspicious
                                 Timings)
                             </h3>
@@ -512,7 +520,7 @@ export default function Panchang() {
                                 {/* Auspicious timings (Example - Abhijit) */}
                                 <div className="rounded-lg bg-green-50 p-4">
                                     <div className="mb-2 flex items-center space-x-2 font-semibold text-green-700">
-                                        <Star size={18} />
+                                        <FaStar size={18} />
                                         <span>Shubh Muhurat</span>
                                     </div>
                                     <div className="space-y-3 text-sm">
@@ -533,7 +541,7 @@ export default function Panchang() {
                                 {/* Inauspicious timings (Example - Rahu Kalam) */}
                                 <div className="rounded-lg bg-red-50 p-4">
                                     <div className="mb-2 flex items-center space-x-2 font-semibold text-red-700">
-                                        <Moon
+                                        <FaMoon
                                             className="rotate-180"
                                             size={18}
                                         />

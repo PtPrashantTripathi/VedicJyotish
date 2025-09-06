@@ -1,9 +1,7 @@
 {
     "compilerOptions": {
         "paths": {
-            "src/*": ["src/*"],
-            "sweph-wasm/*": ["./packages/sweph-wasm/src/*"],
-            "wasp-lib/*": ["./packages/wasp-lib/src/*"]
+            "src/*": ["src/*"]
         },
         "target": "ESNext",
         "useDefineForClassFields": true,
@@ -14,15 +12,15 @@
         /* Bundler mode */
         "moduleResolution": "bundler",
         // "allowImportingTsExtensions": true,
-        // "verbatimModuleSyntax": true,
+        "verbatimModuleSyntax": true,
         // "moduleDetection": "force",
         "noEmit": true,
-        "jsx": "react-jsx", // "jsx": "preserve",
+        "jsx": "preserve",
         /* Linting */
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        // "erasableSyntaxOnly": true,
+        "erasableSyntaxOnly": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
         "allowJs": true,
@@ -34,11 +32,12 @@
         "incremental": true,
         "declaration": true /* Generates corresponding '.d.ts' file. */,
         // "outDir": "lib" /* Redirect output structure to the directory. */,
-        "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+        "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
+        "noUncheckedIndexedAccess": true
     },
     "build": {
         "minify": true
     },
-    "include": ["src", "*.ts", "packages"],
+    "include": ["src", "*.ts"],
     "exclude": ["node_modules"]
 }

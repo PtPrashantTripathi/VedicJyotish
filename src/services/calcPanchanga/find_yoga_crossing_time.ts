@@ -1,5 +1,4 @@
 import { MOD360 } from "src/services/utils";
-import type SwissEPH from "sweph-wasm/index";
 
 /**
  * @param jd_start The Julian Day to start searching from.
@@ -8,7 +7,6 @@ import type SwissEPH from "sweph-wasm/index";
  * @brief Finds the precise time for the sum of Sun and Moon longitudes to cross a specific degree (for Yoga).
  */
 export function find_yoga_crossing_time(
-    swe: SwissEPH,
     jd_start: number,
     target_lon: number
 ): number {

@@ -28,5 +28,5 @@ export function parseValidDate(input: string): string {
     }
 
     dt = new Date(dt.getTime() - dt.getTimezoneOffset() * 60 * 1000);
-    return dt.toISOString().split("T")[0];
+    return dt.toISOString().split("T")[0] ?? "";
 }

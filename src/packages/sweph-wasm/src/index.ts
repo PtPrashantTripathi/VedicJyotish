@@ -5,7 +5,7 @@ import {
     NumberPointer,
     StringPointer,
     TypeConverter,
-} from "wasp-lib/index";
+} from "src/packages/wasp-lib";
 
 import { EpheFileMetadata } from "./utils/ephe_file_metadata";
 import { getBaseURLPath } from "./utils/get_base_url_path";

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { IErrorType } from "src/components/Errors";
 import { calcHinduTime } from "src/hooks/hinduTime";
 import { calcRiseSet } from "src/services/calcRiseSet";
+import type { HinduTime } from "src/types";
 import {
     type ISearchParams,
     parseURLSearchParams as parseSearchParams,
@@ -76,11 +77,7 @@ export function useSessionState() {
     )[1];
 
     // Calculate Hindu Today Sunrise and SunSet
-    const today_sun = calcRiseSet(swe, tjd_ut, swe.SE_SUN, [
-        data.lon,
-        data.lat,
-        0,
-    ]);
+    const today_sun = calcRiseSet(tjd_ut, swe.SE_SUN, [data.lon, data.lat, 0]);
 
     // Initialize state from URL parameters
     const [session, setSession] = useState<ISessionData>({
@@ -95,6 +92,7 @@ export function useSessionState() {
         nav: false,
         error: [],
     });
+
     /**
      * Updates search parameters state and synchronizes with URL. Performs
      * partial updates, merging with existing state.

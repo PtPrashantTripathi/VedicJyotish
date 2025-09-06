@@ -2,6 +2,7 @@ import { WEEKDAY_PLANETARY_LORDS } from "src/services/calcKalavelas/planetaryLor
 import { createTimePeriods } from "src/services/calcKalavelas/timeCalculations";
 import type { KalavelasEn } from "src/services/constants/Planet";
 import { reorderArray } from "src/services/utils";
+import type { TimeSpan } from "src/types";
 
 /**
  * Gets the night lord based on the day of the week. Night sequence starts with

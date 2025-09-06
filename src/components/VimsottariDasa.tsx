@@ -22,21 +22,21 @@ export default function VimsottariDasa({
         d => d.StartDate <= now && now <= d.EndDate
     )[0];
 
-    const pratyantardasha = antardasha.ChildDasha.filter(
-        d => d.StartDate <= now && now <= d.EndDate
-    )[0];
+    // const pratyantardasha = antardasha.ChildDasha.filter(
+    //     d => d.StartDate <= now && now <= d.EndDate
+    // )[0];
 
-    const sookshmadasha = pratyantardasha.ChildDasha.filter(
-        d => d.StartDate <= now && now <= d.EndDate
-    )[0];
+    // const sookshmadasha = pratyantardasha.ChildDasha.filter(
+    //     d => d.StartDate <= now && now <= d.EndDate
+    // )[0];
 
-    const praanadasha = sookshmadasha.ChildDasha.filter(
-        d => d.StartDate <= now && now <= d.EndDate
-    )[0];
+    // const praanadasha = sookshmadasha.ChildDasha.filter(
+    //     d => d.StartDate <= now && now <= d.EndDate
+    // )[0];
 
-    const dehadasha = praanadasha.ChildDasha.filter(
-        d => d.StartDate <= now && now <= d.EndDate
-    )[0];
+    // const dehadasha = praanadasha.ChildDasha.filter(
+    //     d => d.StartDate <= now && now <= d.EndDate
+    // )[0];
 
     return (
         <section>
@@ -47,7 +47,7 @@ export default function VimsottariDasa({
             <h3> Antar Dasha</h3>
             <DasaTable dasa={antardasha} />
 
-            <h3> Pratyantar Dasha</h3>
+            {/* <h3> Pratyantar Dasha</h3>
             <DasaTable dasa={pratyantardasha} />
 
             <h3> Sookshma Dasha</h3>
@@ -57,7 +57,7 @@ export default function VimsottariDasa({
             <DasaTable dasa={praanadasha} />
 
             <h3> Deha Dasha</h3>
-            <DasaTable dasa={dehadasha} />
+            <DasaTable dasa={dehadasha} /> */}
         </section>
     );
 }

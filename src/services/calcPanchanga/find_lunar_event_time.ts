@@ -1,5 +1,4 @@
 import { MOD360 } from "src/services/utils";
-import type SwissEPH from "sweph-wasm/index";
 
 /**
  * @param jd_start The Julian Day to start searching from.
@@ -9,7 +8,6 @@ import type SwissEPH from "sweph-wasm/index";
  * This is when the angular separation between the Moon and Sun reaches a specific degree.
  */
 export function find_lunar_event_time(
-    swe: SwissEPH,
     jd_start: number,
     target_angle: number
 ): number {

@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "src/app";
-import SwissEPH from "sweph-wasm/index";
+import SwissEPH from "src/packages/sweph-wasm/src";
 
 globalThis.swe = await SwissEPH.init();
 

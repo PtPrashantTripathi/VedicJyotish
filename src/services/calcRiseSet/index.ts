@@ -1,7 +1,4 @@
-import type SwissEPH from "sweph-wasm/index";
-
 export function calcRiseSet(
-    swe: SwissEPH,
     jd: number,
     ipl: number,
     geopos: [longitude: number, latitude: number, elevation: number]

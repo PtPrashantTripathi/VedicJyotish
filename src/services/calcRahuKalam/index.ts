@@ -1,3 +1,5 @@
+import type { TimeSpan } from "src/types";
+
 /**
  * Rahu Kalam portion indices for each day of the week. Index corresponds to
  * weekday (0 = Sunday, 6 = Saturday).

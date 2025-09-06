@@ -33,24 +33,24 @@ export default function App() {
             <Navigation />
             <main>
                 <Errors />
-                {session.data.page === "KundliForm" ? (
+                {session.data.page === "Home" ? (
+                    <Home />
+                ) : session.data.page === "Panchang" ? (
+                    <Panchang />
+                ) : session.data.page === "KundliForm" ? (
                     <KundliForm />
                 ) : session.data.page === "KundliResult" ? (
                     <KundliResult />
-                ) : session.data.page === "KundliMatching" ? (
-                    <KundliMatching />
-                ) : session.data.page === "About" ? (
-                    <About />
-                ) : session.data.page === "Panchang" ? (
-                    <Panchang />
                 ) : session.data.page === "MonthlyCalendar" ? (
                     <MonthlyCalendar />
-                ) : session.data.page === "Settings" ? (
-                    <Settings />
+                ) : session.data.page === "KundliMatching" ? (
+                    <KundliMatching />
                 ) : session.data.page === "HinduTime" ? (
                     <HinduTime />
-                ) : session.data.page === "Home" ? (
-                    <Home />
+                ) : session.data.page === "Settings" ? (
+                    <Settings />
+                ) : session.data.page === "About" ? (
+                    <About />
                 ) : (
                     <section>
                         <h3>ERROR 404</h3>
