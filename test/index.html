@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WebAssembly File Reader</title>
+</head>
+<body>
+    <h1>WebAssembly File Reader</h1>
+    <pre id="output"></pre>
+    <script>
+        // Simulate a file system for demonstration
+        const fileContent = "This is the content of the file to be read by WebAssembly.";
+        const simulatedFileSystem = {
+            'test.txt': fileContent
+        };
+
+        const outputDiv = document.getElementById('output');
+        const logToPre = (text) => {
+            outputDiv.textContent += text + '\n';
+        };
+
+        // Helper function to read a string from WebAssembly memory
+        function readWasmString(memory, ptr) {
+            const HEAP8 = new Uint8Array(memory.buffer);
+            let end = ptr;
+            while (HEAP8[end] !== 0) {
+                end++;
+            }
+            const bytes = HEAP8.subarray(ptr, end);
+            return new TextDecoder().decode(bytes);
+        }
+
+        async function runWasm() {
+            // Allocate memory to be shared with the WASM module
+            const memory = new WebAssembly.Memory({ initial: 256, maximum: 256 });
+            
+            // A very simple "memory allocator" for demonstration
+            let nextFreeAddress = 1024; // Start after some reserved memory
+            const malloc_shim = (size) => {
+                const ptr = nextFreeAddress;
+                nextFreeAddress += size;
+                return ptr;
+            };
+
+            // Setup the import object with JavaScript functions
+            const importObject = {
+                env: {
+                    memory: memory,
+                    fopen_shim: (filenamePtr, modePtr) => {
+                        const filename = readWasmString(memory, filenamePtr);
+                        if (simulatedFileSystem[filename]) {
+                            // Return a fictional file handle (pointer)
+                            logToPre(`[JS] Opening file: ${filename}`);
+                            return 10; // A non-zero value
+                        }
+                        logToPre(`[JS] File not found: ${filename}`);
+                        return 0; // NULL
+                    },
+                    fread_shim: (ptr, size, count, fd) => {
+                        if (fd === 10) {
+                            // For simplicity, just read the fixed content
+                            const content = simulatedFileSystem['test.txt'];
+                            const HEAP8 = new Uint8Array(memory.buffer);
+                            new TextEncoder().encodeInto(content, HEAP8.subarray(ptr));
+                            return content.length;
+                        }
+                        return 0;
+                    },
+                    fclose_shim: (fd) => {
+                        if (fd === 10) {
+                            logToPre('[JS] Closing file.');
+                            return 0;
+                        }
+                        return -1;
+                    },
+                    fseek_shim: (fd, offset, whence) => {
+                        // Not fully implemented for this simple example
+                        return 0;
+                    },
+                    ftell_shim: (fd) => {
+                        if (fd === 10) {
+                            return simulatedFileSystem['test.txt'].length;
+                        }
+                        return -1;
+                    },
+                    malloc_shim: malloc_shim
+                },
+                console: {
+                    log: (ptr) => {
+                        logToPre(readWasmString(memory, ptr));
+                    }
+                }
+            };
+
+            try {
+                // Fetch and instantiate the WASM module
+                const response = await fetch('file_reader.wasm');
+                const module = await WebAssembly.instantiateStreaming(response, importObject);
+                
+                const { read_file } = module.instance.exports;
+
+                // Create a string in WASM memory for the filename argument
+                const filename = 'test.txt';
+                const filenameBuffer = new TextEncoder().encode(filename + '\0');
+                const filenamePtr = malloc_shim(filenameBuffer.length);
+                const HEAP8 = new Uint8Array(memory.buffer);
+                HEAP8.set(filenameBuffer, filenamePtr);
+
+                // Call the exported function
+                const resultPtr = read_file(filenamePtr);
+
+                if (resultPtr) {
+                    logToPre("Result from WASM: " + readWasmString(memory, resultPtr));
+                }
+
+            } catch (e) {
+                logToPre(`Error: ${e}`);
+            }
+        }
+
+        runWasm();
+    </script>
+</body>
+</html>
