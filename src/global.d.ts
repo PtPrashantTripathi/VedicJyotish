@@ -1,7 +1,7 @@
 // global.d.ts
 /// <reference types="vite/client" />
 
-import type SwissEPH from "src/packages/sweph-wasm/src";
+import type SwissEPH from "src/sweph-wasm/src";
 
 declare global {
     var swe: SwissEPH;

@@ -920,15 +920,15 @@ async function Module(moduleArg = {}) {
     };
 
     /**
-     * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the
-     * given array that contains uint8 values, returns a copy of that string as
-     * a Javascript String object. heapOrArray is either a regular array, or a
+     * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the given
+     * array that contains uint8 values, returns a copy of that string as a
+     * Javascript String object. heapOrArray is either a regular array, or a
      * JavaScript typed array view.
      *
      * @param {number} [idx]
      * @param {number} [maxBytesToRead]
-     * @param {boolean} [ignoreNul] - If true, the function will not stop on a
-     *   NUL character.
+     * @param {boolean} [ignoreNul] - If true, the function will not stop on a NUL
+     *   character.
      * @returns {string}
      */ var UTF8ArrayToString = (
         heapOrArray,
@@ -1647,12 +1647,12 @@ async function Module(moduleArg = {}) {
      *
      * @param {number} ptr
      * @param {number} [maxBytesToRead] - An optional length that specifies the
-     *   maximum number of bytes to read. You can omit this parameter to scan
-     *   the string until the first 0 byte. If maxBytesToRead is passed, and the
-     *   string at [ptr, ptr+maxBytesToReadr[ contains a null byte in the
-     *   middle, then the string will cut short at that byte index.
-     * @param {boolean} [ignoreNul] - If true, the function will not stop on a
-     *   NUL character.
+     *   maximum number of bytes to read. You can omit this parameter to scan the
+     *   string until the first 0 byte. If maxBytesToRead is passed, and the string
+     *   at [ptr, ptr+maxBytesToReadr[ contains a null byte in the middle, then the
+     *   string will cut short at that byte index.
+     * @param {boolean} [ignoreNul] - If true, the function will not stop on a NUL
+     *   character.
      * @returns {string}
      */ var UTF8ToString = (ptr, maxBytesToRead, ignoreNul) => {
         assert(

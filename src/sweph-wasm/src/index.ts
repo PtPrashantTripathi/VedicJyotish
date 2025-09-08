@@ -5,7 +5,7 @@ import {
     NumberPointer,
     StringPointer,
     TypeConverter,
-} from "src/packages/wasp-lib";
+} from "wasp-lib";
 
 import { EpheFileMetadata } from "./utils/ephe_file_metadata";
 import { getBaseURLPath } from "./utils/get_base_url_path";
@@ -4040,8 +4040,8 @@ export default class SwissEPH {
         helflag: number
     ): [
         /**
-         * Limiting visual magnitude (object is visible if this value is bigger
-         * than the object's magnitude value)
+         * Limiting visual magnitude (object is visible if this value is
+         * bigger than the object's magnitude value)
          */
         visual_mag: number,
         /** Altitude of the object */

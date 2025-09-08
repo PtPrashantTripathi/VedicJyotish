@@ -20,7 +20,7 @@
     "type": "module",
     "main": "index.html",
     "scripts": {
-        "build": "python3 -m src.packages.sweph-wasm.build_tool -t web && tsc -b && vite build",
+        "build": "python3 -m src.sweph-wasm.build_tool -t web && tsc -b && vite build",
         "build:database": "python3 tools/generate_database.py",
         "build:dev": "npm run build && npm run build:devtool",
         "build:devtool": "python3 tools/gen_devtools_json.py",
@@ -35,7 +35,8 @@
     },
     "dependencies": {
         "luxon": "latest",
-        "pako": "latest"
+        "pako": "latest",
+        "wasp-lib": "latest"
     },
     "devDependencies": {
         "@eslint/js": "latest",
