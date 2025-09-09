@@ -19,7 +19,7 @@ export default function Navigation() {
                         className="h-6 w-6 text-blue-700"
                     />
                     <span className="text-xl font-semibold">
-                        Hindu Calendar
+                        Vedic Astronomy
                     </span>
                 </a>
                 <button
@@ -34,25 +34,30 @@ export default function Navigation() {
             {/* Navigation List */}
             <nav className="p-3">
                 <ul className="flex flex-col space-y-1 rounded-lg font-medium">
-                    {Object.values(pageDetails).map((item, idx) => (
-                        <li key={idx}>
-                            <a
-                                href={"?page=" + item.page}
-                                className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-2 transition-colors ${
-                                    item.page === session.data.page
-                                        ? "bg-blue-700 text-white"
-                                        : "text-gray-900 hover:bg-gray-100"
-                                }`}
-                                aria-current={
-                                    item.page === session.data.page
-                                        ? "page"
-                                        : undefined
-                                }>
-                                <item.icon className="h-5 w-5" />
-                                <span>{item.title}</span>
-                            </a>
-                        </li>
-                    ))}
+                    {Object.entries(pageDetails)
+                        .filter(value => value[1].nav)
+                        .map(([pageId, pageDetail]) => (
+                            <li key={pageId}>
+                                <a
+                                    href={"?page=" + pageId}
+                                    className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-2 transition-colors ${
+                                        pageId === session.data.page
+                                            ? "bg-blue-700 text-white"
+                                            : "text-gray-900 hover:bg-gray-100"
+                                    }`}
+                                    aria-current={
+                                        pageId === session.data.page
+                                            ? "page"
+                                            : undefined
+                                    }>
+                                    <pageDetail.icon
+                                        className="h-5 w-5"
+                                        color="#FF8C00"
+                                    />
+                                    <span>{pageDetail.title}</span>
+                                </a>
+                            </li>
+                        ))}
                 </ul>
             </nav>
         </aside>

@@ -20,7 +20,7 @@
     "type": "module",
     "main": "index.html",
     "scripts": {
-        "build": "python3 -m src.sweph-wasm.build_tool -t web && tsc -b && vite build",
+        "build": "tsc -b && vite build",
         "build:database": "python3 tools/generate_database.py",
         "build:dev": "npm run build && npm run build:devtool",
         "build:devtool": "python3 tools/gen_devtools_json.py",
@@ -34,8 +34,10 @@
         "typecheck": "tsc --noEmit --incremental false"
     },
     "dependencies": {
+        "fixed-len-array": "latest",
         "luxon": "latest",
         "pako": "latest",
+        "sweph-wasm": "latest",
         "wasp-lib": "latest"
     },
     "devDependencies": {
@@ -53,7 +55,6 @@
         "eslint-plugin-react-refresh": "latest",
         "eslint-plugin-simple-import-sort": "latest",
         "eslint-plugin-unused-imports": "latest",
-        "fixed-len-array": "latest",
         "globals": "latest",
         "prettier": "latest",
         "prettier-plugin-jsdoc": "latest",
@@ -66,12 +67,13 @@
         "typescript": "latest",
         "typescript-eslint": "latest",
         "vite": "latest",
+        "vite-plugin-svgr": "latest",
         "vite-tsconfig-paths": "latest"
     },
+    "packageManager": "pnpm@10.15.1",
     "engines": {
         "node": ">=22",
         "pnpm": ">=10"
     },
-    "typeScriptVersion": "latest",
-    "packageManager": "pnpm@10.15.1"
+    "typeScriptVersion": "latest"
 }

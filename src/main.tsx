@@ -1,10 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "src/app";
-import SwissEPH from "src/sweph-wasm/src";
+import SwissEPH from "sweph-wasm";
 
 globalThis.swe = await SwissEPH.init();
-
 // Path to Swiss Ephemeris data files.
 await swe.swe_set_ephe_path("./ephe", [
     "seas_18.se1",

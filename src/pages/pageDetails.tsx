@@ -2,14 +2,12 @@ import {
     FaCalendarAlt,
     FaClock,
     FaCog,
+    FaHeartbeat,
+    FaHome,
     FaInfoCircle,
-    FaOm,
-    FaRegCalendarAlt,
-    FaStar,
-    FaStudiovinari,
-    FaUsers,
+    FaSun,
 } from "react-icons/fa";
-import type { IconType } from "react-icons/lib";
+import KundliSVG from "src/icons/kundli.svg?react";
 
 export type ValidPageType =
     | "Home"
@@ -23,66 +21,65 @@ export type ValidPageType =
     | "About";
 
 export interface PageDetail {
-    icon: IconType;
-    page: ValidPageType;
+    icon: React.FC<React.SVGProps<SVGSVGElement>>;
     title: string;
     subtitle: string;
+    nav: boolean;
 }
 
 export const pageDetails: Record<ValidPageType, PageDetail> = {
-    MonthlyCalendar: {
-        icon: FaCalendarAlt,
-        title: "मासिक",
-        subtitle: "माह के पक्ष एवं तिथि",
-        page: "MonthlyCalendar",
+    Home: {
+        icon: FaHome,
+        title: "मुख्य पृष्ठ",
+        subtitle: "वैदिक ज्योतिष और पंचांग",
+        nav: true,
     },
     Panchang: {
-        icon: FaRegCalendarAlt,
-        title: "दैनिक पञ्चाङ्ग",
-        subtitle: "Today's Panchang Details",
-        page: "Panchang",
+        icon: FaSun,
+        title: "दैनिक पंचांग",
+        subtitle: "आज का शुभ-अशुभ मुहूर्त, योग, करण",
+        nav: true,
     },
-
+    MonthlyCalendar: {
+        icon: FaCalendarAlt,
+        title: "मासिक कैलेंडर",
+        subtitle: "मास, पक्ष, तिथि और त्यौहार",
+        nav: true,
+    },
     KundliForm: {
-        icon: FaStar,
-        title: "कुंडली",
-        subtitle: "ग्रह स्थिति, लग्न",
-        page: "KundliForm",
+        icon: KundliSVG,
+        title: "कुंडली बनाएं",
+        subtitle: "जन्म विवरण से कुंडली विश्लेषण",
+        nav: true,
+    },
+    KundliResult: {
+        icon: KundliSVG,
+        title: "कुंडली विश्लेषण",
+        subtitle: "ग्रह स्थिति, दशा, महादशा, और लग्न",
+        nav: false,
     },
     KundliMatching: {
-        icon: FaUsers,
+        icon: FaHeartbeat,
         title: "कुंडली मिलान",
-        subtitle: "गुण मिलान, अष्टकूट",
-        page: "KundliMatching",
+        subtitle: "विवाह और संबंधों के लिए गुण मिलान",
+        nav: true,
     },
     HinduTime: {
         icon: FaClock,
         title: "हिन्दू समय",
-        subtitle: "इष्टकाल, घटी विधि",
-        page: "HinduTime",
+        subtitle: "इष्टकाल और घटी विधि की गणना",
+        nav: true,
     },
     Settings: {
         icon: FaCog,
         title: "सेटिंग्स",
-        subtitle: "स्थान और पसंद बदलें",
-        page: "Settings",
+        subtitle: "स्थान और पसंदीदा भाषा बदलें",
+        nav: true,
     },
     About: {
         icon: FaInfoCircle,
-        title: "जानकारी",
-        subtitle: "हिन्दू कैलेंडर के बारे में",
-        page: "About",
-    },
-    Home: {
-        icon: FaOm,
-        title: "वैदिक ज्योतिष",
-        subtitle: "Vedic Astrology",
-        page: "About",
-    },
-    KundliResult: {
-        icon: FaStudiovinari,
-        title: "KundliResult",
-        subtitle: "KundliResult",
-        page: "KundliResult",
+        title: "हमारे बारे में",
+        subtitle: "वैदिक ज्योतिष ऐप का परिचय",
+        nav: true,
     },
 };

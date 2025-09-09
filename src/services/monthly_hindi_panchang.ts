@@ -14,7 +14,7 @@
 // gcc -O0 -Wno-deprecated-declarations  -fsanitize=address -g tools/test/monthly_hindi_panchang.c src/services/swisseph-wasm/lib/*.c -o main && ./main
 
 import { toFixedLengthArray } from "fixed-len-array";
-import SwissEPH from "src/sweph-wasm/src";
+import SwissEPH from "sweph-wasm";
 
 // Configuration
 // Location: Mandla, Madhya Pradesh, India

@@ -7,11 +7,11 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import js from "@eslint/js";
 import ts from "typescript-eslint";
-import { globalIgnores } from "eslint/config";
+import { globalIgnores, defineConfig } from "eslint/config";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-export default ts.config([
+export default defineConfig([
     globalIgnores(["dist", "node_modules"]),
     {
         files: ["**/*.ts", "**/*.tsx"],
