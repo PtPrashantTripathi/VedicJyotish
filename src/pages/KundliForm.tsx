@@ -29,7 +29,7 @@ export default function KundliForm() {
 
     useEffect(() => {
         // Fetches a city data.gz JSON file and decompresses it to an JSON object.
-        fetch("database/city_database.cjson")
+        fetch("assets/database/city_database.cjson")
             .then(response => response.arrayBuffer())
             .then(data => {
                 setState(prev => ({
@@ -46,7 +46,7 @@ export default function KundliForm() {
             });
 
         // Load timezone data from zipped JSON
-        fetch("database/tz_offset.json")
+        fetch("assets/database/tz_offset.json")
             .then(res => res.json())
             .then(timezoneMap => {
                 setState(prev => ({

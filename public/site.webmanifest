@@ -6,32 +6,32 @@
     "theme_color": "#ffffff",
     "icons": [
         {
-            "src": "icon/icon-16x16.png",
+            "src": "assets/icon/icon-16x16.png",
             "sizes": "16x16",
             "type": "image/png"
         },
         {
-            "src": "icon/icon-32x32.png",
+            "src": "assets/icon/icon-32x32.png",
             "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "icon/icon-64x64.png",
+            "src": "assets/icon/icon-64x64.png",
             "sizes": "64x64",
             "type": "image/png"
         },
         {
-            "src": "icon/icon-192x192.png",
+            "src": "assets/icon/icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "icon/icon-512x512.png",
+            "src": "assets/icon/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         },
         {
-            "src": "icon-maskable-512x512.png",
+            "src": "assets/icon/icon-maskable-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"

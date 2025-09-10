@@ -26,7 +26,7 @@ class TimezoneETL:
         self.root = Path(__file__).resolve().parent.parent
 
         self.source_dir = self.root / "tools/geonames"
-        self.database_dir = self.root / "public/database"
+        self.database_dir = self.root / "public/assets/database"
         shutil.rmtree(self.database_dir, True)
         self.database_dir.mkdir(parents=True, exist_ok=True)
 

@@ -6,12 +6,6 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
-    server: {
-        fs: {
-            // Allow serving files from one level up to the project root
-            allow: [".."],
-        },
-    },
     base: "./",
     root: ".",
     plugins: [react(), tailwindcss(), tsconfigPaths(), svgr()],
@@ -19,7 +13,7 @@ export default defineConfig({
         target: "esnext",
         outDir: "dist",
         emptyOutDir: true,
-        sourcemap: true, // optional: helps debugging
+        // sourcemap: true, // optional: helps debugging
         minify: "esbuild",
         rollupOptions: {
             treeshake: true,

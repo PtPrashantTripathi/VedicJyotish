@@ -15,7 +15,7 @@ export default function Navigation() {
             <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
                 <a href={"?page=Home"} className="flex items-center space-x-3">
                     <img
-                        src="icon/icon-192x192.png"
+                        src="assets/icon/icon-192x192.png"
                         className="h-6 w-6 text-blue-700"
                     />
                     <span className="text-xl font-semibold">
@@ -40,11 +40,10 @@ export default function Navigation() {
                             <li key={pageId}>
                                 <a
                                     href={"?page=" + pageId}
-                                    className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-2 transition-colors ${
-                                        pageId === session.data.page
+                                    className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-2 transition-colors ${pageId === session.data.page
                                             ? "bg-blue-700 text-white"
                                             : "text-gray-900 hover:bg-gray-100"
-                                    }`}
+                                        }`}
                                     aria-current={
                                         pageId === session.data.page
                                             ? "page"
