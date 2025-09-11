@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import {
     FaCalendar,
     FaClock,
@@ -7,7 +7,6 @@ import {
     FaMoon,
     FaStar,
     FaSun,
-    FaUsersSlash,
 } from "react-icons/fa";
 import Loader from "src/components/Loader";
 import { useSessionContext } from "src/contexts/SessionContext";
@@ -15,25 +14,13 @@ import { getPanchanga } from "src/services/calcPanchanga";
 
 export default function Panchang() {
     const session = useSessionContext();
-
-    const [panchanga, setPanchanga] = useState<Awaited<
-        ReturnType<typeof getPanchanga>
-    > | null>(null);
-
-    useEffect(() => {
-        async function fetchPanchanga() {
-            const result = await getPanchanga(
-                DateTime.fromISO(session.data.date, {
-                    zone: session.data.tz_name,
-                }) as DateTime<true>,
-                session.data.lon,
-                session.data.lat
-            );
-            setPanchanga(result);
-            console.log(result);
-        }
-        fetchPanchanga();
-    }, [session.data]);
+    const panchanga = useMemo(() => getPanchanga(
+        DateTime.fromISO(session.data.date, {
+            zone: session.data.tz_name,
+        }) as DateTime<true>,
+        session.data.lon,
+        session.data.lat
+    ), [session.data.date, session.data.lat, session.data.lon, session.data.tz_name]);
 
     const tabs = {
         overview: {
@@ -46,7 +33,6 @@ export default function Panchang() {
             icon: FaGlobe,
         },
         muhurat: { label: "Muhurat", icon: FaStar },
-        calendar: { label: "Calendar", icon: FaUsersSlash },
     };
 
     const [selectedTab, setSelectedTab] =
@@ -65,11 +51,10 @@ export default function Panchang() {
                             <button
                                 key={id}
                                 onClick={() => setSelectedTab(id)}
-                                className={`flex items-center space-x-2 border-b-2 px-2 py-4 text-sm font-medium whitespace-nowrap transition-colors ${
-                                    selectedTab === id
-                                        ? "border-purple-500 text-purple-600"
-                                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                                }`}>
+                                className={`flex items-center space-x-2 border-b-2 px-2 py-4 text-sm font-medium whitespace-nowrap transition-colors ${selectedTab === id
+                                    ? "border-purple-500 text-purple-600"
+                                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                    }`}>
                                 <tab.icon size={16} />
                                 <span>{tab.label}</span>
                             </button>

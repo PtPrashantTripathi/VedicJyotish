@@ -157,7 +157,16 @@ interface DailyPanchang {
     sunrise_time: string;
     sunset_time: string;
 }
-const swe = await SwissEPH.init();
+
+globalThis.swe = await SwissEPH.init("./assets/swisseph.wasm");
+// Path to Swiss Ephemeris data files.
+await swe.swe_set_ephe_path("assets/ephe", [
+    "seas_18.se1",
+    "sepl_18.se1",
+    "semo_18.se1",
+    "sefstars.txt",
+]);
+
 /** Convert JD UT to IST time string (HH:MM format) */
 function jd_to_time_string(jd_ut: number) {
     const jd_ist = jd_ut + IST_OFFSET;
@@ -382,12 +391,6 @@ console.log("swe_version", swe.swe_version());
 
 // Path to Swiss Ephemeris data files.
 // Change this to the directory where you've stored the 'sepl_18.se1', etc. files.
-
-await swe.swe_set_ephe_path("./ephe", [
-    "seas_18.se1",
-    "sepl_18.se1",
-    "semo_18.se1",
-]);
 
 swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
 // Location settings

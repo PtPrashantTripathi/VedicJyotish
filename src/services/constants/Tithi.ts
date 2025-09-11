@@ -70,6 +70,7 @@ export interface TithiDetail {
 /** The final calculated Tithi object, including Paksha and positional data. */
 export type Tithi = TithiDetail &
     CalculatedDetail & {
+        tithi_num: number;
         paksha_name: PakshaName;
         lunarphase: number;
     };
@@ -183,6 +184,7 @@ export function getTithi(
     // 6. Construct and return the final Tithi object.
     return {
         ...details,
+        tithi_num: tithiNum,
         lunarphase,
         paksha_name,
         range: {

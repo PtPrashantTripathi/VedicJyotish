@@ -20,8 +20,8 @@ export default defineConfig({
             external: [],
             output: {
                 // This will name the JS entry file like: index.[hash].js or result.[hash].js
-                entryFileNames: "js/[name].js",
-                chunkFileNames: "js/[name].js",
+                entryFileNames: "js/[name].[extname]",
+                chunkFileNames: "js/[name].[extname]",
                 assetFileNames: "assets/[name][extname]",
             },
         },

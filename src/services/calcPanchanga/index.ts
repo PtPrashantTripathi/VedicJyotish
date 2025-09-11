@@ -28,7 +28,7 @@ import { getYoga } from "src/services/constants/Yoga";
 import { MOD360 } from "src/services/utils";
 
 /** Main calculation function */
-export async function getPanchanga(
+export function getPanchanga(
     datetime: DateTime<true>,
     longitude: number, // north positive
     latitude: number, // east positive
@@ -40,14 +40,14 @@ export async function getPanchanga(
     swe.swe_set_topo(longitude, latitude, altitude);
 
     // Convert current system time to Julian Day UT
-    const utc_dt = datetime.toUTC();
+    const utc_dt = datetime;
     const tjd_ut = swe.swe_utc_to_jd(
         utc_dt.year,
         utc_dt.month,
         utc_dt.day,
-        utc_dt.hour,
-        utc_dt.minute,
-        utc_dt.second,
+        0,
+        0,
+        0,
         swe.SE_GREG_CAL
     )[1];
 
