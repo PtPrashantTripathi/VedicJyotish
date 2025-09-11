@@ -29,7 +29,7 @@ export default {
             },
         },
         {
-            files: "*.html",
+            files: ["*.html", "*.svg"],
             options: {
                 parser: "html",
             },

@@ -30,5 +30,8 @@
         "[h]": "c",
         "[cpp]": "c",
         "[typescriptreact]": "typescript"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
     }
 }
