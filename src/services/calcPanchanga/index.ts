@@ -29,18 +29,13 @@ import { MOD360 } from "src/services/utils";
 
 /** Main calculation function */
 export function getPanchanga(
-    datetime: DateTime<true>,
+    input_dt: DateTime<true>,
     longitude: number, // north positive
-    latitude: number, // east positive
-    altitude: number = 0 // height above sea level in meters
+    latitude: number // east positive
 ) {
-    swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
-
-    // Location settings
-    swe.swe_set_topo(longitude, latitude, altitude);
-
     // Convert current system time to Julian Day UT
-    const utc_dt = datetime;
+    const datetime = input_dt.startOf("day").plus({ minute: input_dt.offset });
+    const utc_dt = datetime.toUTC();
     const tjd_ut = swe.swe_utc_to_jd(
         utc_dt.year,
         utc_dt.month,
@@ -51,12 +46,14 @@ export function getPanchanga(
         swe.SE_GREG_CAL
     )[1];
 
-    // Get Sun and Moon positions at the given time
     const iflag = swe.SEFLG_SWIEPH | swe.SEFLG_SPEED | swe.SEFLG_SIDEREAL;
-    const xx_sun = swe.swe_calc_ut(tjd_ut, swe.SE_SUN, iflag);
-    const xx_moon = swe.swe_calc_ut(tjd_ut, swe.SE_MOON, iflag);
-    const sun_lon = xx_sun[0];
-    const moon_lon = xx_moon[0];
+
+    // Ayanamsa
+    const ayanamsa = swe.swe_get_ayanamsa_ex_ut(tjd_ut, iflag);
+
+    // Get Sun and Moon positions at the given time
+    const sun_lon = swe.swe_calc_ut(tjd_ut, swe.SE_SUN, iflag)[0];
+    const moon_lon = swe.swe_calc_ut(tjd_ut, swe.SE_MOON, iflag)[0];
 
     // Sun and Moon info
     const sun_rashi = getRasi(sun_lon);
@@ -148,6 +145,7 @@ export function getPanchanga(
         tjd_ut,
         latitude,
         longitude,
+        ayanamsa,
         sun_rashi,
         moon_rashi,
         sunrise: jdToDateTime(today_sun.rise_jd),

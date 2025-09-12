@@ -1,9 +1,23 @@
+import {
+    GiAquarius,
+    GiAries,
+    GiCancer,
+    GiCapricorn,
+    GiGemini,
+    GiLeo,
+    GiLibra,
+    GiPisces,
+    GiSagittarius,
+    GiScorpio,
+    GiTaurus,
+    GiVirgo,
+} from "react-icons/gi";
+import type { IconType } from "react-icons/lib";
 import type { SaptagrahaEn } from "src/services/constants/Planet";
 import type { CalculatedDetail, Translation } from "src/services/types";
 import { MOD360 } from "src/services/utils";
 
 // Type Definitions
-
 export type RasiEn =
     | "Aries"
     | "Taurus"
@@ -52,7 +66,7 @@ export interface RasiDetail {
     element: ElementEn;
     gender: GenderEn;
     nature: NatureEn;
-    symbol: string;
+    symbol: IconType;
     color: string;
 }
 
@@ -83,7 +97,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Fire",
         gender: "M",
         nature: "Movable",
-        symbol: "♈",
+        symbol: GiAries,
         color: "#ff0000",
     },
     Taurus: {
@@ -93,7 +107,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Earth",
         gender: "F",
         nature: "Fixed",
-        symbol: "♉",
+        symbol: GiTaurus,
         color: "#00ff00",
     },
     Gemini: {
@@ -103,7 +117,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Air",
         gender: "M",
         nature: "Dual",
-        symbol: "♊",
+        symbol: GiGemini,
         color: "#ee754f",
     },
     Cancer: {
@@ -113,7 +127,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Water",
         gender: "F",
         nature: "Movable",
-        symbol: "♋",
+        symbol: GiCancer,
         color: "#4a6efa",
     },
     Leo: {
@@ -123,7 +137,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Fire",
         gender: "M",
         nature: "Fixed",
-        symbol: "♌",
+        symbol: GiLeo,
         color: "#ff4c45",
     },
     Virgo: {
@@ -133,7 +147,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Earth",
         gender: "F",
         nature: "Dual",
-        symbol: "♍",
+        symbol: GiVirgo,
         color: "#ee754f",
     },
     Libra: {
@@ -143,7 +157,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Air",
         gender: "M",
         nature: "Movable",
-        symbol: "♎",
+        symbol: GiLibra,
         color: "#00ff00",
     },
     Scorpio: {
@@ -153,7 +167,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Water",
         gender: "F",
         nature: "Fixed",
-        symbol: "♏",
+        symbol: GiScorpio,
         color: "#ff0000",
     },
     Sagittarius: {
@@ -163,7 +177,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Fire",
         gender: "M",
         nature: "Dual",
-        symbol: "♐",
+        symbol: GiSagittarius,
         color: "#0134ff",
     },
     Capricorn: {
@@ -173,7 +187,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Earth",
         gender: "F",
         nature: "Movable",
-        symbol: "♑",
+        symbol: GiCapricorn,
         color: "#964B00",
     },
     Aquarius: {
@@ -183,7 +197,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Air",
         gender: "M",
         nature: "Fixed",
-        symbol: "♒",
+        symbol: GiAquarius,
         color: "#964B00",
     },
     Pisces: {
@@ -193,7 +207,7 @@ export const RasiDetails: Record<RasiEn, RasiDetail> = {
         element: "Water",
         gender: "F",
         nature: "Dual",
-        symbol: "♓",
+        symbol: GiPisces,
         color: "#0134ff",
     },
 };

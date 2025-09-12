@@ -1,5 +1,5 @@
-import { FaClock } from "react-icons/fa";
 import { useSessionContext } from "src/contexts/SessionContext";
+import { pageDetails } from "src/pages";
 
 export default function Home() {
     const session = useSessionContext();
@@ -14,142 +14,52 @@ export default function Home() {
                     </h2>
 
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {/* <!-- Kundli Creation  --> */}
-                        <div
-                            className="cursor-pointer rounded-xl bg-white p-6"
-                            onClick={() =>
-                                session.updateData({ page: "KundliForm" })
-                            }>
-                            <div className="text-center">
-                                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500">
-                                    <i className="fas fa-chart-pie text-2xl text-white"></i>
-                                </div>
-                                <h3 className="mb-3 text-xl font-semibold">
-                                    Kundli Creation
-                                </h3>
-                                <p className="mb-4 text-gray-600">
-                                    Generate your complete birth chart with
-                                    detailed planetary positions
-                                </p>
-                                <button className="rounded-full bg-purple-600 px-6 py-2 text-white transition-colors hover:bg-purple-700">
-                                    Create Kundli
-                                </button>
-                            </div>
-                        </div>
+                        {Object.entries(pageDetails)
+                            .filter(([, detail]) => detail.nav)
+                            .map(([pageId, detail]) => {
+                                return (
+                                    <div
+                                        key={pageId}
+                                        className="cursor-pointer rounded-xl bg-white p-6"
+                                        onClick={() =>
+                                            session.updateData({ page: pageId })
+                                        }>
+                                        <div className="text-center">
+                                            <div
+                                                className={
+                                                    "mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" +
+                                                    (detail.icon.name.startsWith(
+                                                        "Svg"
+                                                    )
+                                                        ? ""
+                                                        : " bg-gradient-to-br from-orange-600 to-amber-500 shadow-lg")
+                                                }>
+                                                <detail.icon
+                                                    className={
+                                                        detail.icon.name.startsWith(
+                                                            "Svg"
+                                                        )
+                                                            ? "h-10 w-10"
+                                                            : "h-6 w-6 text-4xl text-white drop-shadow-md"
+                                                    }
+                                                />
+                                            </div>
 
-                        {/* <!-- Kundli Matching  --> */}
-                        <div
-                            className="cursor-pointer rounded-xl bg-white p-6"
-                            onClick={() =>
-                                session.updateData({ page: "KundliMatching" })
-                            }>
-                            <div className="text-center">
-                                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-pink-500">
-                                    <i className="fas fa-heart text-2xl text-white"></i>
-                                </div>
-                                <h3 className="mb-3 text-xl font-semibold">
-                                    Kundli Matching
-                                </h3>
-                                <p className="mb-4 text-gray-600">
-                                    Check compatibility between partners for
-                                    marriage
-                                </p>
-                                <button className="rounded-full bg-red-600 px-6 py-2 text-white transition-colors hover:bg-red-700">
-                                    Check Matching
-                                </button>
-                            </div>
-                        </div>
+                                            <h3 className="mb-3 text-xl font-semibold text-gray-800">
+                                                {detail.title}
+                                            </h3>
 
-                        {/* <!-- Dasha Analysis  --> */}
-                        <div
-                            className="cursor-pointer rounded-xl bg-white p-6"
-                            onClick={() =>
-                                session.updateData({ page: "HinduTime" })
-                            }>
-                            <div className="text-center">
-                                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-teal-500">
-                                    <FaClock className="text-2xl text-white" />
-                                </div>
-                                <h3 className="mb-3 text-xl font-semibold">
-                                    Hindu Time
-                                </h3>
-                                <p className="mb-4 text-gray-600">
-                                    Hinud Time periods
-                                </p>
-                                <button className="rounded-full bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700">
-                                    View Dasha
-                                </button>
-                            </div>
-                        </div>
+                                            <p className="mb-4 text-gray-600">
+                                                {detail.description}
+                                            </p>
 
-                        {/* <!-- Phaladesh  --> */}
-                        <div
-                            className="cursor-pointer rounded-xl bg-white p-6"
-                            onClick={() =>
-                                session.updateData({ page: "About" })
-                            }>
-                            <div className="text-center">
-                                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-emerald-500">
-                                    <i className="fas fa-scroll text-2xl text-white"></i>
-                                </div>
-                                <h3 className="mb-3 text-xl font-semibold">
-                                    Phaladesh
-                                </h3>
-                                <p className="mb-4 text-gray-600">
-                                    Detailed predictions based on your birth
-                                    chart
-                                </p>
-                                <button className="rounded-full bg-green-600 px-6 py-2 text-white transition-colors hover:bg-green-700">
-                                    Get Predictions
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* <!-- Panchang Calendar  --> */}
-                        <div
-                            className="cursor-pointer rounded-xl bg-white p-6"
-                            onClick={() =>
-                                session.updateData({
-                                    page: "MonthlyCalendar",
-                                })
-                            }>
-                            <div className="text-center">
-                                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-yellow-500 to-orange-500">
-                                    <i className="fas fa-calendar-alt text-2xl text-white"></i>
-                                </div>
-                                <h3 className="mb-3 text-xl font-semibold">
-                                    Panchang Calendar
-                                </h3>
-                                <p className="mb-4 text-gray-600">
-                                    View detailed panchang for any date
-                                </p>
-                                <button className="rounded-full bg-yellow-600 px-6 py-2 text-white transition-colors hover:bg-yellow-700">
-                                    View Calendar
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* <!-- Settings  --> */}
-                        <div
-                            className="cursor-pointer rounded-xl bg-white p-6"
-                            onClick={() =>
-                                session.updateData({ page: "Settings" })
-                            }>
-                            <div className="text-center">
-                                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-gray-500 to-gray-700">
-                                    <i className="fas fa-cog text-2xl text-white"></i>
-                                </div>
-                                <h3 className="mb-3 text-xl font-semibold">
-                                    Settings
-                                </h3>
-                                <p className="mb-4 text-gray-600">
-                                    Configure location, language and preferences
-                                </p>
-                                <button className="rounded-full bg-gray-600 px-6 py-2 text-white transition-colors hover:bg-gray-700">
-                                    Open Settings
-                                </button>
-                            </div>
-                        </div>
+                                            <button className="rounded-full bg-purple-600 px-6 py-2 text-white transition-all hover:bg-purple-700 hover:shadow-md">
+                                                {detail.subtitle}
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                     </div>
                 </div>
             </div>

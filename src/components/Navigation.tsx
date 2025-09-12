@@ -1,6 +1,6 @@
 import { FaTimes } from "react-icons/fa";
 import { useSessionContext } from "src/contexts/SessionContext";
-import { pageDetails } from "src/pages/pageDetails";
+import { pageDetails } from "src/pages";
 
 export default function Navigation() {
     const session = useSessionContext();
@@ -13,7 +13,7 @@ export default function Navigation() {
             }>
             {/* Header */}
             <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-                <a href={"?page=Home"} className="flex items-center space-x-3">
+                <a href={"/"} className="flex items-center space-x-3">
                     <img
                         src="assets/icon/icon-192x192.png"
                         className="h-6 w-6 text-blue-700"
@@ -39,7 +39,11 @@ export default function Navigation() {
                         .map(([pageId, pageDetail]) => (
                             <li key={pageId}>
                                 <a
-                                    href={"?page=" + pageId}
+                                    onClick={() =>
+                                        session.updateData({
+                                            page: pageId,
+                                        })
+                                    }
                                     className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-2 transition-colors ${
                                         pageId === session.data.page
                                             ? "bg-blue-700 text-white"

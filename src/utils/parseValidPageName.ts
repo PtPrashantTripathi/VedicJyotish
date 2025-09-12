@@ -1,4 +1,4 @@
-import { pageDetails, type ValidPageType } from "src/pages/pageDetails";
+import { pageDetails, type ValidPageType } from "src/pages";
 
 /**
  * Validates if the given page is one of the allowed page types.

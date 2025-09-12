@@ -208,7 +208,7 @@ export default function KundliForm() {
                                                             city,
                                                             lat,
                                                             lon,
-                                                            tz_name,
+                                                            tznm,
                                                         ] =
                                                             e.currentTarget.id.split(
                                                                 "|"
@@ -221,10 +221,10 @@ export default function KundliForm() {
                                                             lon: parseFloat(
                                                                 lon
                                                             ),
-                                                            tz_name,
+                                                            tznm,
                                                             tz: state
                                                                 .timezoneMap[
-                                                                tz_name
+                                                                tznm
                                                             ],
                                                         });
                                                         setFilteredCities([]);
@@ -308,43 +308,38 @@ export default function KundliForm() {
                                                 id="tz"
                                                 className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
                                                 value={formatTimezoneOffset(
-                                                    session.data.tz_name,
+                                                    session.data.tznm,
                                                     session.data.tz
                                                 )}
                                                 onChange={e => {
-                                                    const tz_name =
-                                                        e.target.value
-                                                            .split("[")[0]
-                                                            .trim();
+                                                    const tznm = e.target.value
+                                                        .split("[")[0]
+                                                        .trim();
                                                     session.updateData({
-                                                        tz_name,
+                                                        tznm,
                                                         tz: state.timezoneMap[
-                                                            tz_name
+                                                            tznm
                                                         ],
                                                     });
                                                 }}>
                                                 {Object.entries(
                                                     state.timezoneMap
-                                                ).map(
-                                                    ([tz_name, tz_offset]) => {
-                                                        const formattedTimezone =
-                                                            formatTimezoneOffset(
-                                                                tz_name,
-                                                                tz_offset
-                                                            );
-                                                        return (
-                                                            <option
-                                                                key={tz_name}
-                                                                value={
-                                                                    formattedTimezone
-                                                                }>
-                                                                {
-                                                                    formattedTimezone
-                                                                }
-                                                            </option>
+                                                ).map(([tznm, tz_offset]) => {
+                                                    const formattedTimezone =
+                                                        formatTimezoneOffset(
+                                                            tznm,
+                                                            tz_offset
                                                         );
-                                                    }
-                                                )}
+                                                    return (
+                                                        <option
+                                                            key={tznm}
+                                                            value={
+                                                                formattedTimezone
+                                                            }>
+                                                            {formattedTimezone}
+                                                        </option>
+                                                    );
+                                                })}
                                             </select>
                                         </div>
 
@@ -408,25 +403,28 @@ export default function KundliForm() {
                                                 Choose Ayanamsa
                                             </label>
                                             <select
-                                                value={
-                                                    session.data.ayanamsa || ""
-                                                }
+                                                value={session.data.ayan || ""}
                                                 onChange={e =>
                                                     session.updateData({
-                                                        ayanamsa:
-                                                            e.target.value,
+                                                        ayan: parseInt(
+                                                            e.target.value
+                                                        ),
                                                     })
                                                 }
                                                 id="ayanamsa"
                                                 name="ayanamsa"
                                                 className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500">
-                                                {ayanamsaNames.map(name => (
-                                                    <option
-                                                        key={name}
-                                                        value={name}>
-                                                        {name}
-                                                    </option>
-                                                ))}
+                                                {Object.entries(
+                                                    ayanamsaNames
+                                                ).map(
+                                                    ([mode, ayanamsa_name]) => (
+                                                        <option
+                                                            key={ayanamsa_name}
+                                                            value={mode}>
+                                                            {ayanamsa_name}
+                                                        </option>
+                                                    )
+                                                )}
                                             </select>
                                         </div>
                                     </div>

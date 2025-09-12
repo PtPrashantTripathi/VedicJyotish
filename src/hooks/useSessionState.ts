@@ -73,6 +73,17 @@ export function useSessionState() {
             // Sync with URL
             updateURL(updated.data);
 
+            // if ()
+            if (updated.data.ayan !== prev.data.ayan)
+                swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
+
+            // Location settings
+            if (
+                updated.data.lon !== prev.data.lon ||
+                updated.data.lat !== prev.data.lat
+            )
+                swe.swe_set_topo(updated.data.lon, updated.data.lat, 0);
+
             return updated;
         });
     }, []);

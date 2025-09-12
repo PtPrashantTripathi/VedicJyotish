@@ -15,7 +15,7 @@ export default function HinduTime() {
 
     // Convert current system time to Julian Day UT
     const datetime = DateTime.fromISO(session.data.date, {
-        zone: session.data.tz_name,
+        zone: session.data.tznm,
     });
     const utc_dt = datetime.toUTC();
     const tjd_ut = swe.swe_utc_to_jd(

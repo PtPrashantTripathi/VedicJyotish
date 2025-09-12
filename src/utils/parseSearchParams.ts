@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import type { ValidPageType } from "src/pages/pageDetails";
+import type { ValidPageType } from "src/pages";
 import { parseValidTimezoneOffset } from "src/utils/parseTimezoneOffset";
 import { parseValidAyanamsaName } from "src/utils/parseValidAyanamsaName";
 import { parseValidDate } from "src/utils/parseValidDate";
@@ -18,7 +18,7 @@ export interface ISearchParams {
     /** Tz - Timezone offset in hours (e.g., 5.5 for +05:30) */
     tz: number;
     /** Tz_name - Timezone name (e.g., "Asia/Kolkata") */
-    tz_name: string;
+    tznm: string;
     /** City - City name with location details */
     city: string;
     /** Lat - Latitude coordinate */
@@ -26,7 +26,7 @@ export interface ISearchParams {
     /** Lon - Longitude coordinate */
     lon: number;
     /** Ayanamsa - Ayanamsa calculation method */
-    ayanamsa: string;
+    ayan: number;
 }
 
 /**
@@ -34,15 +34,15 @@ export interface ISearchParams {
  * Used to maintain order and ensure all parameters are processed.
  */
 export const searchParamKeys: (keyof ISearchParams)[] = [
-    "page",
-    "city",
-    "tz_name",
-    "lat",
-    "lon",
-    "ayanamsa",
-    "date",
-    "time",
-    "tz",
+    "page", // Page Name
+    "city", // City Name
+    "date", // Date
+    "time", // Time
+    "tznm", // Time Zone Name
+    "tz", // Time Zone Offset
+    "lat", // Latitude
+    "lon", // Longitude
+    "ayan", // Ayanamsa Name
 ];
 
 /**
@@ -62,17 +62,12 @@ export function parseURLSearchParams(): ISearchParams {
         date: DateTime.now().toFormat("yyyy-MM-dd"),
         time: DateTime.now().toFormat("HH:mm:ss"),
         tz: 5.5,
-        tz_name: "Asia/Kolkata",
+        tznm: "Asia/Kolkata",
         city: "Ujjain, Madhya Pradesh, India",
         lat: 23.1793,
         lon: 75.784912,
-        ayanamsa: "Lahiri",
+        ayan: 1,
     };
-
-    // Only parse URL on client side to avoid SSR issues
-    if (typeof window === "undefined") {
-        return searchParams;
-    }
 
     let currentSearchParams = new URLSearchParams(window.location.search);
     const id = currentSearchParams.get("id");
@@ -116,8 +111,8 @@ export function parseURLSearchParams(): ISearchParams {
                     case "lon":
                         searchParams.lon = parseValidDegree(value, "lon");
                         break;
-                    case "ayanamsa":
-                        searchParams.ayanamsa = parseValidAyanamsaName(value);
+                    case "ayan":
+                        searchParams.ayan = parseValidAyanamsaName(value);
                         break;
                     case "date":
                         searchParams.date = parseValidDate(value);
@@ -129,7 +124,7 @@ export function parseURLSearchParams(): ISearchParams {
                         searchParams.tz = parseValidTimezoneOffset(value);
                         break;
                     case "city":
-                    case "tz_name":
+                    case "tznm":
                         searchParams[key] = value;
                         break;
                 }

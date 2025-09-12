@@ -31,7 +31,7 @@ export default function App() {
                     (session.nav ? " opacity-100" : " pointer-events-none")
                 }></div>
             <Navigation />
-            <main>
+            <main className="mx-auto">
                 <Errors />
                 {session.data.page === "Home" ? (
                     <Home />

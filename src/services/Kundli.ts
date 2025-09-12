@@ -5,7 +5,7 @@ import { Planet, type PlanetEn } from "src/services/constants/Planet";
 import { MOD360 } from "src/services/utils";
 
 // getPlanetaryPosition
-export async function Kundli(
+export function Kundli(
     datetime: DateTime<true>,
     longitude: number, // north positive
     latitude: number, // east positive
@@ -32,9 +32,6 @@ export async function Kundli(
         utc_dt.second,
         swe.SE_GREG_CAL
     )[1];
-
-    // Ayanamsa
-    const ayanamsa = swe.swe_get_ayanamsa_ex_ut(tjd_ut, IFLAGS);
 
     // Ascendant etc.
     const { ascmc } = swe.swe_houses(
@@ -133,12 +130,10 @@ export async function Kundli(
         planets.Ascendant.rasi.rasi_num
     );
 
-    const panchanga = await getPanchanga(
-        datetime
-            .minus({
-                days: planets.Ascendant.degree - planets.Sun.degree < 0 ? 1 : 0,
-            })
-            .startOf("day") as DateTime<true>,
+    const panchanga = getPanchanga(
+        datetime.minus({
+            days: planets.Ascendant.degree - planets.Sun.degree < 0 ? 1 : 0,
+        }) as DateTime<true>,
         longitude,
         latitude
     );
@@ -159,7 +154,7 @@ export async function Kundli(
 
     return {
         panchanga,
-        ayanamsa,
+        datetime,
         planets,
         daybirth: MOD360(planets.Ascendant.degree - planets.Sun.degree) < 180,
     };
