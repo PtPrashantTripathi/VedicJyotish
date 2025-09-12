@@ -111,4 +111,3 @@ export const pageDetails: Record<ValidPageType, PageDetail> = {
         actionMessage: "और जानें",
     },
 };
-

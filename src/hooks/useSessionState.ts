@@ -1,11 +1,13 @@
 // src/hooks/useSessionState.ts
 import { useCallback, useEffect, useState } from "react";
 import type { IErrorType } from "src/components/Errors";
+import { AyanamsaMods } from "src/services/constants/AyanamsaMods";
 import {
     type ISearchParams,
     parseURLSearchParams as parseSearchParams,
     searchParamKeys,
 } from "src/utils/parseSearchParams";
+import { parseStorageValues } from "src/utils/parseStorageValues";
 
 // Defines the full session data structure, including errors and navigation state.
 export interface ISessionData {
@@ -47,7 +49,24 @@ function updateURL(params: ISearchParams): void {
  * @returns Object containing state and control functions
  */
 export function useSessionState() {
-    const data = parseSearchParams();
+    const storage_data = parseStorageValues();
+
+    const data = parseSearchParams(
+        {
+            name: storage_data.name,
+            date: storage_data.dob.toFormat("yyyy-MM-dd"),
+            time: storage_data.dob.toFormat("HH:mm:ss"),
+            tz: storage_data.dob.offset / 60,
+            tznm: storage_data.tz_name,
+            city: storage_data.city,
+            lat: storage_data.lat,
+            lon: storage_data.lon,
+            ayan: (Object.entries(AyanamsaMods).find(
+                ([_, value]) => value === storage_data.ayanamsa
+            ) || [1])[0],
+        },
+        storage_data.default // if its a default init data then the first run will be saved
+    );
 
     // Initialize state from URL parameters
     const [session, setSession] = useState<ISessionData>({
@@ -71,11 +90,16 @@ export function useSessionState() {
             };
 
             // Sync with URL
-            updateURL(updated.data);
+            if (
+                Object.entries(updated.data).some(
+                    ([key, value]) => prev.data[key] !== value
+                )
+            )
+                updateURL(updated.data);
 
-            // if ()
+            // Set ayanamsa for sidereal mode
             if (updated.data.ayan !== prev.data.ayan)
-                swe.swe_set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
+                swe.swe_set_sid_mode(updated.data.ayan, 0, 0);
 
             // Location settings
             if (
@@ -121,7 +145,7 @@ export function useSessionState() {
     }, []);
 
     console.log("session:", JSON.stringify(session, null, 4));
-
+    console.log("storage:", JSON.stringify(storage_data, null, 4));
     console.log(getShortURL());
     return {
         ...session,

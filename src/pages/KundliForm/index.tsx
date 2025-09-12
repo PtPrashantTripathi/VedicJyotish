@@ -2,7 +2,10 @@ import pako from "pako";
 import { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { useSessionContext } from "src/contexts/SessionContext";
-import { ayanamsaNames } from "src/services/constants/Ayanamsa";
+import {
+    AyanamsaMods,
+    type AyanamsaModsKey,
+} from "src/services/constants/AyanamsaMods";
 import { formatTimezoneOffset } from "src/utils/formatTimezoneOffset";
 
 export default function KundliForm() {
@@ -114,13 +117,27 @@ export default function KundliForm() {
                             />
 
                             <div>
-                                <label className="mb-2 block text-sm font-medium text-gray-700">
+                                <label
+                                    className="mb-2 block text-sm font-medium text-gray-700"
+                                    htmlFor="name">
                                     Full Name
                                 </label>
                                 <input
                                     type="text"
+                                    id="name"
+                                    name="name"
                                     className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
                                     placeholder="Enter your full name"
+                                    value={
+                                        session.data.name !== "User"
+                                            ? session.data.name
+                                            : ""
+                                    }
+                                    onChange={e =>
+                                        session.updateData({
+                                            name: e.target.value,
+                                        })
+                                    }
                                 />
                             </div>
 
@@ -408,14 +425,14 @@ export default function KundliForm() {
                                                     session.updateData({
                                                         ayan: parseInt(
                                                             e.target.value
-                                                        ),
+                                                        ) as AyanamsaModsKey,
                                                     })
                                                 }
                                                 id="ayanamsa"
                                                 name="ayanamsa"
                                                 className="w-full rounded-lg border border-gray-300 p-3 transition-colors focus:border-purple-500 focus:ring-2 focus:ring-purple-500">
                                                 {Object.entries(
-                                                    ayanamsaNames
+                                                    AyanamsaMods
                                                 ).map(
                                                     ([mode, ayanamsa_name]) => (
                                                         <option

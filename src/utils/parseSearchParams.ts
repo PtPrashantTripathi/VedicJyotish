@@ -1,7 +1,16 @@
 import { DateTime } from "luxon";
 import type { ValidPageType } from "src/pages";
-import { parseValidTimezoneOffset } from "src/utils/parseTimezoneOffset";
+import {
+    AyanamsaMods,
+    type AyanamsaModsKey,
+} from "src/services/constants/AyanamsaMods";
+import { setStorageValues } from "src/utils/parseStorageValues";
+import {
+    parseValidTimezoneName,
+    parseValidTimezoneOffset,
+} from "src/utils/parseTimezone";
 import { parseValidAyanamsaName } from "src/utils/parseValidAyanamsaName";
+import { parseValidBool } from "src/utils/parseValidBool";
 import { parseValidDate } from "src/utils/parseValidDate";
 import { parseValidDegree } from "src/utils/parseValidDegree";
 import { parseValidPageName } from "src/utils/parseValidPageName";
@@ -9,6 +18,8 @@ import { parseValidTime } from "src/utils/parseValidTime";
 
 /** Defines the structure of valid URL search parameters and component state. */
 export interface ISearchParams {
+    /** User name */
+    name: string;
     /** Page - Current page type/name */
     page: ValidPageType;
     /** Date - Date in YYYY-MM-DD format */
@@ -26,7 +37,7 @@ export interface ISearchParams {
     /** Lon - Longitude coordinate */
     lon: number;
     /** Ayanamsa - Ayanamsa calculation method */
-    ayan: number;
+    ayan: AyanamsaModsKey;
 }
 
 /**
@@ -52,12 +63,16 @@ export const searchParamKeys: (keyof ISearchParams)[] = [
  *
  * @returns {ISearchParams} Parsed search parameters with fallback defaults
  */
-export function parseURLSearchParams(): ISearchParams {
+export function parseURLSearchParams(
+    input?: Partial<ISearchParams>,
+    save?: boolean
+): ISearchParams {
     /**
      * Default search parameters with sensible fallback values. Used when URL
      * parameters are missing or invalid.
      */
     const searchParams: ISearchParams = {
+        name: "User",
         page: "Home",
         date: DateTime.now().toFormat("yyyy-MM-dd"),
         time: DateTime.now().toFormat("HH:mm:ss"),
@@ -68,6 +83,9 @@ export function parseURLSearchParams(): ISearchParams {
         lon: 75.784912,
         ayan: 1,
     };
+    if (input) {
+        Object.assign(searchParams, input);
+    }
 
     let currentSearchParams = new URLSearchParams(window.location.search);
     const id = currentSearchParams.get("id");
@@ -112,7 +130,7 @@ export function parseURLSearchParams(): ISearchParams {
                         searchParams.lon = parseValidDegree(value, "lon");
                         break;
                     case "ayan":
-                        searchParams.ayan = parseValidAyanamsaName(value);
+                        searchParams.ayan = parseValidAyanamsaName(value).key;
                         break;
                     case "date":
                         searchParams.date = parseValidDate(value);
@@ -123,9 +141,11 @@ export function parseURLSearchParams(): ISearchParams {
                     case "tz":
                         searchParams.tz = parseValidTimezoneOffset(value);
                         break;
-                    case "city":
                     case "tznm":
-                        searchParams[key] = value;
+                        searchParams.tznm = parseValidTimezoneName(value);
+                        break;
+                    case "city":
+                        searchParams.city = value;
                         break;
                 }
             } catch (error) {
@@ -136,6 +156,24 @@ export function parseURLSearchParams(): ISearchParams {
             }
         }
     });
+    const sp_save = currentSearchParams.get("save");
+    if (
+        (sp_save && parseValidBool(sp_save)) ||
+        (save && searchParams.page === "KundliResult")
+    ) {
+        setStorageValues({
+            name: searchParams.name,
+            dob: DateTime.fromISO(`${searchParams.date}T${searchParams.time}`, {
+                zone: searchParams.tznm,
+            }) as DateTime<true>,
+            tz_name: searchParams.tznm,
+            city: searchParams.city,
+            lat: searchParams.lat,
+            lon: searchParams.lon,
+            ayanamsa: AyanamsaMods[searchParams.ayan],
+            default: false,
+        });
+    }
 
     return searchParams;
 }

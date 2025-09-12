@@ -1,5 +1,5 @@
-/** Ayanamsa Names */
-export const ayanamsaNames: Record<number, string> = {
+/** A comprehensive list of ayanamsa mode with their full names. */
+export const AyanamsaMods = {
     0: "Fagan Bradley", // SE_SIDM_FAGAN_BRADLEY
     1: "Lahiri", // SE_SIDM_LAHIRI
     2: "De Luce", // SE_SIDM_DELUCE
@@ -49,4 +49,10 @@ export const ayanamsaNames: Record<number, string> = {
     46: "Lahiri ICRC", // SE_SIDM_LAHIRI_ICRC
     // 43: "Manjula Laghumanasa",              // SE_SIDM_MANJULA
     255: "User Defined Ayanamsa", // SE_SIDM_USER
-};
+} as const;
+
+// This type generates a union of all possible values from the `ayanamsamods` object.
+export type AyanamsaModsKey = keyof typeof AyanamsaMods;
+
+// This type generates a union of all possible values from the `ayanamsamods` object.
+export type AyanamsaModsValue = (typeof AyanamsaMods)[AyanamsaModsKey];
