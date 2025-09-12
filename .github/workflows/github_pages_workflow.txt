@@ -1,0 +1,123 @@
+# GitHub Pages Deployment Workflow
+# Automatically builds and deploys your project to GitHub Pages
+name: Deploy to GitHub Pages
+
+# Workflow triggers
+on:
+  # Automatically deploy when code is pushed to main branch
+  push:
+    branches: [main]
+
+  # Allow manual deployment through GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      build_env:
+        description: "Build environment (prod/dev)"
+        required: false
+        default: "prod"
+        type: choice
+        options:
+          - prod
+          - dev
+      verbose:
+        description: "Enable verbose logging"
+        required: false
+        default: false
+        type: boolean
+      download_source_files:
+        description: "Download additional source files"
+        required: false
+        default: false
+        type: boolean
+
+# Required permissions for GitHub Pages deployment
+permissions:
+  contents: read      # Read repository contents
+  pages: write       # Deploy to GitHub Pages
+  id-token: write    # OIDC token for secure deployment
+
+# Prevent concurrent deployments to avoid conflicts
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  # Single job that builds and deploys
+  build-and-deploy:
+    name: Build and Deploy
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    
+    # Environment variables available to all steps
+    env:
+      BUILD_ENV: ${{ github.event.inputs.build_env || 'prod' }}
+      VERBOSE: ${{ github.event.inputs.verbose || 'false' }}
+      DOWNLOAD_SOURCE: ${{ github.event.inputs.download_source_files || 'false' }}
+
+    steps:
+      # Step 1: Get the source code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better build optimization
+
+      # Step 2: Configure GitHub Pages settings
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # Step 3: Setup Node.js runtime
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Use stable LTS version instead of "latest"
+          cache: 'npm'        # Cache npm dependencies for faster builds
+
+      # Step 4: Install pnpm package manager
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8  # Use stable pnpm version
+          run_install: false
+
+      # Step 5: Setup pnpm cache for faster subsequent builds
+      - name: Get pnpm store directory
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      # Step 6: Install project dependencies
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Step 7: Build the project
+      - name: Build project
+        run: pnpm run build
+        env:
+          NODE_ENV: ${{ env.BUILD_ENV }}
+
+      # Step 8: Upload build artifacts for GitHub Pages
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+          retention-days: 5
+
+      # Step 9: Deploy to GitHub Pages
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # Step 8: Output deployment URL
+      - name: Display deployment info
+        run: |
+          echo "🚀 Deployment successful!"
+          echo "📍 Site URL: ${{ steps.deployment.outputs.page_url }}"
