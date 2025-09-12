@@ -66,31 +66,11 @@ jobs:
 
             # Install Node.js project dependencies
             - name: Install Node dependencies
-              run: npm install
-
-            # Set up Python for tasks
-            - name: Setup Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: "3.x"
-
-            # Install Node.js project dependencies
-            - name: Install Python packages
-              run: pip install requests pandas
-
-            # Install and activate Emscripten SDK
-            - name: Install and Activate Emscripten SDK
-              run: |
-                  git clone https://github.com/emscripten-core/emsdk.git ~/emsdk
-                  ~/emsdk/emsdk install latest
-                  ~/emsdk/emsdk activate latest
-              shell: bash
+              run: pnpm install
 
             # Build the project using npm and EMSDK
             - name: Build Project
-              run: |
-                  source ~/emsdk/emsdk_env.sh
-                  npm run build
+              run: pnpm run build
 
             # Upload the build output (dist/) as an artifact for Pages
             - name: Upload Build Artifact
