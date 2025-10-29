@@ -1,9 +1,5 @@
 import "src/style/global.css";
 
-<<<<<<< HEAD
-// import { lazy } from "react";
-=======
->>>>>>> 391cf0f (last commit)
 import Errors from "src/components/Errors";
 import Footer from "src/components/Footer";
 import Header from "src/components/Header";
@@ -20,11 +16,6 @@ import MonthlyCalendar from "src/pages/MonthlyCalendar";
 import Panchang from "src/pages/Panchang";
 import Settings from "src/pages/Settings";
 
-<<<<<<< HEAD
-// const KundliResult = lazy(() => import("src/pages/KundliResult"));
-
-=======
->>>>>>> 391cf0f (last commit)
 export default function App() {
     const session = useSessionState();
     return (
@@ -37,27 +28,6 @@ export default function App() {
                     (session.nav ? " opacity-100" : " pointer-events-none")
                 }></div>
             <Navigation />
-<<<<<<< HEAD
-            <main className="mx-auto">
-                <Errors />
-                {session.data.page === "Home" ? (
-                    <Home />
-                ) : session.data.page === "Panchang" ? (
-                    <Panchang />
-                ) : session.data.page === "KundliForm" ? (
-                    <KundliForm />
-                ) : session.data.page === "KundliResult" ? (
-                    <KundliResult />
-                ) : session.data.page === "MonthlyCalendar" ? (
-                    <MonthlyCalendar />
-                ) : session.data.page === "KundliMatching" ? (
-                    <KundliMatching />
-                ) : session.data.page === "HinduTime" ? (
-                    <HinduTime />
-                ) : session.data.page === "Settings" ? (
-                    <Settings />
-                ) : session.data.page === "About" ? (
-=======
             <main className="container mx-auto px-4 py-8">
                 <Errors />
 
@@ -78,7 +48,6 @@ export default function App() {
                 ) : session.searchParams.page === "Settings" ? (
                     <Settings />
                 ) : session.searchParams.page === "About" ? (
->>>>>>> 391cf0f (last commit)
                     <About />
                 ) : (
                     <section>

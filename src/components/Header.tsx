@@ -5,11 +5,7 @@ import { pageDetails } from "src/pages";
 export default function Header() {
     const session = useSessionContext();
 
-<<<<<<< HEAD
-    const detail = pageDetails[session.data.page];
-=======
     const detail = pageDetails[session.searchParams.page];
->>>>>>> 391cf0f (last commit)
     return (
         <header className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 text-white shadow-lg">
             <div className="mx-auto max-w-7xl px-4 py-6">

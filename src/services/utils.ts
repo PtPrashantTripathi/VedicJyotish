@@ -7,35 +7,21 @@ import type { RasiNumber } from "src/services/constants/Rasi";
 export const absolute = (x: number): number =>
     x >= 0 ? Math.floor(x) : Math.ceil(x);
 
-<<<<<<< HEAD
-/** Normalize to 0–24 hour range */
-export const mod24 = (x: number): number => (x + 24) % 24;
-
-/** Normalize to 0 – 359.99... degrees */
-export const MOD360 = (x: number): number => {
-    let y = x % 360;
-    if (y < 0) {
-        y += 360;
-=======
 /** Normalize to 0 – 359.99... degrees */
 export const MOD = (x: number, n: number): number => {
     let y = x % n;
     if (y < 0) {
         y += n;
->>>>>>> 391cf0f (last commit)
     }
     return y;
 };
 
-<<<<<<< HEAD
-=======
 /** Normalize to 0–24 hour range */
 export const MOD24 = (x: number): number => MOD(x, 24);
 
 /** Normalize to 0 – 359.99... degrees */
 export const MOD360 = (x: number): number => MOD(x, 360);
 
->>>>>>> 391cf0f (last commit)
 /**
  * Normalize a given integer in rashi number.
  *

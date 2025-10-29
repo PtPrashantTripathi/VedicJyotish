@@ -10,11 +10,7 @@ export default function KundliMatching() {
                         <div className="mb-6 flex items-center">
                             <button
                                 onClick={() =>
-<<<<<<< HEAD
-                                    session.updateData({ page: "Home" })
-=======
                                     session.updateSearchParams({ page: "Home" })
->>>>>>> 391cf0f (last commit)
                                 }
                                 className="mr-4 text-red-600 hover:text-red-800">
                                 <i className="fas fa-arrow-left text-xl"></i>

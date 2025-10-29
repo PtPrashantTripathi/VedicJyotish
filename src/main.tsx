@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 import pako from "pako";
->>>>>>> 391cf0f (last commit)
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "src/app";
@@ -16,8 +13,6 @@ await swe.swe_set_ephe_path("./assets/ephe", [
     "sefstars.txt",
 ]);
 
-<<<<<<< HEAD
-=======
 // Fetches a city data.gz zipped JSON file and decompresses it to an JSON object.
 fetch("assets/database/city_database.cjson")
     .then(response => response.arrayBuffer())
@@ -42,7 +37,6 @@ fetch("assets/database/tz_offset.json")
         throw Error(`Failed to fetch tz_offset data: ${err}`);
     });
 
->>>>>>> 391cf0f (last commit)
 // Use createRoot to render the React application to the DOM.
 createRoot(document.body).render(
     <StrictMode>
