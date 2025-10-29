@@ -40,17 +40,29 @@ export default function Navigation() {
                             <li key={pageId}>
                                 <a
                                     onClick={() =>
+<<<<<<< HEAD
                                         session.updateData({
+=======
+                                        session.updateSearchParams({
+>>>>>>> 391cf0f (last commit)
                                             page: pageId,
                                         })
                                     }
                                     className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-2 transition-colors ${
+<<<<<<< HEAD
                                         pageId === session.data.page
+=======
+                                        pageId === session.searchParams.page
+>>>>>>> 391cf0f (last commit)
                                             ? "bg-blue-700 text-white"
                                             : "text-gray-900 hover:bg-gray-100"
                                     }`}
                                     aria-current={
+<<<<<<< HEAD
                                         pageId === session.data.page
+=======
+                                        pageId === session.searchParams.page
+>>>>>>> 391cf0f (last commit)
                                             ? "page"
                                             : undefined
                                     }>

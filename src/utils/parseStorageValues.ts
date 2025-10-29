@@ -1,16 +1,33 @@
 import { DateTime } from "luxon";
 import type { AyanamsaModsValue } from "src/services/constants/AyanamsaMods";
 import type { HouseSystemValue } from "src/services/constants/HouseSystems";
+<<<<<<< HEAD
 import { parseValidTimezoneName } from "src/utils/parseTimezone";
 import { parseValidAyanamsaName } from "src/utils/parseValidAyanamsaName";
 import { parseValidBool } from "src/utils/parseValidBool";
 import { parseValidDegree } from "src/utils/parseValidDegree";
 import { parseValidHouseSystemName } from "src/utils/parseValidHouseSystem";
+=======
+import { parseValidAyanamsaName } from "src/utils/validators/parseValidAyanamsaName";
+import { parseValidBool } from "src/utils/validators/parseValidBool";
+import { parseValidDateTime } from "src/utils/validators/parseValidDateTime";
+import { parseValidDegree } from "src/utils/validators/parseValidDegree";
+import { parseValidGender } from "src/utils/validators/parseValidGender";
+import { parseValidHouseSystemName } from "src/utils/validators/parseValidHouseSystem";
+import { parseValidLanguage } from "src/utils/validators/parseValidLanguage";
+import { parseValidTimezoneName } from "src/utils/validators/parseValidTimezone";
+>>>>>>> 391cf0f (last commit)
 
 /** Defines the structure of valid storage parameters and component state. */
 export interface IStorageValues {
     /** User name */
+<<<<<<< HEAD
     name: string;
+=======
+    username: string;
+    /** User Gender */
+    gender: "M" | "F";
+>>>>>>> 391cf0f (last commit)
     /** Date - ISO string in this 2025-09-12T06:16:06.637+05:30 format */
     dob: DateTime<true>;
     /** Tz_name - Timezone name (e.g., "Asia/Kolkata") */
@@ -22,10 +39,19 @@ export interface IStorageValues {
     /** Lon - Longitude coordinate */
     lon: number;
     /** Ayanamsa - Ayanamsa calculation method */
+<<<<<<< HEAD
     ayanamsa: AyanamsaModsValue;
     language: "Hindi" | "English";
     true_node: boolean;
     house_sys: HouseSystemValue;
+=======
+    ayanamsa_mod: AyanamsaModsValue;
+    language: "Hindi" | "English";
+    true_node: boolean;
+    /** House System - calculation method */
+    house_sys: HouseSystemValue;
+    /** Flag */
+>>>>>>> 391cf0f (last commit)
     default: boolean;
 }
 
@@ -41,16 +67,28 @@ export function parseStorageValues(): IStorageValues {
      * localStorage parameters are missing or invalid.
      */
     const storageValues: IStorageValues = {
+<<<<<<< HEAD
         name: "User",
+=======
+        username: "User",
+>>>>>>> 391cf0f (last commit)
         dob: DateTime.now(),
         tz_name: "Asia/Kolkata",
         city: "Ujjain, Madhya Pradesh, India",
         lat: 23.1793,
         lon: 75.784912,
+<<<<<<< HEAD
         ayanamsa: "Lahiri",
         language: "Hindi",
         true_node: true,
         house_sys: "Placidus",
+=======
+        ayanamsa_mod: "Lahiri",
+        language: "Hindi",
+        true_node: true,
+        house_sys: "Placidus",
+        gender: "M",
+>>>>>>> 391cf0f (last commit)
         default: true,
     };
 
@@ -59,6 +97,7 @@ export function parseStorageValues(): IStorageValues {
         if (value) {
             try {
                 switch (key) {
+<<<<<<< HEAD
                     case "dob": {
                         const dob = DateTime.fromISO(value);
                         if (dob.isValid) {
@@ -68,10 +107,19 @@ export function parseStorageValues(): IStorageValues {
                         }
                         break;
                     }
+=======
+                    case "username":
+                        storageValues.username = value.trim();
+                        break;
+                    case "dob":
+                        storageValues.dob = parseValidDateTime(value);
+                        break;
+>>>>>>> 391cf0f (last commit)
                     case "tz_name":
                         storageValues.tz_name = parseValidTimezoneName(value);
                         break;
                     case "city":
+<<<<<<< HEAD
                     case "name":
                         storageValues[key] = value;
                         break;
@@ -92,10 +140,27 @@ export function parseStorageValues(): IStorageValues {
                         } else {
                             throw new Error("Invalid language value");
                         }
+=======
+                        storageValues.city = value.trim();
+                        break;
+                    case "lat":
+                        storageValues.lat = parseValidDegree(value, "lat");
+                        break;
+                    case "lon":
+                        storageValues.lon = parseValidDegree(value, "lon");
+                        break;
+                    case "ayanamsa_mod":
+                        storageValues.ayanamsa_mod =
+                            parseValidAyanamsaName(value).value;
+                        break;
+                    case "language":
+                        storageValues.language = parseValidLanguage(value);
+>>>>>>> 391cf0f (last commit)
                         break;
                     case "true_node":
                         storageValues.true_node = parseValidBool(value);
                         break;
+<<<<<<< HEAD
                     case "default":
                         storageValues.default = parseValidBool(value);
                         break;
@@ -104,6 +169,18 @@ export function parseStorageValues(): IStorageValues {
                         storageValues.house_sys =
                             parseValidHouseSystemName(value).value;
                         break;
+=======
+                    case "house_sys":
+                        storageValues.house_sys =
+                            parseValidHouseSystemName(value).value;
+                        break;
+                    case "gender":
+                        storageValues.gender = parseValidGender(value);
+                        break;
+                    case "default":
+                        storageValues.default = parseValidBool(value);
+                        break;
+>>>>>>> 391cf0f (last commit)
                 }
             } catch (error) {
                 console.warn(
@@ -112,11 +189,19 @@ export function parseStorageValues(): IStorageValues {
             }
         }
     });
+<<<<<<< HEAD
     setStorageValues(storageValues);
     return storageValues;
 }
 
 export function setStorageValues(storageValues: Partial<IStorageValues>) {
+=======
+    saveStorageValues(storageValues);
+    return storageValues;
+}
+
+export function saveStorageValues(storageValues: Partial<IStorageValues>) {
+>>>>>>> 391cf0f (last commit)
     Object.entries(storageValues).forEach(([key, value]) =>
         localStorage.setItem(key, String(value))
     );
