@@ -1,4 +1,5 @@
 // src/hooks/useSessionState.ts
+<<<<<<< HEAD
 import { useCallback, useEffect, useState } from "react";
 import type { IErrorType } from "src/components/Errors";
 import { AyanamsaMods } from "src/services/constants/AyanamsaMods";
@@ -8,15 +9,37 @@ import {
     searchParamKeys,
 } from "src/utils/parseSearchParams";
 import { parseStorageValues } from "src/utils/parseStorageValues";
+=======
+import { DateTime } from "luxon";
+import { useCallback, useEffect, useState } from "react";
+import type { IErrorType } from "src/components/Errors";
+import {
+    getShortURLString,
+    type ISearchParams,
+    parseSearchParams as parseSearchParams,
+    updateURL,
+} from "src/utils/parseSearchParams";
+import {
+    type IStorageValues,
+    parseStorageValues,
+    saveStorageValues,
+} from "src/utils/parseStorageValues";
+>>>>>>> 391cf0f (last commit)
 
 // Defines the full session data structure, including errors and navigation state.
 export interface ISessionData {
     nav: boolean;
+<<<<<<< HEAD
     data: ISearchParams;
+=======
+    searchParams: ISearchParams;
+    storageValues: IStorageValues;
+>>>>>>> 391cf0f (last commit)
     error: IErrorType[];
 }
 
 /**
+<<<<<<< HEAD
  * Updates the browser URL with new search parameters without page reload.
  * Replaces current history state to avoid navigation issues.
  *
@@ -36,6 +59,8 @@ function updateURL(params: ISearchParams): void {
 }
 
 /**
+=======
+>>>>>>> 391cf0f (last commit)
  * Custom React hook for managing search parameters with URL synchronization.
  *
  * Features:
@@ -49,6 +74,7 @@ function updateURL(params: ISearchParams): void {
  * @returns Object containing state and control functions
  */
 export function useSessionState() {
+<<<<<<< HEAD
     const storage_data = parseStorageValues();
 
     const data = parseSearchParams(
@@ -71,6 +97,26 @@ export function useSessionState() {
     // Initialize state from URL parameters
     const [session, setSession] = useState<ISessionData>({
         data,
+=======
+    const storageValues = parseStorageValues();
+
+    const searchParams = parseSearchParams({
+        user: storageValues.username,
+        gender: storageValues.gender,
+        date: storageValues.dob.toFormat("yyyy-MM-dd"),
+        time: storageValues.dob.toFormat("HH:mm:ss"),
+        tz: storageValues.dob.offset / 60,
+        tznm: storageValues.tz_name,
+        city: storageValues.city,
+        lat: storageValues.lat,
+        lon: storageValues.lon,
+    });
+
+    // Initialize state from URL parameters
+    const [session, setSession] = useState<ISessionData>({
+        searchParams,
+        storageValues,
+>>>>>>> 391cf0f (last commit)
         nav: false,
         error: [],
     });
@@ -82,6 +128,7 @@ export function useSessionState() {
      * @param {Partial<ISearchParams>} input - Partial search parameters to
      *   update
      */
+<<<<<<< HEAD
     const updateData = useCallback((input: Partial<ISearchParams>) => {
         setSession(prev => {
             const updated = {
@@ -130,13 +177,84 @@ export function useSessionState() {
             btoa(params.toString())
         );
     }, [session]);
+=======
+    const updateSearchParams = useCallback(
+        (input: Partial<ISearchParams>) => {
+            setSession(prev => {
+                const updated = {
+                    ...prev,
+                    searchParams: { ...prev.searchParams, ...input },
+                };
+
+                // Sync with URL
+                if (
+                    Object.entries(updated.searchParams).some(
+                        ([key, value]) => prev.searchParams[key] !== value
+                    )
+                )
+                    updateURL(updated.searchParams);
+
+                return updated;
+            });
+        },
+        [setSession]
+    );
+
+    const updateStorageValues = useCallback(
+        (input: Partial<IStorageValues>) => {
+            setSession(prev => {
+                const updated = {
+                    ...prev,
+                    storageValues: { ...prev.storageValues, ...input },
+                };
+
+                // Sync with Storage Values
+                if (
+                    Object.entries(updated.storageValues).some(
+                        ([key, value]) => prev.storageValues[key] !== value
+                    )
+                )
+                    saveStorageValues(updated.storageValues);
+
+                return updated;
+            });
+        },
+        [setSession]
+    );
+
+    // This block should be fixed to prevent a potential state update during render.
+    // It should be wrapped in a useEffect, but since it only runs on the first mount
+    // when default/save flags are true, it's a common pattern in hooks, but technically
+    // a violation. It's often ignored if the function guarantees it only runs once,
+    // but the safest approach is to use useEffect.
+    // However, to strictly adhere to the original logic structure while acknowledging
+    // its purpose: it's initializing storage based on initial state.
+    if (storageValues.default || searchParams.save) {
+        updateStorageValues({
+            username: searchParams.user,
+            gender: searchParams.gender,
+            dob: DateTime.fromISO(`${searchParams.date}T${searchParams.time}`, {
+                zone: searchParams.tznm,
+            }) as DateTime<true>,
+            tz_name: searchParams.tznm,
+            city: searchParams.city,
+            lat: searchParams.lat,
+            lon: searchParams.lon,
+            default: false,
+        });
+    }
+>>>>>>> 391cf0f (last commit)
 
     // Handle browser navigation (back/forward buttons)
     useEffect(() => {
         const handlePopState = () => {
             setSession(prev => ({
                 ...prev,
+<<<<<<< HEAD
                 data: parseSearchParams(),
+=======
+                searchParams: parseSearchParams(),
+>>>>>>> 391cf0f (last commit)
             }));
         };
 
@@ -145,6 +263,7 @@ export function useSessionState() {
     }, []);
 
     console.log("session:", JSON.stringify(session, null, 4));
+<<<<<<< HEAD
     console.log("storage:", JSON.stringify(storage_data, null, 4));
     console.log(getShortURL());
     return {
@@ -152,6 +271,18 @@ export function useSessionState() {
         setSession,
         updateData,
         getShortURL,
+=======
+    console.log(getShortURLString(session.searchParams));
+    return {
+        ...session,
+        setSession,
+        updateSearchParams,
+        updateStorageValues,
+        shortURL: useCallback(
+            () => getShortURLString(session.searchParams),
+            [session.searchParams]
+        ),
+>>>>>>> 391cf0f (last commit)
         setNav: (nav: boolean) => {
             setSession(prev => ({
                 ...prev,

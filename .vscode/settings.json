@@ -39,5 +39,11 @@
     },
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
+<<<<<<< HEAD
+=======
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+>>>>>>> 391cf0f (last commit)
     }
 }

@@ -1,151 +1,32 @@
-import { DateTime } from "luxon";
-import { useEffect, useMemo, useState } from "react";
-<<<<<<< HEAD
-import { useSessionContext } from "src/contexts/SessionContext";
-import { calcHinduTime } from "src/services/calcHinduTime";
-import { calcRiseSet } from "src/services/calcRiseSet";
-import { MOD360 } from "src/services/utils";
-=======
-import Clock from "src/components/Clock";
-import { useSessionContext } from "src/contexts/SessionContext";
-import { calcHinduTime } from "src/services/calcHinduTime";
-import { calcRiseSet } from "src/services/calcRiseSet";
->>>>>>> 391cf0f (last commit)
+import { MOD } from "src/services/utils";
 
-export default function HinduTime() {
-    const session = useSessionContext();
+interface Props {
+    today_sun: {
+        rise_jd: number;
+        set_jd: number;
+    };
+    hinduTime: { ghati: number; pal: number; vipal: number };
+}
 
-    // Convert current system time to Julian Day UT
-<<<<<<< HEAD
-    const datetime = DateTime.fromISO(session.data.date, {
-        zone: session.data.tznm,
-=======
-    const datetime = DateTime.fromISO(session.searchParams.date, {
-        zone: session.searchParams.tznm,
->>>>>>> 391cf0f (last commit)
-    });
-    const utc_dt = datetime.toUTC();
-    const tjd_ut = swe.swe_utc_to_jd(
-        utc_dt.year,
-        utc_dt.month,
-        utc_dt.day,
-        utc_dt.hour,
-        utc_dt.minute,
-        utc_dt.second,
-        swe.SE_GREG_CAL
-    )[1];
-
-    // Calculate Hindu Today Sunrise and SunSet
-    const today_sun = useMemo(
-        () =>
-            calcRiseSet(tjd_ut, swe.SE_SUN, [
-<<<<<<< HEAD
-                session.data.lon,
-                session.data.lat,
-                0,
-            ]),
-        [session.data.lat, session.data.lon, tjd_ut]
-=======
-                session.searchParams.lon,
-                session.searchParams.lat,
-                0,
-            ]),
-        [session.searchParams.lat, session.searchParams.lon, tjd_ut]
->>>>>>> 391cf0f (last commit)
-    );
-    const [hinduTime, setHinduTime] = useState(
-        calcHinduTime(today_sun.rise_jd - tjd_ut)
-    );
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setHinduTime(calcHinduTime(today_sun.rise_jd - tjd_ut));
-        }, 400);
-        return () => clearInterval(timer);
-    }, [tjd_ut, today_sun.rise_jd]);
-
-<<<<<<< HEAD
-    const settings = { size: 400 };
-    const padding = settings.size * 0.01;
-    const outerRadius = settings.size * 0.5;
-    const innerRadius = settings.size * 0.475;
-    const center = settings.size / 2;
+export default function Clock(input: Props) {
+    const size = 400;
+    const padding = size * 0.01;
+    const outerRadius = size * 0.5;
+    const innerRadius = size * 0.475;
+    const center = size / 2;
 
     // Calculate arc path (more complex, requires trigonometry)
     const startAngle =
-        2 * Math.PI * (today_sun.set_jd - today_sun.rise_jd) - Math.PI / 2;
+        2 * Math.PI * (input.today_sun.set_jd - input.today_sun.rise_jd) -
+        Math.PI / 2;
     const endAngle = 2 * Math.PI - Math.PI / 2;
 
-=======
->>>>>>> 391cf0f (last commit)
-    return (
-        <div className="font-inter flex flex-col items-center justify-center bg-gray-50 p-4">
-            <div className="flex w-full max-w-lg flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-6 shadow-xl">
-                <h1 className="mb-4 text-2xl font-semibold text-gray-800">
-                    Hindu Time
-                </h1>
-<<<<<<< HEAD
-                {newFunction(
-                    settings,
-                    padding,
-                    center,
-                    innerRadius,
-                    outerRadius,
-                    startAngle,
-                    endAngle,
-                    hinduTime
-                )}
-=======
-                <Clock today_sun={today_sun} hinduTime={hinduTime} />
->>>>>>> 391cf0f (last commit)
-
-                <div className="mt-6 flex flex-col items-center gap-2 text-center">
-                    <span className="text-4xl font-extrabold text-gray-900 drop-shadow">
-                        {`${String(hinduTime.ghati).padStart(2, "0")}:${String(hinduTime.pal).padStart(2, "0")}:${String(hinduTime.vipal).padStart(2, "0")}`}
-                    </span>
-                    <div className="text-sm font-medium text-gray-500">
-                        <div>
-                            Sunrise:{" "}
-                            <span className="font-semibold text-gray-700">
-                                {datetime
-                                    .plus({
-                                        days: today_sun.rise_jd - tjd_ut,
-                                    })
-                                    .toISO()}
-                            </span>
-                        </div>
-                        <div>
-                            Sunset:{" "}
-                            <span className="font-semibold text-gray-700">
-                                {datetime
-                                    .plus({
-                                        days: today_sun.set_jd - tjd_ut,
-                                    })
-                                    .toISO()}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
-<<<<<<< HEAD
-function newFunction(
-    settings: { size: number },
-    padding: number,
-    center: number,
-    innerRadius: number,
-    outerRadius: number,
-    startAngle: number,
-    endAngle: number,
-    hinduTime: { ghati: number; pal: number; vipal: number }
-) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            width={settings.size}
-            height={settings.size}
-            viewBox={`${-padding} ${-padding} ${settings.size + padding * 2} ${settings.size + padding * 2}`}
+            width={size}
+            height={size}
+            viewBox={`${-padding} ${-padding} ${size + padding * 2} ${size + padding * 2}`}
             shapeRendering="geometricPrecision"
             textRendering="geometricPrecision"
             imageRendering="optimizeQuality"
@@ -261,7 +142,7 @@ function newFunction(
                     `M ${center},${center} ` +
                     `L ${center + innerRadius * Math.cos(startAngle)},${center + innerRadius * Math.sin(startAngle)} ` +
                     `A ${innerRadius},${innerRadius} ` +
-                    `0 ${MOD360(endAngle - startAngle) > 180 ? 1 : 0} 1 ` +
+                    `0 ${MOD(endAngle - startAngle, 2 * Math.PI) > Math.PI ? 1 : 0} 1 ` +
                     `${center + innerRadius * Math.cos(endAngle)} ${center + innerRadius * Math.sin(endAngle)} ` +
                     `Z`
                 }
@@ -278,13 +159,13 @@ function newFunction(
                     center +
                     innerRadius *
                         0.7 *
-                        Math.sin((hinduTime.ghati * 6 * Math.PI) / 180)
+                        Math.sin((input.hinduTime.ghati * 6 * Math.PI) / 180)
                 }
                 y2={
                     center -
                     innerRadius *
                         0.7 *
-                        Math.cos((hinduTime.ghati * 6 * Math.PI) / 180)
+                        Math.cos((input.hinduTime.ghati * 6 * Math.PI) / 180)
                 }
                 stroke="#2D3748"
                 strokeWidth="3"
@@ -298,13 +179,13 @@ function newFunction(
                     center +
                     innerRadius *
                         0.8 *
-                        Math.sin((hinduTime.pal * 6 * Math.PI) / 180)
+                        Math.sin((input.hinduTime.pal * 6 * Math.PI) / 180)
                 }
                 y2={
                     center -
                     innerRadius *
                         0.8 *
-                        Math.cos((hinduTime.pal * 6 * Math.PI) / 180)
+                        Math.cos((input.hinduTime.pal * 6 * Math.PI) / 180)
                 }
                 stroke="#2D3748"
                 strokeWidth="2"
@@ -318,13 +199,13 @@ function newFunction(
                     center +
                     innerRadius *
                         0.9 *
-                        Math.sin((hinduTime.vipal * Math.PI) / 180)
+                        Math.sin((input.hinduTime.vipal * Math.PI) / 180)
                 }
                 y2={
                     center -
                     innerRadius *
                         0.9 *
-                        Math.cos((hinduTime.vipal * Math.PI) / 180)
+                        Math.cos((input.hinduTime.vipal * Math.PI) / 180)
                 }
                 stroke="#DC2626"
                 strokeWidth="1.5"
@@ -343,5 +224,3 @@ function newFunction(
         </svg>
     );
 }
-=======
->>>>>>> 391cf0f (last commit)

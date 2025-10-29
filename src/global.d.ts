@@ -6,6 +6,11 @@ import type SwissEPH from "sweph-wasm";
 
 declare global {
     var swe: SwissEPH;
+<<<<<<< HEAD
+=======
+    var city_database: [string, number, number, string][];
+    var timezone_database: Record<string, number>;
+>>>>>>> 391cf0f (last commit)
 
     /** Extend the ObjectConstructor type */
     interface ObjectConstructor {

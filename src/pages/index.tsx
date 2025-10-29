@@ -37,7 +37,11 @@ export const pageDetails: Record<ValidPageType, PageDetail> = {
         subtitle: "वैदिक ज्योतिष और पंचांग",
         description:
             "वैदिक ज्योतिष और भारतीय पंचांग के बारे में जानकारी प्राप्त करें",
+<<<<<<< HEAD
         nav: true,
+=======
+        nav: false,
+>>>>>>> 391cf0f (last commit)
         actionMessage: "एक्सप्लोर करें",
     },
     Panchang: {

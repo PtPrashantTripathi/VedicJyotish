@@ -1,4 +1,8 @@
 import { DateTime } from "luxon";
+<<<<<<< HEAD
+=======
+import React from "react";
+>>>>>>> 391cf0f (last commit)
 import ChartInfoTable from "src/components/ChartInfoTable";
 import KundliChartSVG from "src/components/KundliChartSVG";
 import KundliYogPhala from "src/components/KundliYogPhala";
@@ -11,11 +15,22 @@ export default function KundliResult() {
     const session = useSessionContext();
 
     const kundliData = Kundli(
+<<<<<<< HEAD
         DateTime.fromISO(`${session.data.date}T${session.data.time}`, {
             zone: session.data.tznm,
         }) as DateTime<true>,
         session.data.lon,
         session.data.lat
+=======
+        DateTime.fromISO(
+            `${session.searchParams.date}T${session.searchParams.time}`,
+            {
+                zone: session.searchParams.tznm,
+            }
+        ) as DateTime<true>,
+        session.searchParams.lon,
+        session.searchParams.lat
+>>>>>>> 391cf0f (last commit)
     );
 
     return (
@@ -23,7 +38,13 @@ export default function KundliResult() {
             <div className="container mx-auto px-4 py-8">
                 <div className="mb-6 flex items-center">
                     <button
+<<<<<<< HEAD
                         onClick={() => session.updateData({ page: "Home" })}
+=======
+                        onClick={() =>
+                            session.updateSearchParams({ page: "Home" })
+                        }
+>>>>>>> 391cf0f (last commit)
                         className="mr-4 text-green-600 hover:text-green-800">
                         <i className="fas fa-arrow-left text-xl"></i>
                     </button>
@@ -164,6 +185,14 @@ export default function KundliResult() {
                     </section>
 
                     <KundliYogPhala kundliData={kundliData} />
+<<<<<<< HEAD
+=======
+                    <div className="flex items-center justify-center rounded-2xl border border-blue-200 bg-white p-12 shadow-xl">
+                        <span className="font-medium text-blue-600">
+                            योग फल लोड हो रहा है... (Loading Yog Phala...)
+                        </span>
+                    </div>
+>>>>>>> 391cf0f (last commit)
 
                     <VimsottariDasa kundliData={kundliData} />
                 </div>

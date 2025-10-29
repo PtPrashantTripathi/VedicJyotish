@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import type { ValidPageType } from "src/pages";
+<<<<<<< HEAD
 import {
     AyanamsaMods,
     type AyanamsaModsKey,
@@ -15,11 +16,27 @@ import { parseValidDate } from "src/utils/parseValidDate";
 import { parseValidDegree } from "src/utils/parseValidDegree";
 import { parseValidPageName } from "src/utils/parseValidPageName";
 import { parseValidTime } from "src/utils/parseValidTime";
+=======
+import { parseValidBool } from "src/utils/validators/parseValidBool";
+import { parseValidDate } from "src/utils/validators/parseValidDate";
+import { parseValidDegree } from "src/utils/validators/parseValidDegree";
+import { parseValidGender } from "src/utils/validators/parseValidGender";
+import { parseValidPageName } from "src/utils/validators/parseValidPageName";
+import { parseValidTime } from "src/utils/validators/parseValidTime";
+import {
+    parseValidTimezoneName,
+    parseValidTimezoneOffset,
+} from "src/utils/validators/parseValidTimezone";
+>>>>>>> 391cf0f (last commit)
 
 /** Defines the structure of valid URL search parameters and component state. */
 export interface ISearchParams {
     /** User name */
+<<<<<<< HEAD
     name: string;
+=======
+    user: string;
+>>>>>>> 391cf0f (last commit)
     /** Page - Current page type/name */
     page: ValidPageType;
     /** Date - Date in YYYY-MM-DD format */
@@ -36,6 +53,7 @@ export interface ISearchParams {
     lat: number;
     /** Lon - Longitude coordinate */
     lon: number;
+<<<<<<< HEAD
     /** Ayanamsa - Ayanamsa calculation method */
     ayan: AyanamsaModsKey;
 }
@@ -57,22 +75,40 @@ export const searchParamKeys: (keyof ISearchParams)[] = [
 ];
 
 /**
+=======
+    /** User Gender */
+    gender: "M" | "F";
+    /** Save Data */
+    save: boolean;
+}
+
+/**
+>>>>>>> 391cf0f (last commit)
  * Parses URL search parameters into an ISearchParams object. Handles both
  * direct search params and base64-encoded `id` parameter. Explicit query params
  * take precedence over decoded ones.
  *
  * @returns {ISearchParams} Parsed search parameters with fallback defaults
  */
+<<<<<<< HEAD
 export function parseURLSearchParams(
     input?: Partial<ISearchParams>,
     save?: boolean
+=======
+export function parseSearchParams(
+    input?: Partial<ISearchParams>
+>>>>>>> 391cf0f (last commit)
 ): ISearchParams {
     /**
      * Default search parameters with sensible fallback values. Used when URL
      * parameters are missing or invalid.
      */
     const searchParams: ISearchParams = {
+<<<<<<< HEAD
         name: "User",
+=======
+        user: "User",
+>>>>>>> 391cf0f (last commit)
         page: "Home",
         date: DateTime.now().toFormat("yyyy-MM-dd"),
         time: DateTime.now().toFormat("HH:mm:ss"),
@@ -81,7 +117,12 @@ export function parseURLSearchParams(
         city: "Ujjain, Madhya Pradesh, India",
         lat: 23.1793,
         lon: 75.784912,
+<<<<<<< HEAD
         ayan: 1,
+=======
+        gender: "M",
+        save: false,
+>>>>>>> 391cf0f (last commit)
     };
     if (input) {
         Object.assign(searchParams, input);
@@ -115,11 +156,16 @@ export function parseURLSearchParams(
         }
     }
 
+<<<<<<< HEAD
     searchParamKeys.forEach(key => {
+=======
+    Object.keys(searchParams).forEach(key => {
+>>>>>>> 391cf0f (last commit)
         const value = currentSearchParams.get(key);
         if (value) {
             try {
                 switch (key) {
+<<<<<<< HEAD
                     case "page":
                         searchParams.page = parseValidPageName(value);
                         break;
@@ -132,6 +178,14 @@ export function parseURLSearchParams(
                     case "ayan":
                         searchParams.ayan = parseValidAyanamsaName(value).key;
                         break;
+=======
+                    case "user":
+                        searchParams.user = value.trim();
+                        break;
+                    case "page":
+                        searchParams.page = parseValidPageName(value);
+                        break;
+>>>>>>> 391cf0f (last commit)
                     case "date":
                         searchParams.date = parseValidDate(value);
                         break;
@@ -145,7 +199,23 @@ export function parseURLSearchParams(
                         searchParams.tznm = parseValidTimezoneName(value);
                         break;
                     case "city":
+<<<<<<< HEAD
                         searchParams.city = value;
+=======
+                        searchParams.city = value.trim();
+                        break;
+                    case "lat":
+                        searchParams.lat = parseValidDegree(value, "lat");
+                        break;
+                    case "lon":
+                        searchParams.lon = parseValidDegree(value, "lon");
+                        break;
+                    case "gender":
+                        searchParams.gender = parseValidGender(value);
+                        break;
+                    case "save":
+                        searchParams.save = parseValidBool(value);
+>>>>>>> 391cf0f (last commit)
                         break;
                 }
             } catch (error) {
@@ -156,6 +226,7 @@ export function parseURLSearchParams(
             }
         }
     });
+<<<<<<< HEAD
     const sp_save = currentSearchParams.get("save");
     if (
         (sp_save && parseValidBool(sp_save)) ||
@@ -177,3 +248,65 @@ export function parseURLSearchParams(
 
     return searchParams;
 }
+=======
+
+    return searchParams;
+}
+
+/**
+ * Array of search parameter keys for consistent parsing and URL generation.
+ * Used to maintain order and ensure all parameters are processed.
+ */
+const searchParamKeys: (keyof ISearchParams)[] = [
+    "page", // Page Name
+    "user", // User Name
+    "gender",
+    "date",
+    "time",
+    "tz", // Time Zone Offset
+    "tznm", // Time Zone Name
+    "city", // City Name
+    "lat", // Latitude
+    "lon", // Longitude
+    "save",
+];
+
+/**
+ * Updates the browser URL with new search parameters without page reload.
+ * Replaces current history state to avoid navigation issues.
+ *
+ * @param {ISearchParams} params - Complete search parameters object
+ */
+export function updateURL(params: ISearchParams): void {
+    const searchParams = new URLSearchParams(
+        searchParamKeys.map(key => [key, String(params[key])])
+    );
+
+    const searchString = searchParams.toString();
+    const newUrl = `${window.location.pathname}${searchString ? "?" + searchString : ""}`;
+
+    if (newUrl !== window.location.pathname + window.location.search) {
+        window.history.replaceState(null, "", newUrl);
+    }
+}
+
+/**
+ * Generates a short URL with all parameters base64-encoded in an `id`
+ * parameter. Useful for sharing complete application state via URL.
+ *
+ * @param {ISearchParams} params - Complete search parameters object
+ * @returns {string} Complete short URL with encoded parameters
+ */
+export function getShortURLString(params: ISearchParams): string {
+    const urlSearchParams = new URLSearchParams(
+        searchParamKeys.map(key => [key, String(params[key])])
+    );
+
+    return (
+        window.location.origin +
+        window.location.pathname +
+        "?id=" +
+        btoa(urlSearchParams.toString())
+    );
+}
+>>>>>>> 391cf0f (last commit)
