@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-import { DateTime } from "luxon";
-import { useEffect, useState } from "react";
-=======
 // src/pages/MonthlyCalendar/index.tsx
 import { DateTime } from "luxon";
 import { useMemo, useState } from "react";
->>>>>>> 391cf0f (last commit)
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { WiSunrise, WiSunset } from "react-icons/wi";
 import Loader from "src/components/Loader";
@@ -19,48 +14,18 @@ export default function MonthlyCalendar() {
     const today = DateTime.now();
 
     const [currentMonth, setCurrentMonth] = useState(today);
-<<<<<<< HEAD
-    const [currentIndex, setCurrentIndex] = useState(today.day - 1);
-
-    // Panchanga data for the month
-    const [monthData, setMonthData] = useState<
-        Array<ReturnType<typeof getPanchanga>>
-    >([]);
-
-    // Generate the panchanga data whenever month changes
-    useEffect(() => {
-=======
     // Index tracks the selected day (0-indexed for array)
     // today.day is 1-indexed, so -1 to match array index
     const [currentIndex, setCurrentIndex] = useState(today.day - 1);
 
     // Panchanga data for the month is now a derived, memoized value
     const monthData = useMemo(() => {
->>>>>>> 391cf0f (last commit)
         const startOfMonth = currentMonth.startOf("month");
         const endOfMonth = currentMonth.endOf("month");
         const daysInMonth = endOfMonth.day;
 
         const newMonthData = Array.from({ length: daysInMonth }, (_, i) => {
             const date = startOfMonth.set({ day: i + 1 });
-<<<<<<< HEAD
-            return getPanchanga(date, session.data.lon, session.data.lat);
-        });
-        setMonthData(newMonthData);
-    }, [currentMonth, session.data.lon, session.data.lat]);
-
-    // Handle month navigation
-    const goToPreviousMonth = () =>
-        setCurrentMonth(currentMonth.minus({ month: 1 }));
-    const goToNextMonth = () =>
-        setCurrentMonth(currentMonth.plus({ month: 1 }));
-
-    if (monthData.length === 0) {
-        return <Loader />;
-    }
-
-    const currentData = monthData[currentIndex];
-=======
             return getPanchanga(
                 date,
                 session.searchParams.lon,
@@ -95,7 +60,6 @@ export default function MonthlyCalendar() {
     const safeIndex = Math.min(currentIndex, monthData.length - 1);
 
     const currentData = monthData[safeIndex];
->>>>>>> 391cf0f (last commit)
 
     return (
         <div className="container mx-auto px-4 pt-4">
@@ -150,23 +114,11 @@ export default function MonthlyCalendar() {
                                         </td>
 
                                         <td className="py-2 font-medium text-orange-500">
-<<<<<<< HEAD
-                                            {monthData[
-                                                currentIndex
-                                            ].tithi.start.dt.toFormat(
-                                                "dd-MMM hh:mma"
-                                            )}
-                                            {" → "}
-                                            {monthData[
-                                                currentIndex
-                                            ].tithi.end.dt.toFormat(
-=======
                                             {currentData.tithi.start.dt.toFormat(
                                                 "dd-MMM hh:mma"
                                             )}
                                             {" → "}
                                             {currentData.tithi.end.dt.toFormat(
->>>>>>> 391cf0f (last commit)
                                                 "dd-MMM hh:mma"
                                             )}
                                         </td>
@@ -180,23 +132,11 @@ export default function MonthlyCalendar() {
                                             {currentData.nakshatra.name.hindi}
                                         </td>
                                         <td className="py-2 font-medium text-orange-500">
-<<<<<<< HEAD
-                                            {monthData[
-                                                currentIndex
-                                            ].nakshatra.start.dt.toFormat(
-                                                "dd-MMM hh:mma"
-                                            )}
-                                            {" → "}
-                                            {monthData[
-                                                currentIndex
-                                            ].nakshatra.end.dt.toFormat(
-=======
                                             {currentData.nakshatra.start.dt.toFormat(
                                                 "dd-MMM hh:mma"
                                             )}
                                             {" → "}
                                             {currentData.nakshatra.end.dt.toFormat(
->>>>>>> 391cf0f (last commit)
                                                 "dd-MMM hh:mma"
                                             )}
                                         </td>
@@ -209,23 +149,11 @@ export default function MonthlyCalendar() {
                                             {currentData.yoga.name.hindi}
                                         </td>
                                         <td className="py-2 font-medium text-orange-500">
-<<<<<<< HEAD
-                                            {monthData[
-                                                currentIndex
-                                            ].yoga.start.dt.toFormat(
-                                                "dd-MMM hh:mma"
-                                            )}
-                                            {" → "}
-                                            {monthData[
-                                                currentIndex
-                                            ].yoga.end.dt.toFormat(
-=======
                                             {currentData.yoga.start.dt.toFormat(
                                                 "dd-MMM hh:mma"
                                             )}
                                             {" → "}
                                             {currentData.yoga.end.dt.toFormat(
->>>>>>> 391cf0f (last commit)
                                                 "dd-MMM hh:mma"
                                             )}
                                         </td>
@@ -238,23 +166,11 @@ export default function MonthlyCalendar() {
                                             {currentData.karana.name.hindi}
                                         </td>
                                         <td className="py-2 font-medium text-orange-500">
-<<<<<<< HEAD
-                                            {monthData[
-                                                currentIndex
-                                            ].karana.start.dt.toFormat(
-                                                "dd-MMM hh:mma"
-                                            )}
-                                            {" → "}
-                                            {monthData[
-                                                currentIndex
-                                            ].karana.end.dt.toFormat(
-=======
                                             {currentData.karana.start.dt.toFormat(
                                                 "dd-MMM hh:mma"
                                             )}
                                             {" → "}
                                             {currentData.karana.end.dt.toFormat(
->>>>>>> 391cf0f (last commit)
                                                 "dd-MMM hh:mma"
                                             )}
                                         </td>
@@ -313,13 +229,7 @@ export default function MonthlyCalendar() {
                                         <td
                                             className="py-2 font-medium text-green-700"
                                             colSpan={2}>
-<<<<<<< HEAD
-                                            {monthData[
-                                                currentIndex
-                                            ].sunrise.dt.toFormat(
-=======
                                             {currentData.sunrise.dt.toFormat(
->>>>>>> 391cf0f (last commit)
                                                 "dd-MMM hh:mm:ss a"
                                             )}
                                         </td>
@@ -331,13 +241,7 @@ export default function MonthlyCalendar() {
                                         <td
                                             className="py-2 font-medium text-green-700"
                                             colSpan={2}>
-<<<<<<< HEAD
-                                            {monthData[
-                                                currentIndex
-                                            ].sunset.dt.toFormat(
-=======
                                             {currentData.sunset.dt.toFormat(
->>>>>>> 391cf0f (last commit)
                                                 "dd-MMM hh:mm:ss a"
                                             )}
                                         </td>
@@ -393,14 +297,10 @@ export default function MonthlyCalendar() {
                             <div className="grid grid-cols-7 gap-1 text-xs sm:text-sm">
                                 {Array.from(
                                     {
-<<<<<<< HEAD
-                                        length: monthData[0]?.vara.num ?? 0,
-=======
                                         // Use currentMonth to calculate the day of the week for the 1st
                                         length:
                                             currentMonth.startOf("month")
                                                 .weekday % 7,
->>>>>>> 391cf0f (last commit)
                                     },
                                     (_, i) => {
                                         return <div key={i}></div>;
@@ -420,13 +320,10 @@ export default function MonthlyCalendar() {
                                                 today.toISODate()
                                                     ? "border-yellow-400 bg-yellow-50"
                                                     : ""
-<<<<<<< HEAD
-=======
                                             } ${
                                                 index === safeIndex
                                                     ? "border-2 border-blue-500 shadow-md"
                                                     : "" // Highlight selected day
->>>>>>> 391cf0f (last commit)
                                             }`}>
                                             {/* Top Section with Sunrise & Sunset */}
                                             <div className="flex items-center justify-between">

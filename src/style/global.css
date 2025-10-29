@@ -3,11 +3,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-<<<<<<< HEAD
-=======
 /* Standardizing styles for core HTML elements using @apply to ensure */
 /* site-wide typographic consistency, replacing repeated class strings in components. */
->>>>>>> 391cf0f (last commit)
 @layer base {
     html {
         font-family:
@@ -15,10 +12,6 @@
             system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
             "Segoe UI Symbol", "Noto Color Emoji";
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 391cf0f (last commit)
     .pulse-animation {
         animation: pulse 2s infinite;
     }

@@ -1,11 +1,7 @@
 {
     "compilerOptions": {
         "paths": {
-<<<<<<< HEAD
-            "src/*": ["src/*"]
-=======
             "src/*": ["./src/*"]
->>>>>>> 391cf0f (last commit)
         },
         "target": "ESNext",
         "useDefineForClassFields": true,
@@ -32,10 +28,6 @@
         "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
         "resolveJsonModule": true,
         "isolatedModules": true,
-<<<<<<< HEAD
-        "baseUrl": ".",
-=======
->>>>>>> 391cf0f (last commit)
         "incremental": true,
         "declaration": true /* Generates corresponding '.d.ts' file. */,
         // "outDir": "lib" /* Redirect output structure to the directory. */,

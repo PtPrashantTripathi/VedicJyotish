@@ -19,11 +19,7 @@ export default defineConfig([
             prettier,
             js.configs.recommended,
             ts.configs.recommended,
-<<<<<<< HEAD
-            reactHooks.configs["recommended-latest"],
-=======
             reactHooks.configs.flat.recommended,
->>>>>>> 391cf0f (last commit)
             reactRefresh.configs.vite,
         ],
         languageOptions: {

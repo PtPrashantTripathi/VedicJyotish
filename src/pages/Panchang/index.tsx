@@ -17,19 +17,6 @@ export default function Panchang() {
     const panchanga = useMemo(
         () =>
             getPanchanga(
-<<<<<<< HEAD
-                DateTime.fromISO(session.data.date, {
-                    zone: session.data.tznm,
-                }) as DateTime<true>,
-                session.data.lon,
-                session.data.lat
-            ),
-        [
-            session.data.date,
-            session.data.lat,
-            session.data.lon,
-            session.data.tznm,
-=======
                 DateTime.fromISO(session.searchParams.date, {
                     zone: session.searchParams.tznm,
                 }) as DateTime<true>,
@@ -41,7 +28,6 @@ export default function Panchang() {
             session.searchParams.lat,
             session.searchParams.lon,
             session.searchParams.tznm,
->>>>>>> 391cf0f (last commit)
         ]
     );
 
