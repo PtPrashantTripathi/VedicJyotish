@@ -34,13 +34,6 @@
         "typecheck": "tsc --noEmit --incremental false"
     },
     "dependencies": {
-        "fixed-len-array": "latest",
-        "luxon": "latest",
-        "pako": "latest",
-        "sweph-wasm": "latest",
-        "wasp-lib": "latest"
-    },
-    "devDependencies": {
         "@eslint/js": "latest",
         "@tailwindcss/vite": "latest",
         "@types/emscripten": "latest",
@@ -55,25 +48,30 @@
         "eslint-plugin-react-refresh": "latest",
         "eslint-plugin-simple-import-sort": "latest",
         "eslint-plugin-unused-imports": "latest",
+        "fixed-len-array": "latest",
         "globals": "latest",
+        "luxon": "latest",
+        "pako": "latest",
         "prettier": "latest",
-        "prettier-plugin-jsdoc": "latest",
         "prettier-plugin-tailwindcss": "latest",
         "react": "latest",
         "react-dom": "latest",
         "react-icons": "latest",
+        "sweph-wasm": "latest",
         "tailwindcss": "latest",
         "tw-animate-css": "latest",
         "typescript": "latest",
         "typescript-eslint": "latest",
         "vite": "latest",
-        "vite-plugin-svgr": "latest",
-        "vite-tsconfig-paths": "latest"
+        "wasp-lib": "latest"
     },
     "packageManager": "pnpm@10.15.1",
     "engines": {
         "node": ">=22",
         "pnpm": ">=10"
     },
-    "typeScriptVersion": "latest"
+    "typeScriptVersion": "latest",
+    "devDependencies": {
+        "esbuild": "^0.28.0"
+    }
 }

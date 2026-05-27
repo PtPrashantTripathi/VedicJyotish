@@ -20,45 +20,47 @@ export default function App() {
     const session = useSessionState();
     return (
         <SessionContext value={session}>
-            <Header />
-            <div
-                onClick={() => session.setNav(false)}
-                className={
-                    "fixed inset-0 z-40 bg-black/40 opacity-0 transition-opacity duration-300" +
-                    (session.nav ? " opacity-100" : " pointer-events-none")
-                }></div>
-            <Navigation />
-            <main className="container mx-auto px-4 py-8">
-                <Errors />
+            <div className="min-h-screen bg-[#f3f6fb] text-slate-800">
+                <Header />
+                <div
+                    onClick={() => session.setNav(false)}
+                    className={
+                        "fixed inset-0 z-40 bg-black/40 opacity-0 transition-opacity duration-300" +
+                        (session.nav ? " opacity-100" : " pointer-events-none")
+                    }></div>
+                <Navigation />
+                <main className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6 md:py-8">
+                    <Errors />
 
-                {session.searchParams.page === "Home" ? (
-                    <Home />
-                ) : session.searchParams.page === "Panchang" ? (
-                    <Panchang />
-                ) : session.searchParams.page === "KundliForm" ? (
-                    <KundliForm />
-                ) : session.searchParams.page === "KundliResult" ? (
-                    <KundliResult />
-                ) : session.searchParams.page === "MonthlyCalendar" ? (
-                    <MonthlyCalendar />
-                ) : session.searchParams.page === "KundliMatching" ? (
-                    <KundliMatching />
-                ) : session.searchParams.page === "HinduTime" ? (
-                    <HinduTime />
-                ) : session.searchParams.page === "Settings" ? (
-                    <Settings />
-                ) : session.searchParams.page === "About" ? (
-                    <About />
-                ) : (
-                    <section>
-                        <h3>ERROR 404</h3>
-                    </section>
-                )}
-            </main>
+                    {session.searchParams.page === "Home" ? (
+                        <Home />
+                    ) : session.searchParams.page === "Panchang" ? (
+                        <Panchang />
+                    ) : session.searchParams.page === "KundliForm" ? (
+                        <KundliForm />
+                    ) : session.searchParams.page === "KundliResult" ? (
+                        <KundliResult />
+                    ) : session.searchParams.page === "MonthlyCalendar" ? (
+                        <MonthlyCalendar />
+                    ) : session.searchParams.page === "KundliMatching" ? (
+                        <KundliMatching />
+                    ) : session.searchParams.page === "HinduTime" ? (
+                        <HinduTime />
+                    ) : session.searchParams.page === "Settings" ? (
+                        <Settings />
+                    ) : session.searchParams.page === "About" ? (
+                        <About />
+                    ) : (
+                        <section>
+                            <h3>ERROR 404</h3>
+                        </section>
+                    )}
+                </main>
 
-            {/* <DATEDETAILSPAGE /> */}
+                {/* <DATEDETAILSPAGE /> */}
 
-            <Footer />
+                <Footer />
+            </div>
         </SessionContext>
     );
 }

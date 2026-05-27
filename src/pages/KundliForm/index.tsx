@@ -24,12 +24,15 @@ export default function KundliForm() {
         }
     };
     return (
-        <form className="space-y-6" method="GET" action="">
+        <form
+            className="space-y-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6"
+            method="GET"
+            action="">
             <input hidden id="page" name="page" value="KundliResult" readOnly />
 
-            <div className="mb-4 rounded-lg border-l-4 border-purple-500 bg-purple-50 p-4 text-base font-medium text-gray-700">
+            <div className="mb-2 rounded-2xl border border-sky-100 bg-sky-50 p-4 text-base font-medium text-slate-700">
                 <span className="block">Enter Birthdata</span>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-slate-500">
                     कुंडली के लिए जन्म विवरण
                 </span>
             </div>
@@ -113,12 +116,12 @@ export default function KundliForm() {
                 />
 
                 {filteredCities.length > 0 && (
-                    <div className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg">
+                    <div className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-xl">
                         {filteredCities.map(([city, lat, lon, tz], idx) => (
                             <div
                                 key={idx}
                                 id={`${city}|${lat}|${lon}|${tz}`}
-                                className="cursor-pointer border-b border-gray-100 p-3 last:border-b-0 hover:bg-purple-50"
+                                className="cursor-pointer border-b border-slate-100 p-3 last:border-b-0 hover:bg-sky-50"
                                 onClick={e => {
                                     const [city, lat, lon, tznm] =
                                         e.currentTarget.id.split("|");
@@ -145,7 +148,7 @@ export default function KundliForm() {
                                             session.searchParams.city.toLowerCase() ? (
                                                 <strong
                                                     key={i}
-                                                    className="text-purple-600">
+                                                    className="text-sky-700">
                                                     {part}
                                                 </strong>
                                             ) : (
@@ -158,7 +161,7 @@ export default function KundliForm() {
                     </div>
                 )}
 
-                <div className="mt-3 rounded-lg bg-blue-50 p-3 text-sm text-gray-600">
+                <div className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
                     <p className="mb-1">
                         🏙️ <strong>Tip:</strong> Type your city in{" "}
                         <strong>English</strong> and choose from the list.
@@ -175,24 +178,24 @@ export default function KundliForm() {
                 </div>
             </div>
 
-            <div className="border-t pt-6">
+            <div className="border-t border-slate-200 pt-6">
                 <div className="flex items-center space-x-3">
                     <input
                         type="checkbox"
                         id="advanced_options_switch"
                         checked={showAdvanced}
                         onChange={e => setShowAdvanced(e.target.checked)}
-                        className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-purple-600 focus:ring-2 focus:ring-purple-500"
+                        className="h-4 w-4 rounded border-slate-300 bg-white text-sky-600 focus:ring-2 focus:ring-sky-400"
                     />
                     <label
                         htmlFor="advanced_options_switch"
-                        className="cursor-pointer text-sm font-medium text-gray-700">
+                        className="cursor-pointer text-sm font-medium text-slate-700">
                         Advanced Options
                     </label>
                 </div>
 
                 {showAdvanced && (
-                    <div className="mt-6 space-y-6 rounded-lg bg-gray-50 p-4">
+                    <div className="mt-6 space-y-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <FormSelect
                             label="TimeZone"
                             id="tz"
@@ -267,12 +270,12 @@ export default function KundliForm() {
             <div className="flex space-x-4">
                 <button
                     type="submit"
-                    className="flex-1 rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                    className="flex-1 rounded-2xl bg-sky-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-sky-700 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
                     Generate Kundli
                 </button>
                 <button
                     type="reset"
-                    className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                    className="rounded-2xl border border-slate-300 px-6 py-3 font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
                     Reset
                 </button>
             </div>

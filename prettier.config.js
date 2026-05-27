@@ -3,7 +3,7 @@
  * @see https://prettier.io/docs/configuration
  */
 export default {
-    plugins: ["prettier-plugin-jsdoc", "prettier-plugin-tailwindcss"],
+    plugins: ["prettier-plugin-tailwindcss"],
     arrowParens: "avoid",
     bracketSameLine: true,
     bracketSpacing: true,

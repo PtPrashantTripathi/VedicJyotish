@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
 
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -8,10 +8,24 @@
 @layer base {
     html {
         font-family:
-            "Noto Sans Devanagari", sans-serif, "Inter", "Geist", ui-sans-serif,
-            system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+            "Noto Sans Devanagari", "Roboto", ui-sans-serif, system-ui,
+            sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
             "Segoe UI Symbol", "Noto Color Emoji";
+        background-color: #f3f6fb;
     }
+
+    body {
+        background-color: #f3f6fb;
+        color: #1e293b;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font: inherit;
+    }
+
     .pulse-animation {
         animation: pulse 2s infinite;
     }
@@ -98,5 +112,69 @@
             height: 5rem;
             opacity: 0;
         }
+    }
+
+    #phaladesh-page h1 {
+        margin-bottom: 0.8rem;
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: rgb(15 23 42);
+    }
+
+    #phaladesh-page h3 {
+        margin-top: 0.7rem;
+        margin-bottom: 0.6rem;
+        font-size: 1.02rem;
+        font-weight: 600;
+        color: rgb(30 41 59);
+    }
+
+    #phaladesh-page section.container {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #phaladesh-page table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid rgb(226 232 240);
+        border-radius: 0.85rem;
+        overflow: hidden;
+        background: rgb(255 255 255 / 0.9);
+    }
+
+    #phaladesh-page thead th {
+        padding: 0.75rem 0.85rem;
+        border-bottom: 1px solid rgb(226 232 240);
+        background: linear-gradient(180deg, #f0f9ff, #fff);
+        color: rgb(71 85 105);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        text-align: left;
+    }
+
+    #phaladesh-page tbody td {
+        padding: 0.75rem 0.85rem;
+        border-bottom: 1px solid rgb(241 245 249);
+        color: rgb(30 41 59);
+        font-size: 0.92rem;
+        vertical-align: top;
+    }
+
+    #phaladesh-page tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    #phaladesh-page tbody tr:nth-child(even) {
+        background: rgb(248 250 252 / 0.65);
+    }
+
+    #phaladesh-page .prose p {
+        border-left: 3px solid rgb(14 165 233 / 0.55);
+        padding-left: 0.75rem;
+        margin-bottom: 0.9rem;
     }
 }

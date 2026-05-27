@@ -8,7 +8,7 @@ import {
     FaSun,
 } from "react-icons/fa";
 import type { IconType } from "react-icons/lib";
-import KundliSVG from "src/icons/kundli.svg?react";
+import KundliSVG from "src/icons/kundli";
 
 export type ValidPageType =
     | "Home"
