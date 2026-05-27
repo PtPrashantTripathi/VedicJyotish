@@ -2,50 +2,54 @@ import { pageDetails } from "src/pages";
 
 export default function Home() {
     return (
-        <div className="bg-gray-50 py-12">
-            <div className="container mx-auto px-4">
-                <h2 className="mb-8 text-center text-3xl font-bold text-gray-800">
-                    Astrology Services
-                </h2>
+        <div className="py-4 md:py-8">
+            <div className="mx-auto max-w-7xl px-1">
+                <div className="mb-8 rounded-3xl border border-slate-200 bg-white px-6 py-7 shadow-sm">
+                    <p className="text-sm font-medium text-sky-600">
+                        Dashboard
+                    </p>
+                    <h2 className="mt-1 text-3xl font-bold text-slate-900">
+                        Astrology Services
+                    </h2>
+                    <p className="mt-2 max-w-2xl text-sm text-slate-500">
+                        अपने ज्योतिषीय विश्लेषण, पंचांग और दैनिक गणनाओं के लिए
+                        किसी भी सेवा का चयन करें।
+                    </p>
+                </div>
 
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                     {Object.entries(pageDetails)
                         .filter(([, detail]) => detail.nav)
                         .map(([pageId, detail]) => {
                             return (
                                 <a href={`?page=${pageId}`} key={pageId}>
-                                    <div className="cursor-pointer rounded-xl bg-white p-6 text-center">
-                                        <div
-                                            className={
-                                                "mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" +
-                                                (detail.icon.name.startsWith(
-                                                    "Svg"
-                                                )
-                                                    ? ""
-                                                    : " bg-gradient-to-br from-orange-600 to-amber-500 shadow-lg")
-                                            }>
+                                    <div className="group h-full cursor-pointer rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md">
+                                        <div className="mb-4 flex items-center justify-between">
                                             <detail.icon
                                                 className={
                                                     detail.icon.name.startsWith(
                                                         "Svg"
                                                     )
-                                                        ? "h-10 w-10"
-                                                        : "h-6 w-6 text-4xl text-white drop-shadow-md"
+                                                        ? "h-11 w-11"
+                                                        : "h-7 w-7 text-sky-600"
                                                 }
                                             />
+                                            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500">
+                                                Open
+                                            </span>
                                         </div>
 
-                                        <h3 className="mb-3 text-xl font-semibold text-gray-800">
+                                        <h3 className="mb-2 text-xl font-semibold text-slate-900">
                                             {detail.title}
                                         </h3>
 
-                                        <p className="mb-4 text-gray-600">
+                                        <p className="mb-4 text-sm leading-relaxed text-slate-500">
                                             {detail.description}
                                         </p>
 
-                                        <button className="rounded-full bg-purple-600 px-6 py-2 text-white transition-all hover:bg-purple-700 hover:shadow-md">
-                                            {detail.subtitle}
-                                        </button>
+                                        <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 group-hover:border-sky-200 group-hover:text-sky-700">
+                                            {detail.actionMessage}
+                                        </div>
                                     </div>
                                 </a>
                             );
