@@ -2,59 +2,84 @@ import { pageDetails } from "src/pages";
 
 export default function Home() {
     return (
-        <div className="py-4 md:py-8">
-            <div className="mx-auto max-w-7xl px-1">
-                <div className="mb-8 rounded-3xl border border-slate-200 bg-white px-6 py-7 shadow-sm">
-                    <p className="text-sm font-medium text-sky-600">
-                        Dashboard
-                    </p>
-                    <h2 className="mt-1 text-3xl font-bold text-slate-900">
-                        Astrology Services
-                    </h2>
-                    <p className="mt-2 max-w-2xl text-sm text-slate-500">
-                        अपने ज्योतिषीय विश्लेषण, पंचांग और दैनिक गणनाओं के लिए
-                        किसी भी सेवा का चयन करें।
-                    </p>
-                </div>
+        <div className="py-2">
+            {/* Banner */}
+            <div
+                className="mb-5 overflow-hidden rounded-2xl px-5 py-5"
+                style={{
+                    background: "linear-gradient(135deg, #D4480A 0%, #7D1B2E 100%)",
+                    boxShadow: "0 4px 20px rgba(212,72,10,0.3)",
+                }}>
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/70">
+                    ॐ श्री गणेशाय नमः
+                </p>
+                <h2 className="mt-1 text-2xl font-bold text-white">
+                    वैदिक ज्योतिष सेवाएं
+                </h2>
+                <p className="mt-1 text-sm text-white/75">
+                    जन्म कुंडली, पंचांग, मुहूर्त और ज्योतिष गणनाएं
+                </p>
+            </div>
 
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                    {Object.entries(pageDetails)
-                        .filter(([, detail]) => detail.nav)
-                        .map(([pageId, detail]) => {
-                            return (
-                                <a href={`?page=${pageId}`} key={pageId}>
-                                    <div className="group h-full cursor-pointer rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md">
-                                        <div className="mb-4 flex items-center justify-between">
-                                            <detail.icon
-                                                className={
-                                                    detail.icon.name.startsWith(
-                                                        "Svg"
-                                                    )
-                                                        ? "h-11 w-11"
-                                                        : "h-7 w-7 text-sky-600"
-                                                }
-                                            />
-                                            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500">
-                                                Open
-                                            </span>
-                                        </div>
+            {/* Service Cards */}
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {Object.entries(pageDetails)
+                    .filter(([, detail]) => detail.nav)
+                    .map(([pageId, detail]) => (
+                        <a
+                            key={pageId}
+                            href={`?page=${pageId}`}
+                            className="block no-underline">
+                            <div
+                                className="group flex h-full cursor-pointer items-start gap-4 rounded-2xl p-4 transition-all"
+                                style={{
+                                    background: "var(--c-surface)",
+                                    border: "1px solid var(--c-border)",
+                                    boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+                                }}
+                                onMouseEnter={e => {
+                                    (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(212,72,10,0.18)";
+                                    (e.currentTarget as HTMLDivElement).style.borderColor = "var(--c-primary)";
+                                    (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
+                                }}
+                                onMouseLeave={e => {
+                                    (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.06)";
+                                    (e.currentTarget as HTMLDivElement).style.borderColor = "var(--c-border)";
+                                    (e.currentTarget as HTMLDivElement).style.transform = "none";
+                                }}>
+                                {/* Icon */}
+                                <div
+                                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
+                                    style={{ background: "rgba(212,72,10,0.08)", border: "1px solid rgba(212,72,10,0.2)" }}>
+                                    <detail.icon
+                                        className={detail.icon.name?.startsWith("Svg") ? "h-8 w-8" : "h-6 w-6"}
+                                        color="var(--c-primary)"
+                                    />
+                                </div>
 
-                                        <h3 className="mb-2 text-xl font-semibold text-slate-900">
-                                            {detail.title}
-                                        </h3>
-
-                                        <p className="mb-4 text-sm leading-relaxed text-slate-500">
-                                            {detail.description}
-                                        </p>
-
-                                        <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 group-hover:border-sky-200 group-hover:text-sky-700">
-                                            {detail.actionMessage}
-                                        </div>
-                                    </div>
-                                </a>
-                            );
-                        })}
-                </div>
+                                {/* Text */}
+                                <div className="min-w-0 flex-1">
+                                    <h3
+                                        className="text-base font-bold"
+                                        style={{ color: "var(--c-text)" }}>
+                                        {detail.title}
+                                    </h3>
+                                    <p className="mt-0.5 text-xs leading-relaxed" style={{ color: "var(--c-text-m)" }}>
+                                        {detail.description}
+                                    </p>
+                                    <span
+                                        className="mt-2 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold"
+                                        style={{
+                                            background: "rgba(212,72,10,0.08)",
+                                            color: "var(--c-primary)",
+                                            border: "1px solid rgba(212,72,10,0.2)",
+                                        }}>
+                                        {detail.actionMessage} →
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    ))}
             </div>
         </div>
     );

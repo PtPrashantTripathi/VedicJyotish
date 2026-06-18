@@ -34,9 +34,9 @@ export default function Settings() {
                 <div className="container mx-auto px-4 py-8">
                     <div className="mx-auto max-w-2xl space-y-6">
                         {/* <!-- Location Settings  --> */}
-                        <div className="rounded-xl bg-white p-6">
-                            <h3 className="mb-4 text-xl font-semibold text-purple-600">
-                                Location Settings
+                        <div className="rounded-xl bg-white p-6" style={{ border: "1px solid var(--c-border)" }}>
+                            <h3 className="mb-4 text-lg font-bold" style={{ color: "var(--c-maroon)" }}>
+                                📍 स्थान सेटिंग्स — Location Settings
                             </h3>
                             <div className="mt-6 space-y-6 rounded-lg bg-gray-50 p-4">
                                 <div className="relative">
@@ -245,9 +245,9 @@ export default function Settings() {
                         </div>
 
                         {/* <!-- Language & Display  --> */}
-                        <div className="rounded-xl bg-white p-6">
-                            <h3 className="mb-4 text-xl font-semibold text-blue-600">
-                                Language & Display
+                        <div className="rounded-xl bg-white p-6" style={{ border: "1px solid var(--c-border)" }}>
+                            <h3 className="mb-4 text-lg font-bold" style={{ color: "var(--c-maroon)" }}>
+                                🌐 भाषा और प्रदर्शन — Language &amp; Display
                             </h3>
                             <div className="space-y-4">
                                 <div>
@@ -263,9 +263,9 @@ export default function Settings() {
                         </div>
 
                         {/* <!-- Calculation Settings  --> */}
-                        <div className="rounded-xl bg-white p-6">
-                            <h3 className="mb-4 text-xl font-semibold text-green-600">
-                                Calculation Settings
+                        <div className="rounded-xl bg-white p-6" style={{ border: "1px solid var(--c-border)" }}>
+                            <h3 className="mb-4 text-lg font-bold" style={{ color: "var(--c-maroon)" }}>
+                                ⚙️ गणना सेटिंग्स — Calculation Settings
                             </h3>
                             <div className="space-y-4">
                                 <div>
@@ -340,9 +340,9 @@ export default function Settings() {
                         <div className="text-center">
                             <button
                                 type="submit"
-                                className="flex-1 rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-                                <i className="fas fa-save mr-2"></i>Save
-                                Settings
+                                className="rounded-xl px-8 py-3 font-bold text-white transition-all hover:opacity-90"
+                                style={{ background: "linear-gradient(135deg, var(--c-primary) 0%, var(--c-maroon) 100%)", boxShadow: "0 4px 14px rgba(212,72,10,0.35)" }}>
+                                सेटिंग्स सहेजें — Save Settings
                             </button>
                         </div>
                     </div>

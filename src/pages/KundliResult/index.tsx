@@ -7,6 +7,7 @@ import VimsottariDasa from "src/components/VimsottariDasa";
 import { useSessionContext } from "src/contexts/SessionContext";
 import { Kundli } from "src/services/Kundli";
 import { DMS } from "src/services/utils";
+import { fmtDate, fmtTime } from "src/utils/formatDate";
 
 export default function KundliResult() {
     const session = useSessionContext();
@@ -111,191 +112,97 @@ export default function KundliResult() {
         useState<keyof typeof tabs>("overview");
 
     return (
-        <div id="phaladesh-page" className="min-h-screen bg-white">
-            <div className="mx-auto max-w-7xl px-4 py-8 md:py-10">
-                <header className="relative overflow-hidden rounded-3xl border-2 border-sky-100 bg-linear-to-br from-sky-50 via-white to-slate-50 p-0 shadow-[0_16px_60px_-12px_rgba(14,116,144,0.35)]">
-                    {/* Animated background elements */}
-                    <div className="pointer-events-none absolute -top-32 -right-12 h-64 w-64 animate-pulse rounded-full bg-sky-200/25 blur-3xl" />
+        <div id="phaladesh-page" className="min-h-screen" style={{ background: "var(--c-bg)" }}>
+            <div className="mx-auto max-w-7xl px-0 py-0 md:py-2">
+
+                {/* ── Chart Header ── */}
+                <div
+                    className="mb-4 overflow-hidden rounded-2xl"
+                    style={{ border: "1px solid var(--c-border-s)", boxShadow: "0 4px 20px rgba(125,27,46,0.15)" }}>
                     <div
-                        className="pointer-events-none absolute -bottom-24 -left-20 h-60 w-60 animate-pulse rounded-full bg-cyan-200/20 blur-3xl"
-                        style={{ animationDelay: "1s" }}
-                    />
-                    <div className="pointer-events-none absolute top-1/2 right-1/4 h-40 w-40 rounded-full bg-blue-200/15 blur-2xl" />
-
-                    {/* Top accent line */}
-                    <div className="h-1 bg-linear-to-r from-sky-400 via-blue-500 to-cyan-400" />
-
-                    <div className="relative space-y-5 p-6 md:p-8">
-                        {/* Title Section */}
-                        <div className="flex flex-wrap items-start gap-4 md:items-center md:justify-between">
-                            <div className="flex items-start gap-4">
-                                <button
-                                    onClick={() =>
-                                        session.updateSearchParams({
-                                            page: "Home",
-                                        })
-                                    }
-                                    className="mt-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-sky-200 bg-white text-lg text-sky-700 shadow-sm transition hover:-translate-x-1 hover:border-sky-300 hover:bg-sky-50 hover:shadow-md"
-                                    aria-label="Go back to home page">
-                                    ←
-                                </button>
-
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-2xl">🔮</span>
-                                        <p className="text-xs font-semibold tracking-widest text-sky-600 uppercase">
-                                            Your Cosmic Blueprint
-                                        </p>
-                                    </div>
-                                    <h1 className="bg-gradient-to-r from-sky-700 via-blue-600 to-cyan-600 bg-clip-text text-3xl font-extrabold text-transparent md:text-4xl">
-                                        जन्म कुंडली विश्लेषण
-                                    </h1>
-                                    <p className="text-sm font-medium text-slate-500">
-                                        Complete astrological birth chart
-                                        analysis
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Right side visual element */}
-                            <div className="hidden flex-col items-center justify-center space-y-1 lg:flex">
-                                <div className="flex gap-1">
-                                    {[...Array(5)].map((_, i) => (
-                                        <div
-                                            key={i}
-                                            className="h-2 w-2 rounded-full bg-gradient-to-r from-sky-400 to-blue-500"
-                                            style={{ opacity: 0.5 + i * 0.1 }}
-                                        />
-                                    ))}
-                                </div>
-                                <div className="text-xs font-medium text-slate-400">
-                                    Premium Analysis
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Divider with pattern */}
-                        <div className="relative h-px bg-gradient-to-r from-transparent via-sky-200 to-transparent" />
-
-                        {/* Key Information Grid */}
-                        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                            {/* Name Card */}
-                            <div className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-blue-50/80 to-white p-4 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md">
-                                <div className="flex items-start justify-between gap-2">
-                                    <div className="flex-1">
-                                        <p className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
-                                            👤 Name
-                                        </p>
-                                        <p className="mt-1.5 truncate text-lg font-bold text-slate-900">
-                                            {session.searchParams.user ||
-                                                "Guest"}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Gender Card */}
-                            <div className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-purple-50/80 to-white p-4 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-purple-300 hover:shadow-md">
-                                <div className="flex items-start justify-between gap-2">
-                                    <div className="flex-1">
-                                        <p className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
-                                            ⚣ Gender
-                                        </p>
-                                        <p className="mt-1.5 text-lg font-bold text-slate-900">
-                                            {session.searchParams.gender === "M"
-                                                ? "पुरुष"
-                                                : "महिला"}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Location Card */}
-                            <div className="group col-span-1 overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-orange-50/80 to-white p-4 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-orange-300 hover:shadow-md sm:col-span-2 lg:col-span-1">
-                                <div className="flex items-start justify-between gap-2">
-                                    <div className="min-w-0 flex-1">
-                                        <p className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
-                                            📍 Location
-                                        </p>
-                                        <p className="mt-1.5 truncate text-sm font-bold text-slate-900">
-                                            {session.searchParams.city}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Time Card */}
-                            <div className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-green-50/80 to-white p-4 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-green-300 hover:shadow-md sm:col-span-2 lg:col-span-1">
-                                <p className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
-                                    🕐 Birth Time
+                        className="px-4 py-4"
+                        style={{ background: "linear-gradient(135deg, #D4480A 0%, #7D1B2E 100%)" }}>
+                        <div className="flex items-start gap-3">
+                            <button
+                                onClick={() => session.updateSearchParams({ page: "Home" })}
+                                className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white/80 transition hover:bg-white/20"
+                                aria-label="Go back">
+                                ←
+                            </button>
+                            <div>
+                                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/60">
+                                    जन्म कुंडली विश्लेषण
                                 </p>
-                                <p className="mt-1.5 truncate text-sm font-bold text-slate-900">
-                                    {kundliData.datetime.toFormat(
-                                        "dd LLL yyyy"
-                                    )}
-                                </p>
-                                <p className="mt-1 text-xs font-semibold text-slate-600">
-                                    {kundliData.datetime.toFormat("hh:mm a")}
+                                <h1 className="mt-0.5 text-xl font-bold text-white">
+                                    {session.searchParams.user || "Guest"}
+                                </h1>
+                                <p className="mt-0.5 text-xs text-white/75">
+                                    {fmtDate(kundliData.datetime)} • {fmtTime(kundliData.datetime)} • {session.searchParams.city}
                                 </p>
                             </div>
-                        </div>
-
-                        {/* Bottom info chips */}
-                        <div className="flex flex-wrap gap-2 pt-2">
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200/80 bg-sky-50/60 px-3.5 py-1.5 text-xs font-semibold text-sky-700 backdrop-blur-sm">
-                                <span>⏰</span>
-                                {session.searchParams.tznm}
-                            </span>
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-200/80 bg-cyan-50/60 px-3.5 py-1.5 text-xs font-semibold text-cyan-700 backdrop-blur-sm">
-                                <span>🌍</span>
-                                {session.searchParams.lat.toFixed(2)}°,{" "}
-                                {session.searchParams.lon.toFixed(2)}°
-                            </span>
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200/80 bg-amber-50/60 px-3.5 py-1.5 text-xs font-semibold text-amber-700 backdrop-blur-sm">
-                                <span>✨</span>
-                                Premium Report
-                            </span>
                         </div>
                     </div>
 
-                    {/* Bottom accent line */}
-                    <div className="h-px bg-gradient-to-r from-transparent via-sky-200 to-transparent" />
-                </header>
-
-                {/* Navigation Tabs */}
-                <div className="sticky top-16 z-10 mt-6 border-b border-slate-200 bg-white">
-                    <div className="flex space-x-1 overflow-x-auto">
-                        {Object.entries(tabs).map(([id, tab]) => (
-                            <button
-                                key={id}
-                                onClick={() =>
-                                    setSelectedTab(id as keyof typeof tabs)
-                                }
-                                className={`flex items-center space-x-2 rounded-t-2xl border-b-2 px-4 py-3 text-sm font-semibold whitespace-nowrap transition-all ${
-                                    selectedTab === id
-                                        ? "border-sky-600 bg-sky-50 text-sky-700"
-                                        : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                                }`}>
-                                <span>{tab.icon}</span>
-                                <span>{tab.label}</span>
-                            </button>
-                        ))}
+                    {/* Quick facts row */}
+                    <div
+                        className="grid grid-cols-2 divide-x sm:grid-cols-4"
+                        style={{ background: "var(--c-warm)", borderTop: "1px solid var(--c-border)", borderColor: "var(--c-border)" }}>
+                        <div className="px-3 py-2">
+                            <p className="text-[9px] font-semibold uppercase tracking-wider" style={{ color: "var(--c-text-m)" }}>वार</p>
+                            <p className="text-sm font-bold" style={{ color: "var(--c-text)" }}>{kundliData.panchanga.vara.name.hindi}</p>
+                        </div>
+                        <div className="px-3 py-2">
+                            <p className="text-[9px] font-semibold uppercase tracking-wider" style={{ color: "var(--c-text-m)" }}>लिंग</p>
+                            <p className="text-sm font-bold" style={{ color: "var(--c-text)" }}>
+                                {session.searchParams.gender === "M" ? "पुरुष" : "महिला"}
+                            </p>
+                        </div>
+                        <div className="px-3 py-2">
+                            <p className="text-[9px] font-semibold uppercase tracking-wider" style={{ color: "var(--c-text-m)" }}>सूर्योदय</p>
+                            <p className="text-sm font-bold" style={{ color: "var(--c-text)" }}>{kundliData.panchanga.sunrise.dt.toFormat("hh:mm a")}</p>
+                        </div>
+                        <div className="px-3 py-2">
+                            <p className="text-[9px] font-semibold uppercase tracking-wider" style={{ color: "var(--c-text-m)" }}>टाइमज़ोन</p>
+                            <p className="truncate text-xs font-bold" style={{ color: "var(--c-text)" }}>{session.searchParams.tznm}</p>
+                        </div>
                     </div>
                 </div>
 
-                {/* Tab Content */}
+                {/* ── Navigation Tabs ── */}
+                <div
+                    className="sticky z-10 mb-4 flex overflow-x-auto"
+                    style={{ top: "var(--c-header-h, 52px)", background: "var(--c-bg)", borderBottom: "2px solid var(--c-border)" }}>
+                    {Object.entries(tabs).map(([id, tab]) => (
+                        <button
+                            key={id}
+                            onClick={() => setSelectedTab(id as keyof typeof tabs)}
+                            className="flex shrink-0 items-center gap-1.5 px-4 py-2.5 text-sm font-semibold whitespace-nowrap transition-all"
+                            style={{
+                                borderBottom: selectedTab === id ? "3px solid var(--c-primary)" : "3px solid transparent",
+                                color: selectedTab === id ? "var(--c-primary)" : "var(--c-text-m)",
+                                background: selectedTab === id ? "rgba(212,72,10,0.06)" : "transparent",
+                                marginBottom: "-2px",
+                            }}>
+                            <span>{tab.icon}</span>
+                            <span>{tab.label}</span>
+                        </button>
+                    ))}
+                </div>
+
+                {/* ── Tab Content ── */}
                 {selectedTab === "overview" && (
-                    <div className="space-y-6 py-6">
-                        {/* Primary Facts */}
-                        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="space-y-4">
+                        {/* Primary Facts Grid */}
+                        <section className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                             {primaryFacts.map(item => (
                                 <article
                                     key={item.label}
-                                    className="rounded-2xl border border-slate-200 bg-white/85 px-4 py-4 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md">
-                                    <p className="text-xs font-medium tracking-wide text-slate-500 uppercase">
+                                    className="rounded-xl px-4 py-3"
+                                    style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)" }}>
+                                    <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--c-text-m)" }}>
                                         {item.label}
                                     </p>
-                                    <p className="mt-1 text-sm font-semibold text-slate-800">
+                                    <p className="mt-0.5 text-sm font-bold" style={{ color: "var(--c-text)" }}>
                                         {item.value}
                                     </p>
                                 </article>
@@ -303,72 +210,43 @@ export default function KundliResult() {
                         </section>
 
                         {/* Ascendant Chart */}
-                        <section className="rounded-3xl border border-slate-200/90 bg-white/90 p-5 shadow-[0_10px_35px_-24px_rgba(15,23,42,0.7)] md:p-6">
-                            <div className="mb-4 flex items-center justify-between gap-3">
-                                <h2 className="text-xl font-semibold text-slate-900 md:text-2xl">
-                                    Ascendant Chart
-                                </h2>
-                                <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700">
-                                    Lagna View
+                        <section className="rounded-2xl p-4" style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)" }}>
+                            <div className="mb-3 flex items-center justify-between">
+                                <h2 className="text-base font-bold" style={{ color: "var(--c-maroon)" }}>Ascendant Chart — लग्न कुंडली</h2>
+                                <span className="rounded-full px-2 py-0.5 text-[10px] font-semibold" style={{ background: "rgba(212,72,10,0.1)", color: "var(--c-primary)" }}>
+                                    Lagna
                                 </span>
                             </div>
-                            <div className="flex justify-center rounded-2xl border border-slate-200 bg-slate-50 p-3">
-                                <KundliChartSVG
-                                    chartData={charts[0].chartData}
-                                    chartSetting={{
-                                        width: 300,
-                                        height: 300,
-                                    }}
-                                />
+                            <div className="flex justify-center rounded-xl p-2" style={{ background: "var(--c-warm)", border: "1px solid var(--c-border)" }}>
+                                <KundliChartSVG chartData={charts[0].chartData} chartSetting={{ width: 300, height: 300 }} />
                             </div>
                         </section>
 
                         {/* Information Chart */}
-                        <section className="rounded-3xl border border-slate-200/90 bg-white/90 p-5 shadow-[0_10px_35px_-24px_rgba(15,23,42,0.7)] md:p-6">
-                            <div className="mb-4 flex items-center justify-between gap-3">
-                                <h2 className="text-xl font-semibold text-slate-900 md:text-2xl">
-                                    Information Chart
-                                </h2>
-                                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-                                    Graha Summary
+                        <section className="rounded-2xl p-4" style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)" }}>
+                            <div className="mb-3 flex items-center justify-between">
+                                <h2 className="text-base font-bold" style={{ color: "var(--c-maroon)" }}>ग्रह स्थिति — Planet Positions</h2>
+                                <span className="rounded-full px-2 py-0.5 text-[10px] font-semibold" style={{ background: "var(--c-warm)", color: "var(--c-text-m)", border: "1px solid var(--c-border)" }}>
+                                    Graha
                                 </span>
                             </div>
-                            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-                                <ChartInfoTable
-                                    grahaData={kundliData.planets}
-                                />
+                            <div className="overflow-x-auto rounded-xl" style={{ border: "1px solid var(--c-border)" }}>
+                                <ChartInfoTable grahaData={kundliData.planets} />
                             </div>
                         </section>
                     </div>
                 )}
 
                 {selectedTab === "charts" && (
-                    <div className="space-y-6 py-6">
-                        <section className="rounded-3xl border border-slate-200/90 bg-white/90 p-5 shadow-[0_10px_35px_-24px_rgba(15,23,42,0.7)] md:p-6">
-                            <div className="mb-5 flex items-center justify-between gap-3">
-                                <h2 className="text-xl font-semibold text-slate-900 md:text-2xl">
-                                    Birth Charts
-                                </h2>
-                                <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700">
-                                    Divisional Views
-                                </span>
-                            </div>
-                            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                    <div className="space-y-4">
+                        <section className="rounded-2xl p-4" style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)" }}>
+                            <h2 className="mb-4 text-base font-bold" style={{ color: "var(--c-maroon)" }}>विभागीय चार्ट — Divisional Charts</h2>
+                            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                                 {charts.map(chart => (
-                                    <article
-                                        key={chart.title}
-                                        className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-                                        <h3 className="mb-3 text-base font-semibold text-slate-800">
-                                            {chart.title}
-                                        </h3>
-                                        <div className="flex justify-center overflow-x-auto rounded-xl border border-slate-200 bg-slate-50 p-2">
-                                            <KundliChartSVG
-                                                chartData={chart.chartData}
-                                                chartSetting={{
-                                                    width: 270,
-                                                    height: 270,
-                                                }}
-                                            />
+                                    <article key={chart.title} className="rounded-xl p-3" style={{ background: "var(--c-warm)", border: "1px solid var(--c-border)" }}>
+                                        <h3 className="mb-2 text-sm font-bold" style={{ color: "var(--c-text)" }}>{chart.title}</h3>
+                                        <div className="flex justify-center overflow-x-auto rounded-lg p-2" style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)" }}>
+                                            <KundliChartSVG chartData={chart.chartData} chartSetting={{ width: 260, height: 260 }} />
                                         </div>
                                     </article>
                                 ))}
@@ -378,16 +256,16 @@ export default function KundliResult() {
                 )}
 
                 {selectedTab === "yoga" && (
-                    <div className="space-y-6 py-6">
-                        <section className="rounded-3xl border border-slate-200/90 bg-white/90 p-5 shadow-[0_10px_35px_-24px_rgba(15,23,42,0.7)] md:p-6">
+                    <div>
+                        <section className="rounded-2xl p-4" style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)" }}>
                             <KundliYogPhala kundliData={kundliData} />
                         </section>
                     </div>
                 )}
 
                 {selectedTab === "dasa" && (
-                    <div className="space-y-6 py-6">
-                        <section className="rounded-3xl border border-slate-200/90 bg-white/90 p-5 shadow-[0_10px_35px_-24px_rgba(15,23,42,0.7)] md:p-6">
+                    <div>
+                        <section className="rounded-2xl p-4" style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)" }}>
                             <VimsottariDasa kundliData={kundliData} />
                         </section>
                     </div>

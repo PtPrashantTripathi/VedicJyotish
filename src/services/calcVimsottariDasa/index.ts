@@ -166,9 +166,10 @@ function computeDasha(
                     : dashaName === "AntarDasha"
                       ? AntarDashaPhal[parentLord]?.[currentLord]
                       : {},
-            // Recursively compute the next level of child dashas if they exist.
+            // Recursively compute the next level of child dashas (up to PratyantarDasha).
             ChildDasha:
-                childDashaName === "AntarDasha"
+                childDashaName === "AntarDasha" ||
+                childDashaName === "PratyantarDasha"
                     ? computeDasha(
                           childDashaName,
                           currentLord,

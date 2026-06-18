@@ -20,16 +20,16 @@ export default function App() {
     const session = useSessionState();
     return (
         <SessionContext value={session}>
-            <div className="min-h-screen bg-[#f3f6fb] text-slate-800">
+            <div className="min-h-screen" style={{ background: "var(--c-bg)", color: "var(--c-text)" }}>
                 <Header />
                 <div
                     onClick={() => session.setNav(false)}
                     className={
-                        "fixed inset-0 z-40 bg-black/40 opacity-0 transition-opacity duration-300" +
+                        "fixed inset-0 z-40 bg-black/50 opacity-0 transition-opacity duration-300" +
                         (session.nav ? " opacity-100" : " pointer-events-none")
                     }></div>
                 <Navigation />
-                <main className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6 md:py-8">
+                <main className="mx-auto w-full max-w-7xl px-3 py-4 pb-24 md:px-5 md:py-6 md:pb-24">
                     <Errors />
 
                     {session.searchParams.page === "Home" ? (

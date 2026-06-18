@@ -3,20 +3,40 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Standardizing styles for core HTML elements using @apply to ensure */
-/* site-wide typographic consistency, replacing repeated class strings in components. */
+:root {
+    /* Traditional Indian color palette */
+    --c-primary:     #D4480A;   /* saffron orange */
+    --c-primary-dk:  #A33507;   /* dark saffron */
+    --c-primary-lt:  #F2641A;   /* light saffron */
+    --c-maroon:      #7D1B2E;   /* deep maroon */
+    --c-maroon-dk:   #4A0F1C;   /* darker maroon */
+    --c-gold:        #C49A0A;   /* golden accent */
+    --c-bg:          #FDF6EC;   /* warm cream background */
+    --c-surface:     #FFFFFF;
+    --c-warm:        #FFF8F0;   /* warm white surface */
+    --c-border:      #E8D5C0;   /* warm border */
+    --c-border-s:    #C8A88C;   /* strong border */
+    --c-text:        #1A1208;   /* near-black warm */
+    --c-text-2:      #5C4033;   /* secondary text */
+    --c-text-m:      #8B7355;   /* muted text */
+    --c-green:       #1A6E3B;   /* current dasha green */
+    --c-green-bg:    #EDFBF3;
+    --c-header-h:    52px;
+    --c-bottom-h:    60px;
+}
+
 @layer base {
     html {
         font-family:
             "Noto Sans Devanagari", "Roboto", ui-sans-serif, system-ui,
             sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
             "Segoe UI Symbol", "Noto Color Emoji";
-        background-color: #f3f6fb;
+        background-color: var(--c-bg);
     }
 
     body {
-        background-color: #f3f6fb;
-        color: #1e293b;
+        background-color: var(--c-bg);
+        color: var(--c-text);
     }
 
     button,
@@ -116,17 +136,17 @@
 
     #phaladesh-page h1 {
         margin-bottom: 0.8rem;
-        font-size: 1.45rem;
+        font-size: 1.4rem;
         font-weight: 700;
-        color: rgb(15 23 42);
+        color: var(--c-text);
     }
 
     #phaladesh-page h3 {
         margin-top: 0.7rem;
         margin-bottom: 0.6rem;
-        font-size: 1.02rem;
+        font-size: 1rem;
         font-weight: 600;
-        color: rgb(30 41 59);
+        color: var(--c-maroon);
     }
 
     #phaladesh-page section.container {
@@ -139,28 +159,29 @@
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
-        border: 1px solid rgb(226 232 240);
-        border-radius: 0.85rem;
+        border: 1px solid var(--c-border);
+        border-radius: 0.5rem;
         overflow: hidden;
-        background: rgb(255 255 255 / 0.9);
+        background: var(--c-surface);
     }
 
     #phaladesh-page thead th {
-        padding: 0.75rem 0.85rem;
-        border-bottom: 1px solid rgb(226 232 240);
-        background: linear-gradient(180deg, #f0f9ff, #fff);
-        color: rgb(71 85 105);
-        font-size: 0.78rem;
+        padding: 0.6rem 0.75rem;
+        border-bottom: 2px solid var(--c-border-s);
+        background: linear-gradient(180deg, var(--c-maroon) 0%, var(--c-maroon-dk) 100%);
+        color: #FFF8F0;
+        font-size: 0.72rem;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.03em;
+        letter-spacing: 0.06em;
         text-align: left;
     }
 
     #phaladesh-page tbody td {
-        padding: 0.75rem 0.85rem;
-        border-bottom: 1px solid rgb(241 245 249);
-        color: rgb(30 41 59);
-        font-size: 0.92rem;
+        padding: 0.6rem 0.75rem;
+        border-bottom: 1px solid var(--c-border);
+        color: var(--c-text);
+        font-size: 0.875rem;
         vertical-align: top;
     }
 
@@ -169,11 +190,15 @@
     }
 
     #phaladesh-page tbody tr:nth-child(even) {
-        background: rgb(248 250 252 / 0.65);
+        background: var(--c-warm);
+    }
+
+    #phaladesh-page tbody tr:hover {
+        background: #FFF0E4;
     }
 
     #phaladesh-page .prose p {
-        border-left: 3px solid rgb(14 165 233 / 0.55);
+        border-left: 3px solid var(--c-primary);
         padding-left: 0.75rem;
         margin-bottom: 0.9rem;
     }
