@@ -100,8 +100,11 @@ export function calcVimsottariDasa(
         (remainingDegreeInNakshatra / degreesPerNakshatra);
 
     // Calculate the start date of the entire Vimsottari Dasa cycle.
-    // This is the date before birth when the current MahaDasha began.
-    const StartDate = DOB.minus({ days: dasaBalance * solarYear });
+    // Subtract the *elapsed* portion (total period minus remaining balance)
+    // to get the date when the current MahaDasha actually began before birth.
+    const elapsedInCurrentDasha =
+        DurationOfVimsottariDasa[moon_nakshatra.lord] - dasaBalance;
+    const StartDate = DOB.minus({ days: elapsedInCurrentDasha * solarYear });
 
     // Compute the full Dasha tree starting from the MahaDasha level.
     return computeDasha(

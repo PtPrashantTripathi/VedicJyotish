@@ -33,12 +33,14 @@ export function Kundli(
         swe.SE_GREG_CAL
     )[1];
 
-    // Ascendant etc.
-    const { ascmc } = swe.swe_houses(
+    // Ascendant etc. — use swe_houses_ex with SEFLG_SIDEREAL so the Ascendant
+    // is in the same sidereal frame as the planets computed with IFLAGS.
+    const { ascmc } = swe.swe_houses_ex(
         tjd_ut,
+        swe.SEFLG_SIDEREAL,
         latitude,
         longitude,
-        "P" // W = equal whole sign
+        "P" // Placidus; use "W" for whole-sign
     );
 
     // Add Ascendant
