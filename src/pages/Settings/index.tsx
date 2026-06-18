@@ -252,12 +252,22 @@ export default function Settings() {
                             <div className="space-y-4">
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-gray-700">
-                                        Language
+                                        Language / भाषा
                                     </label>
-                                    <select className="w-full rounded-lg border border-gray-300 p-3 focus:border-blue-500 focus:ring-blue-500">
-                                        <option>English</option>
-                                        <option>हिंदी (Hindi)</option>
+                                    <select
+                                        className="w-full rounded-lg border border-gray-300 p-3 focus:border-orange-500 focus:ring-orange-500"
+                                        value={session.storageValues.language}
+                                        onChange={e =>
+                                            session.updateStorageValues({
+                                                language: e.target.value as "Hindi" | "English",
+                                            })
+                                        }>
+                                        <option value="English">English</option>
+                                        <option value="Hindi">हिंदी (Hindi)</option>
                                     </select>
+                                    <p className="mt-1 text-xs" style={{ color: "var(--c-text-m)" }}>
+                                        Changes apply after saving settings
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -322,7 +332,7 @@ export default function Settings() {
                                         {Object.entries(HouseSystems).map(
                                             ([hs_mode, hs_name]) => (
                                                 <option
-                                                    key={hs_name}
+                                                    key={hs_mode}
                                                     value={hs_mode}>
                                                     {hs_name}
                                                 </option>
@@ -343,6 +353,41 @@ export default function Settings() {
                                 className="rounded-xl px-8 py-3 font-bold text-white transition-all hover:opacity-90"
                                 style={{ background: "linear-gradient(135deg, var(--c-primary) 0%, var(--c-maroon) 100%)", boxShadow: "0 4px 14px rgba(212,72,10,0.35)" }}>
                                 सेटिंग्स सहेजें — Save Settings
+                            </button>
+                        </div>
+
+                        {/* <!-- Reset to Default --> */}
+                        <div
+                            className="rounded-xl p-4"
+                            style={{ border: "1px dashed #DC2626", background: "#FFF5F5" }}>
+                            <p className="mb-2 text-sm font-bold" style={{ color: "#DC2626" }}>
+                                ⚠️ खतरा क्षेत्र — Danger Zone
+                            </p>
+                            <p className="mb-3 text-xs" style={{ color: "var(--c-text-m)" }}>
+                                इससे सभी सहेजी गई सेटिंग्स, सत्र डेटा और ब्राउज़र मेमोरी
+                                पूरी तरह साफ हो जाएगी। यह क्रिया पूर्ववत नहीं की जा
+                                सकती।
+                                <br />
+                                <span className="text-slate-500">
+                                    (Clears all saved settings, session state, and browser
+                                    localStorage. Cannot be undone.)
+                                </span>
+                            </p>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (
+                                        window.confirm(
+                                            "सभी सेटिंग्स और सत्र डेटा रीसेट करें?\n\nReset all settings and clear browser memory?\n\nThis cannot be undone."
+                                        )
+                                    ) {
+                                        localStorage.clear();
+                                        window.location.href = "?page=Home";
+                                    }
+                                }}
+                                className="rounded-lg border px-5 py-2 text-sm font-semibold transition-all hover:bg-red-50 active:bg-red-100"
+                                style={{ borderColor: "#DC2626", color: "#DC2626" }}>
+                                ↺ डिफ़ॉल्ट पर रीसेट करें — Reset to Default
                             </button>
                         </div>
                     </div>

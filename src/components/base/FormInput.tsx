@@ -14,7 +14,8 @@ export default function FormInput({
     return (
         <div>
             <label
-                className="mb-2 block text-sm font-medium text-slate-600"
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide"
+                style={{ color: "var(--c-text-2)" }}
                 htmlFor={id}>
                 {label}
             </label>
@@ -22,7 +23,10 @@ export default function FormInput({
                 {...props}
                 id={id}
                 // Merges the base styles with any custom classes passed in
-                className={`w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-700 shadow-sm transition-colors duration-200 outline-none placeholder:text-slate-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 ${props.className ?? ""}`}
+                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition-colors duration-200 placeholder:text-[var(--c-text-m)] ${props.className ?? ""}`}
+                style={{ background: "var(--c-surface)", borderColor: "var(--c-border-s)", color: "var(--c-text)" }}
+                onFocus={e => { e.currentTarget.style.borderColor = "var(--c-primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(212,72,10,0.12)"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = "var(--c-border-s)"; e.currentTarget.style.boxShadow = "none"; }}
             />
         </div>
     );

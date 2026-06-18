@@ -5,6 +5,7 @@ import { pageDetails } from "src/pages";
 const BOTTOM_NAV_PAGES = [
     "Home",
     "Panchang",
+    "MonthlyCalendar",
     "KundliForm",
     "KundliMatching",
     "Settings",
