@@ -13,29 +13,29 @@ await swe.swe_set_ephe_path("./assets/ephe", [
     "sefstars.txt",
 ]);
 
-// Fetches a city data.gz zipped JSON file and decompresses it to an JSON object.
-fetch("assets/database/city_database.cjson")
-    .then(response => response.arrayBuffer())
-    .then(data => {
-        globalThis.city_database = JSON.parse(
-            pako.ungzip(new Uint8Array(data), {
-                to: "string",
-            })
-        );
-    })
-    .catch(error => {
-        throw Error(`Error fetching or decompressing JSON: ${error}`);
-    });
-
-// Load timezone data from JSON
-fetch("assets/database/tz_offset.json")
-    .then(res => res.json())
-    .then(data => {
-        globalThis.timezone_database = data;
-    })
-    .catch(err => {
-        throw Error(`Failed to fetch tz_offset data: ${err}`);
-    });
+// Load databases before rendering so components can access them synchronously.
+await Promise.all([
+    fetch("assets/database/city_database.cjson")
+        .then(response => response.arrayBuffer())
+        .then(data => {
+            globalThis.city_database = JSON.parse(
+                pako.ungzip(new Uint8Array(data), {
+                    to: "string",
+                })
+            );
+        })
+        .catch(error => {
+            throw Error(`Error fetching or decompressing JSON: ${error}`);
+        }),
+    fetch("assets/database/tz_offset.json")
+        .then(res => res.json())
+        .then(data => {
+            globalThis.timezone_database = data;
+        })
+        .catch(err => {
+            throw Error(`Failed to fetch tz_offset data: ${err}`);
+        }),
+]);
 
 // Use createRoot to render the React application to the DOM.
 createRoot(document.body).render(

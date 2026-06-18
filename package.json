@@ -24,7 +24,10 @@
         "build:database": "python3 tools/generate_database.py",
         "build:dev": "npm run build && npm run build:devtool",
         "build:devtool": "python3 tools/gen_devtools_json.py",
+        "build:wasm": "pnpm --filter sweph-wasm build:wasm",
+        "build:libs": "pnpm --filter fixed-len-array build && pnpm --filter wasp-lib build && pnpm --filter sweph-wasm build",
         "dev": "vite",
+        "dev:libs": "pnpm --filter fixed-len-array dev & pnpm --filter wasp-lib dev",
         "format": "npm run format:prettier && npm run format:python",
         "format:prettier": "prettier . --write",
         "format:python": "isort . && black .",
@@ -48,7 +51,7 @@
         "eslint-plugin-react-refresh": "latest",
         "eslint-plugin-simple-import-sort": "latest",
         "eslint-plugin-unused-imports": "latest",
-        "fixed-len-array": "./sub_modules/fixed-len-array",
+        "fixed-len-array": "workspace:*",
         "globals": "latest",
         "luxon": "latest",
         "pako": "latest",
@@ -57,13 +60,16 @@
         "react": "latest",
         "react-dom": "latest",
         "react-icons": "latest",
-        "sweph-wasm": "./sub_modules/sweph-wasm",
+        "sweph-wasm": "workspace:*",
         "tailwindcss": "latest",
         "tw-animate-css": "latest",
         "typescript": "latest",
         "typescript-eslint": "latest",
         "vite": "latest",
-        "wasp-lib": "./sub_modules/wasp-lib"
+        "wasp-lib": "workspace:*"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": ["esbuild"]
     },
     "packageManager": "pnpm@10.15.1",
     "engines": {

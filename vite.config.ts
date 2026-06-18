@@ -11,6 +11,17 @@ export default defineConfig({
         // Enable native path resolution from tsconfig.json
         tsconfigPaths: true,
     },
+    server: {
+        watch: {
+            // Follow symlinks into sub_modules/ so workspace package changes trigger HMR
+            ignored: ["!**/sub_modules/**"],
+        },
+    },
+    optimizeDeps: {
+        // Load workspace packages directly from their dist/ (don't pre-bundle them)
+        // so that a library rebuild is immediately picked up by the dev server
+        exclude: ["fixed-len-array", "wasp-lib", "sweph-wasm"],
+    },
     build: {
         target: "esnext",
         outDir: "dist",
