@@ -48,7 +48,7 @@
         "eslint-plugin-react-refresh": "latest",
         "eslint-plugin-simple-import-sort": "latest",
         "eslint-plugin-unused-imports": "latest",
-        "fixed-len-array": "latest",
+        "fixed-len-array": "./sub_modules/fixed-len-array",
         "globals": "latest",
         "luxon": "latest",
         "pako": "latest",
@@ -57,13 +57,13 @@
         "react": "latest",
         "react-dom": "latest",
         "react-icons": "latest",
-        "sweph-wasm": "latest",
+        "sweph-wasm": "./sub_modules/sweph-wasm",
         "tailwindcss": "latest",
         "tw-animate-css": "latest",
         "typescript": "latest",
         "typescript-eslint": "latest",
         "vite": "latest",
-        "wasp-lib": "latest"
+        "wasp-lib": "./sub_modules/wasp-lib"
     },
     "packageManager": "pnpm@10.15.1",
     "engines": {
