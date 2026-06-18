@@ -29,12 +29,16 @@ export default function Navigation() {
                 }}>
                 <div
                     className="flex items-center justify-between px-4 py-3"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,0.15)" }}>
+                    style={{
+                        borderBottom: "1px solid rgba(255,255,255,0.15)",
+                    }}>
                     <a href="/" className="flex items-center gap-2.5">
                         <img
                             src="assets/icon/icon-192x192.png"
                             className="h-9 w-9 rounded-xl"
-                            style={{ border: "1px solid rgba(255,255,255,0.3)" }}
+                            style={{
+                                border: "1px solid rgba(255,255,255,0.3)",
+                            }}
                         />
                         <div>
                             <p className="text-sm font-bold text-white">
@@ -104,7 +108,7 @@ export default function Navigation() {
 
             {/* ── Bottom Navigation Bar ── */}
             <nav
-                className="fixed bottom-0 left-0 right-0 z-30 flex"
+                className="fixed right-0 bottom-0 left-0 z-30 flex"
                 style={{
                     background:
                         "linear-gradient(0deg, #A33507 0%, #D4480A 100%)",

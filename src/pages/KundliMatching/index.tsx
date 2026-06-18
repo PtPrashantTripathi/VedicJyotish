@@ -2,8 +2,11 @@ import { DateTime } from "luxon";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { useSessionContext } from "src/contexts/SessionContext";
 import { useLang } from "src/i18n";
+import {
+    type AshtakootResult,
+    calcAshtakoot,
+} from "src/services/calcAshtakoot";
 import { Kundli } from "src/services/Kundli";
-import { type AshtakootResult, calcAshtakoot } from "src/services/calcAshtakoot";
 import { formatTimezoneOffset } from "src/utils/formatters/formatTimezoneOffset";
 
 interface PersonForm {
@@ -26,12 +29,15 @@ const DEFAULT_FORM: PersonForm = {
     tz: "Asia/Kolkata",
 };
 
-const VERDICT_COLORS: Record<string, { bg: string; border: string; text: string }> = {
-    "Excellent": { bg: "#ECFDF5", border: "#16A34A", text: "#16A34A" },
+const VERDICT_COLORS: Record<
+    string,
+    { bg: string; border: string; text: string }
+> = {
+    Excellent: { bg: "#ECFDF5", border: "#16A34A", text: "#16A34A" },
     "Very Good": { bg: "#FFFBEB", border: "#D97706", text: "#D97706" },
-    "Good":      { bg: "#EFF6FF", border: "#2563EB", text: "#2563EB" },
-    "Average":   { bg: "#FFF7ED", border: "#EA580C", text: "#EA580C" },
-    "Poor":      { bg: "#FFF5F5", border: "#DC2626", text: "#DC2626" },
+    Good: { bg: "#EFF6FF", border: "#2563EB", text: "#2563EB" },
+    Average: { bg: "#FFF7ED", border: "#EA580C", text: "#EA580C" },
+    Poor: { bg: "#FFF5F5", border: "#DC2626", text: "#DC2626" },
 };
 
 function verdictKey(verdict: string): string {
@@ -47,14 +53,28 @@ export default function KundliMatching() {
 
     const [male, setMale] = useState<PersonForm>({ ...DEFAULT_FORM });
     const [female, setFemale] = useState<PersonForm>({ ...DEFAULT_FORM });
-    const [mCities, setMCities] = useState<[string, number, number, string][]>([]);
-    const [fCities, setFCities] = useState<[string, number, number, string][]>([]);
+    const [mCities, setMCities] = useState<[string, number, number, string][]>(
+        []
+    );
+    const [fCities, setFCities] = useState<[string, number, number, string][]>(
+        []
+    );
     const [result, setResult] = useState<AshtakootResult | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const searchCities = (val: string, setter: Dispatch<SetStateAction<[string, number, number, string][]>>) => {
-        if (!val.trim()) { setter([]); return; }
-        setter(city_database.filter(([n]) => n.toLowerCase().includes(val.toLowerCase())).slice(0, 8));
+    const searchCities = (
+        val: string,
+        setter: Dispatch<SetStateAction<[string, number, number, string][]>>
+    ) => {
+        if (!val.trim()) {
+            setter([]);
+            return;
+        }
+        setter(
+            city_database
+                .filter(([n]) => n.toLowerCase().includes(val.toLowerCase()))
+                .slice(0, 8)
+        );
     };
 
     const handleCalculate = () => {
@@ -64,8 +84,12 @@ export default function KundliMatching() {
                 setError("Please enter birth date and time for both.");
                 return;
             }
-            const maleDt = DateTime.fromISO(`${male.date}T${male.time}`, { zone: male.tz }) as DateTime<true>;
-            const femaleDt = DateTime.fromISO(`${female.date}T${female.time}`, { zone: female.tz }) as DateTime<true>;
+            const maleDt = DateTime.fromISO(`${male.date}T${male.time}`, {
+                zone: male.tz,
+            }) as DateTime<true>;
+            const femaleDt = DateTime.fromISO(`${female.date}T${female.time}`, {
+                zone: female.tz,
+            }) as DateTime<true>;
             const mK = Kundli(maleDt, male.lon, male.lat);
             const fK = Kundli(femaleDt, female.lon, female.lat);
             const ashtakoot = calcAshtakoot(
@@ -76,28 +100,41 @@ export default function KundliMatching() {
             );
             setResult(ashtakoot);
             setTimeout(() => {
-                document.getElementById("matching-result")?.scrollIntoView({ behavior: "smooth" });
+                document
+                    .getElementById("matching-result")
+                    ?.scrollIntoView({ behavior: "smooth" });
             }, 100);
         } catch (e) {
-            setError(`Calculation error: ${e instanceof Error ? e.message : String(e)}`);
+            setError(
+                `Calculation error: ${e instanceof Error ? e.message : String(e)}`
+            );
         }
     };
 
     return (
         <div className="min-h-screen" style={{ background: "var(--c-bg)" }}>
-
             {/* Header */}
             <div
                 className="mb-5 overflow-hidden rounded-2xl px-4 py-4"
-                style={{ background: "linear-gradient(135deg, #D4480A 0%, #7D1B2E 100%)", boxShadow: "0 4px 20px rgba(212,72,10,0.28)" }}>
+                style={{
+                    background:
+                        "linear-gradient(135deg, #D4480A 0%, #7D1B2E 100%)",
+                    boxShadow: "0 4px 20px rgba(212,72,10,0.28)",
+                }}>
                 <button
                     onClick={() => session.updateSearchParams({ page: "Home" })}
-                    className="mb-1 text-white/70 hover:text-white text-sm">
+                    className="mb-1 text-sm text-white/70 hover:text-white">
                     ← {t("back")}
                 </button>
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/60">अष्टकूट गुण मिलाप</p>
-                <h1 className="mt-0.5 text-xl font-bold text-white">{t("kundliMatching")}</h1>
-                <p className="mt-0.5 text-xs text-white/70">8-fold compatibility — 36 points system</p>
+                <p className="text-[10px] font-semibold tracking-widest text-white/60 uppercase">
+                    अष्टकूट गुण मिलाप
+                </p>
+                <h1 className="mt-0.5 text-xl font-bold text-white">
+                    {t("kundliMatching")}
+                </h1>
+                <p className="mt-0.5 text-xs text-white/70">
+                    8-fold compatibility — 36 points system
+                </p>
             </div>
 
             {/* Forms Grid */}
@@ -126,7 +163,13 @@ export default function KundliMatching() {
 
             {/* Error */}
             {error && (
-                <div className="mt-4 rounded-xl p-3 text-sm" style={{ background: "#FFF5F5", border: "1px solid #DC2626", color: "#DC2626" }}>
+                <div
+                    className="mt-4 rounded-xl p-3 text-sm"
+                    style={{
+                        background: "#FFF5F5",
+                        border: "1px solid #DC2626",
+                        color: "#DC2626",
+                    }}>
                     ⚠️ {error}
                 </div>
             )}
@@ -137,7 +180,11 @@ export default function KundliMatching() {
                     type="button"
                     onClick={handleCalculate}
                     className="rounded-xl px-10 py-3 text-base font-bold text-white transition-all hover:opacity-90 active:scale-[0.98]"
-                    style={{ background: "linear-gradient(135deg, var(--c-primary) 0%, var(--c-maroon) 100%)", boxShadow: "0 4px 14px rgba(212,72,10,0.35)" }}>
+                    style={{
+                        background:
+                            "linear-gradient(135deg, var(--c-primary) 0%, var(--c-maroon) 100%)",
+                        boxShadow: "0 4px 14px rgba(212,72,10,0.35)",
+                    }}>
                     {t("checkCompatibility")} →
                 </button>
             </div>
@@ -148,72 +195,204 @@ export default function KundliMatching() {
                     {/* Summary Card */}
                     <div
                         className="overflow-hidden rounded-2xl"
-                        style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
-                        <div className="px-5 py-4" style={{ background: "linear-gradient(135deg, var(--c-primary), var(--c-maroon))" }}>
-                            <p className="text-[10px] font-semibold uppercase tracking-widest text-white/60">{t("totalScore")}</p>
+                        style={{
+                            background: "var(--c-surface)",
+                            border: "1px solid var(--c-border)",
+                            boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+                        }}>
+                        <div
+                            className="px-5 py-4"
+                            style={{
+                                background:
+                                    "linear-gradient(135deg, var(--c-primary), var(--c-maroon))",
+                            }}>
+                            <p className="text-[10px] font-semibold tracking-widest text-white/60 uppercase">
+                                {t("totalScore")}
+                            </p>
                             <div className="flex items-end gap-2">
-                                <span className="text-5xl font-bold text-white">{result.total}</span>
-                                <span className="mb-1 text-xl text-white/70">/ 36</span>
+                                <span className="text-5xl font-bold text-white">
+                                    {result.total}
+                                </span>
+                                <span className="mb-1 text-xl text-white/70">
+                                    / 36
+                                </span>
                             </div>
-                            <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.25)" }}>
+                            <div
+                                className="mt-2 h-2.5 w-full overflow-hidden rounded-full"
+                                style={{
+                                    background: "rgba(255,255,255,0.25)",
+                                }}>
                                 <div
                                     className="h-full rounded-full transition-all"
-                                    style={{ width: `${(result.total / 36) * 100}%`, background: "#fff" }}
+                                    style={{
+                                        width: `${(result.total / 36) * 100}%`,
+                                        background: "#fff",
+                                    }}
                                 />
                             </div>
                         </div>
-                        <div className="px-5 py-3" style={(() => { const vk = verdictKey(result.verdict); return VERDICT_COLORS[vk]; })()}>
-                            <p className="text-center text-sm font-bold" style={{ color: VERDICT_COLORS[verdictKey(result.verdict)].text }}>
+                        <div
+                            className="px-5 py-3"
+                            style={(() => {
+                                const vk = verdictKey(result.verdict);
+                                return VERDICT_COLORS[vk];
+                            })()}>
+                            <p
+                                className="text-center text-sm font-bold"
+                                style={{
+                                    color: VERDICT_COLORS[
+                                        verdictKey(result.verdict)
+                                    ].text,
+                                }}>
                                 {isHindi ? result.verdictHi : result.verdict}
                             </p>
                         </div>
                     </div>
 
                     {/* Koot Table */}
-                    <div className="overflow-hidden rounded-2xl" style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)" }}>
-                        <div className="px-4 py-3" style={{ background: "var(--c-warm)", borderBottom: "1px solid var(--c-border)" }}>
-                            <h3 className="text-base font-bold" style={{ color: "var(--c-maroon)" }}>अष्टकूट विवरण — Koot Breakdown</h3>
+                    <div
+                        className="overflow-hidden rounded-2xl"
+                        style={{
+                            background: "var(--c-surface)",
+                            border: "1px solid var(--c-border)",
+                        }}>
+                        <div
+                            className="px-4 py-3"
+                            style={{
+                                background: "var(--c-warm)",
+                                borderBottom: "1px solid var(--c-border)",
+                            }}>
+                            <h3
+                                className="text-base font-bold"
+                                style={{ color: "var(--c-maroon)" }}>
+                                अष्टकूट विवरण — Koot Breakdown
+                            </h3>
                         </div>
-                        <div className="divide-y" style={{ borderColor: "var(--c-border)" }}>
-                            {Object.values(result).filter((v): v is typeof result.varna => v && typeof v === "object" && "label" in v).map(koot => {
-                                const pct = koot.score / koot.max;
-                                const barColor = pct >= 0.8 ? "var(--c-green)" : pct >= 0.5 ? "var(--c-gold)" : "#DC2626";
-                                return (
-                                    <div key={koot.label} className="flex items-center gap-3 px-4 py-3">
-                                        <div className="w-24 shrink-0">
-                                            <p className="text-xs font-bold" style={{ color: "var(--c-text)" }}>{isHindi ? koot.labelHi : koot.label}</p>
-                                            <p className="text-[10px]" style={{ color: "var(--c-text-m)" }}>{koot.detail}</p>
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="h-2 w-full overflow-hidden rounded-full" style={{ background: "var(--c-border)" }}>
-                                                <div className="h-full rounded-full transition-all" style={{ width: `${pct * 100}%`, background: barColor }} />
+                        <div
+                            className="divide-y"
+                            style={{ borderColor: "var(--c-border)" }}>
+                            {Object.values(result)
+                                .filter(
+                                    (v): v is typeof result.varna =>
+                                        v &&
+                                        typeof v === "object" &&
+                                        "label" in v
+                                )
+                                .map(koot => {
+                                    const pct = koot.score / koot.max;
+                                    const barColor =
+                                        pct >= 0.8
+                                            ? "var(--c-green)"
+                                            : pct >= 0.5
+                                              ? "var(--c-gold)"
+                                              : "#DC2626";
+                                    return (
+                                        <div
+                                            key={koot.label}
+                                            className="flex items-center gap-3 px-4 py-3">
+                                            <div className="w-24 shrink-0">
+                                                <p
+                                                    className="text-xs font-bold"
+                                                    style={{
+                                                        color: "var(--c-text)",
+                                                    }}>
+                                                    {isHindi
+                                                        ? koot.labelHi
+                                                        : koot.label}
+                                                </p>
+                                                <p
+                                                    className="text-[10px]"
+                                                    style={{
+                                                        color: "var(--c-text-m)",
+                                                    }}>
+                                                    {koot.detail}
+                                                </p>
+                                            </div>
+                                            <div className="flex-1">
+                                                <div
+                                                    className="h-2 w-full overflow-hidden rounded-full"
+                                                    style={{
+                                                        background:
+                                                            "var(--c-border)",
+                                                    }}>
+                                                    <div
+                                                        className="h-full rounded-full transition-all"
+                                                        style={{
+                                                            width: `${pct * 100}%`,
+                                                            background:
+                                                                barColor,
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="w-16 shrink-0 text-right">
+                                                <span
+                                                    className="text-sm font-bold"
+                                                    style={{ color: barColor }}>
+                                                    {koot.score}
+                                                </span>
+                                                <span
+                                                    className="text-xs"
+                                                    style={{
+                                                        color: "var(--c-text-m)",
+                                                    }}>
+                                                    /{koot.max}
+                                                </span>
                                             </div>
                                         </div>
-                                        <div className="w-16 shrink-0 text-right">
-                                            <span className="text-sm font-bold" style={{ color: barColor }}>{koot.score}</span>
-                                            <span className="text-xs" style={{ color: "var(--c-text-m)" }}>/{koot.max}</span>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
                         </div>
-                        <div className="flex items-center justify-between px-4 py-3" style={{ background: "var(--c-warm)", borderTop: "2px solid var(--c-border-s)" }}>
-                            <span className="text-sm font-bold" style={{ color: "var(--c-maroon)" }}>कुल / Total</span>
-                            <span className="text-lg font-bold" style={{ color: "var(--c-primary)" }}>{result.total} / 36</span>
+                        <div
+                            className="flex items-center justify-between px-4 py-3"
+                            style={{
+                                background: "var(--c-warm)",
+                                borderTop: "2px solid var(--c-border-s)",
+                            }}>
+                            <span
+                                className="text-sm font-bold"
+                                style={{ color: "var(--c-maroon)" }}>
+                                कुल / Total
+                            </span>
+                            <span
+                                className="text-lg font-bold"
+                                style={{ color: "var(--c-primary)" }}>
+                                {result.total} / 36
+                            </span>
                         </div>
                     </div>
 
                     {/* Dosha / Notes */}
                     {result.nadi.score === 0 && (
-                        <div className="rounded-xl p-3 text-sm" style={{ background: "#FFF5F5", border: "1px solid #DC2626" }}>
-                            <p className="font-semibold text-red-700">⚠️ नाड़ी दोष (Nadi Dosha)</p>
-                            <p className="text-xs text-red-600 mt-0.5">Same Nadi detected. This is a significant dosha. Consult an astrologer for remedies.</p>
+                        <div
+                            className="rounded-xl p-3 text-sm"
+                            style={{
+                                background: "#FFF5F5",
+                                border: "1px solid #DC2626",
+                            }}>
+                            <p className="font-semibold text-red-700">
+                                ⚠️ नाड़ी दोष (Nadi Dosha)
+                            </p>
+                            <p className="mt-0.5 text-xs text-red-600">
+                                Same Nadi detected. This is a significant dosha.
+                                Consult an astrologer for remedies.
+                            </p>
                         </div>
                     )}
                     {result.bhakoot.score === 0 && (
-                        <div className="rounded-xl p-3 text-sm" style={{ background: "#FFF5F5", border: "1px solid #DC2626" }}>
-                            <p className="font-semibold text-red-700">⚠️ भकूट दोष (Bhakoot Dosha)</p>
-                            <p className="text-xs text-red-600 mt-0.5">Unfavorable Rashi combination. Consult an astrologer.</p>
+                        <div
+                            className="rounded-xl p-3 text-sm"
+                            style={{
+                                background: "#FFF5F5",
+                                border: "1px solid #DC2626",
+                            }}>
+                            <p className="font-semibold text-red-700">
+                                ⚠️ भकूट दोष (Bhakoot Dosha)
+                            </p>
+                            <p className="mt-0.5 text-xs text-red-600">
+                                Unfavorable Rashi combination. Consult an
+                                astrologer.
+                            </p>
                         </div>
                     )}
                 </div>
@@ -224,7 +403,16 @@ export default function KundliMatching() {
 
 // ─── PersonCard Component ─────────────────────────────────────────────────────
 
-function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities, searchCities }: {
+function PersonCard({
+    title,
+    titleColor,
+    icon,
+    form,
+    setForm,
+    cities,
+    setCities,
+    searchCities,
+}: {
     title: string;
     titleColor: string;
     icon: string;
@@ -232,7 +420,10 @@ function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities,
     setForm: (f: PersonForm) => void;
     cities: [string, number, number, string][];
     setCities: Dispatch<SetStateAction<[string, number, number, string][]>>;
-    searchCities: (val: string, setter: Dispatch<SetStateAction<[string, number, number, string][]>>) => void;
+    searchCities: (
+        val: string,
+        setter: Dispatch<SetStateAction<[string, number, number, string][]>>
+    ) => void;
 }) {
     const inputStyle = {
         width: "100%",
@@ -258,12 +449,27 @@ function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities,
     return (
         <div
             className="overflow-hidden rounded-2xl"
-            style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+            style={{
+                background: "var(--c-surface)",
+                border: "1px solid var(--c-border)",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+            }}>
             <div
                 className="flex items-center gap-2 px-4 py-3"
-                style={{ background: `${titleColor}14`, borderBottom: "1px solid var(--c-border)" }}>
-                <span className="text-xl font-bold" style={{ color: titleColor }}>{icon}</span>
-                <h3 className="text-base font-bold" style={{ color: titleColor }}>{title}</h3>
+                style={{
+                    background: `${titleColor}14`,
+                    borderBottom: "1px solid var(--c-border)",
+                }}>
+                <span
+                    className="text-xl font-bold"
+                    style={{ color: titleColor }}>
+                    {icon}
+                </span>
+                <h3
+                    className="text-base font-bold"
+                    style={{ color: titleColor }}>
+                    {title}
+                </h3>
             </div>
             <div className="space-y-3 p-4">
                 <div>
@@ -273,7 +479,9 @@ function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities,
                         type="text"
                         placeholder="Full name"
                         value={form.name}
-                        onChange={e => setForm({ ...form, name: e.target.value })}
+                        onChange={e =>
+                            setForm({ ...form, name: e.target.value })
+                        }
                     />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -283,7 +491,9 @@ function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities,
                             style={inputStyle}
                             type="date"
                             value={form.date}
-                            onChange={e => setForm({ ...form, date: e.target.value })}
+                            onChange={e =>
+                                setForm({ ...form, date: e.target.value })
+                            }
                         />
                     </div>
                     <div>
@@ -292,7 +502,9 @@ function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities,
                             style={inputStyle}
                             type="time"
                             value={form.time}
-                            onChange={e => setForm({ ...form, time: e.target.value })}
+                            onChange={e =>
+                                setForm({ ...form, time: e.target.value })
+                            }
                         />
                     </div>
                 </div>
@@ -312,16 +524,36 @@ function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities,
                     {cities.length > 0 && (
                         <div
                             className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-xl shadow-xl"
-                            style={{ border: "1px solid var(--c-border-s)", background: "var(--c-surface)" }}>
+                            style={{
+                                border: "1px solid var(--c-border-s)",
+                                background: "var(--c-surface)",
+                            }}>
                             {cities.map(([city, lat, lon, tz], idx) => (
                                 <div
                                     key={idx}
                                     className="cursor-pointer border-b p-2.5 text-xs last:border-0"
-                                    style={{ borderColor: "var(--c-border)", color: "var(--c-text)" }}
-                                    onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "var(--c-warm)"; }}
-                                    onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "var(--c-surface)"; }}
+                                    style={{
+                                        borderColor: "var(--c-border)",
+                                        color: "var(--c-text)",
+                                    }}
+                                    onMouseEnter={e => {
+                                        (
+                                            e.currentTarget as HTMLDivElement
+                                        ).style.background = "var(--c-warm)";
+                                    }}
+                                    onMouseLeave={e => {
+                                        (
+                                            e.currentTarget as HTMLDivElement
+                                        ).style.background = "var(--c-surface)";
+                                    }}
                                     onClick={() => {
-                                        setForm({ ...form, city, lat, lon, tz });
+                                        setForm({
+                                            ...form,
+                                            city,
+                                            lat,
+                                            lon,
+                                            tz,
+                                        });
                                         setCities([]);
                                     }}>
                                     {city}
@@ -334,15 +566,27 @@ function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities,
                     <label style={labelStyle}>Timezone</label>
                     <select
                         style={{ ...inputStyle, appearance: "auto" as never }}
-                        value={formatTimezoneOffset(form.tz, timezone_database[form.tz] ?? 330)}
+                        value={formatTimezoneOffset(
+                            form.tz,
+                            timezone_database[form.tz] ?? 330
+                        )}
                         onChange={e => {
                             const tz = e.target.value.split("[")[0].trim();
                             setForm({ ...form, tz });
                         }}>
-                        {Object.entries(timezone_database).map(([tznm, tz_offset]) => {
-                            const formatted = formatTimezoneOffset(tznm, tz_offset);
-                            return <option key={tznm} value={formatted}>{formatted}</option>;
-                        })}
+                        {Object.entries(timezone_database).map(
+                            ([tznm, tz_offset]) => {
+                                const formatted = formatTimezoneOffset(
+                                    tznm,
+                                    tz_offset
+                                );
+                                return (
+                                    <option key={tznm} value={formatted}>
+                                        {formatted}
+                                    </option>
+                                );
+                            }
+                        )}
                     </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -353,7 +597,12 @@ function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities,
                             type="number"
                             step="0.0001"
                             value={form.lat}
-                            onChange={e => setForm({ ...form, lat: parseFloat(e.target.value) })}
+                            onChange={e =>
+                                setForm({
+                                    ...form,
+                                    lat: parseFloat(e.target.value),
+                                })
+                            }
                         />
                     </div>
                     <div>
@@ -363,7 +612,12 @@ function PersonCard({ title, titleColor, icon, form, setForm, cities, setCities,
                             type="number"
                             step="0.0001"
                             value={form.lon}
-                            onChange={e => setForm({ ...form, lon: parseFloat(e.target.value) })}
+                            onChange={e =>
+                                setForm({
+                                    ...form,
+                                    lon: parseFloat(e.target.value),
+                                })
+                            }
                         />
                     </div>
                 </div>

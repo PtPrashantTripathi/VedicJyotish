@@ -34,8 +34,12 @@ export default function Settings() {
                 <div className="container mx-auto px-4 py-8">
                     <div className="mx-auto max-w-2xl space-y-6">
                         {/* <!-- Location Settings  --> */}
-                        <div className="rounded-xl bg-white p-6" style={{ border: "1px solid var(--c-border)" }}>
-                            <h3 className="mb-4 text-lg font-bold" style={{ color: "var(--c-maroon)" }}>
+                        <div
+                            className="rounded-xl bg-white p-6"
+                            style={{ border: "1px solid var(--c-border)" }}>
+                            <h3
+                                className="mb-4 text-lg font-bold"
+                                style={{ color: "var(--c-maroon)" }}>
                                 📍 स्थान सेटिंग्स — Location Settings
                             </h3>
                             <div className="mt-6 space-y-6 rounded-lg bg-gray-50 p-4">
@@ -245,8 +249,12 @@ export default function Settings() {
                         </div>
 
                         {/* <!-- Language & Display  --> */}
-                        <div className="rounded-xl bg-white p-6" style={{ border: "1px solid var(--c-border)" }}>
-                            <h3 className="mb-4 text-lg font-bold" style={{ color: "var(--c-maroon)" }}>
+                        <div
+                            className="rounded-xl bg-white p-6"
+                            style={{ border: "1px solid var(--c-border)" }}>
+                            <h3
+                                className="mb-4 text-lg font-bold"
+                                style={{ color: "var(--c-maroon)" }}>
                                 🌐 भाषा और प्रदर्शन — Language &amp; Display
                             </h3>
                             <div className="space-y-4">
@@ -259,13 +267,19 @@ export default function Settings() {
                                         value={session.storageValues.language}
                                         onChange={e =>
                                             session.updateStorageValues({
-                                                language: e.target.value as "Hindi" | "English",
+                                                language: e.target.value as
+                                                    | "Hindi"
+                                                    | "English",
                                             })
                                         }>
                                         <option value="English">English</option>
-                                        <option value="Hindi">हिंदी (Hindi)</option>
+                                        <option value="Hindi">
+                                            हिंदी (Hindi)
+                                        </option>
                                     </select>
-                                    <p className="mt-1 text-xs" style={{ color: "var(--c-text-m)" }}>
+                                    <p
+                                        className="mt-1 text-xs"
+                                        style={{ color: "var(--c-text-m)" }}>
                                         Changes apply after saving settings
                                     </p>
                                 </div>
@@ -273,8 +287,12 @@ export default function Settings() {
                         </div>
 
                         {/* <!-- Calculation Settings  --> */}
-                        <div className="rounded-xl bg-white p-6" style={{ border: "1px solid var(--c-border)" }}>
-                            <h3 className="mb-4 text-lg font-bold" style={{ color: "var(--c-maroon)" }}>
+                        <div
+                            className="rounded-xl bg-white p-6"
+                            style={{ border: "1px solid var(--c-border)" }}>
+                            <h3
+                                className="mb-4 text-lg font-bold"
+                                style={{ color: "var(--c-maroon)" }}>
                                 ⚙️ गणना सेटिंग्स — Calculation Settings
                             </h3>
                             <div className="space-y-4">
@@ -351,7 +369,12 @@ export default function Settings() {
                             <button
                                 type="submit"
                                 className="rounded-xl px-8 py-3 font-bold text-white transition-all hover:opacity-90"
-                                style={{ background: "linear-gradient(135deg, var(--c-primary) 0%, var(--c-maroon) 100%)", boxShadow: "0 4px 14px rgba(212,72,10,0.35)" }}>
+                                style={{
+                                    background:
+                                        "linear-gradient(135deg, var(--c-primary) 0%, var(--c-maroon) 100%)",
+                                    boxShadow:
+                                        "0 4px 14px rgba(212,72,10,0.35)",
+                                }}>
                                 सेटिंग्स सहेजें — Save Settings
                             </button>
                         </div>
@@ -359,18 +382,25 @@ export default function Settings() {
                         {/* <!-- Reset to Default --> */}
                         <div
                             className="rounded-xl p-4"
-                            style={{ border: "1px dashed #DC2626", background: "#FFF5F5" }}>
-                            <p className="mb-2 text-sm font-bold" style={{ color: "#DC2626" }}>
+                            style={{
+                                border: "1px dashed #DC2626",
+                                background: "#FFF5F5",
+                            }}>
+                            <p
+                                className="mb-2 text-sm font-bold"
+                                style={{ color: "#DC2626" }}>
                                 ⚠️ खतरा क्षेत्र — Danger Zone
                             </p>
-                            <p className="mb-3 text-xs" style={{ color: "var(--c-text-m)" }}>
-                                इससे सभी सहेजी गई सेटिंग्स, सत्र डेटा और ब्राउज़र मेमोरी
-                                पूरी तरह साफ हो जाएगी। यह क्रिया पूर्ववत नहीं की जा
-                                सकती।
+                            <p
+                                className="mb-3 text-xs"
+                                style={{ color: "var(--c-text-m)" }}>
+                                इससे सभी सहेजी गई सेटिंग्स, सत्र डेटा और
+                                ब्राउज़र मेमोरी पूरी तरह साफ हो जाएगी। यह क्रिया
+                                पूर्ववत नहीं की जा सकती।
                                 <br />
                                 <span className="text-slate-500">
-                                    (Clears all saved settings, session state, and browser
-                                    localStorage. Cannot be undone.)
+                                    (Clears all saved settings, session state,
+                                    and browser localStorage. Cannot be undone.)
                                 </span>
                             </p>
                             <button
@@ -386,7 +416,10 @@ export default function Settings() {
                                     }
                                 }}
                                 className="rounded-lg border px-5 py-2 text-sm font-semibold transition-all hover:bg-red-50 active:bg-red-100"
-                                style={{ borderColor: "#DC2626", color: "#DC2626" }}>
+                                style={{
+                                    borderColor: "#DC2626",
+                                    color: "#DC2626",
+                                }}>
                                 ↺ डिफ़ॉल्ट पर रीसेट करें — Reset to Default
                             </button>
                         </div>

@@ -39,7 +39,7 @@ export default function Header() {
                 </div>
 
                 <div className="min-w-0 flex-1">
-                    <h1 className="truncate text-base font-bold leading-tight text-white">
+                    <h1 className="truncate text-base leading-tight font-bold text-white">
                         {detail.title}
                     </h1>
                     <p className="truncate text-[11px] leading-tight text-white/70">

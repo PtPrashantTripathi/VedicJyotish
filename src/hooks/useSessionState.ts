@@ -109,27 +109,27 @@ export function useSessionState() {
         [setSession]
     );
 
-    // This block should be fixed to prevent a potential state update during render.
-    // It should be wrapped in a useEffect, but since it only runs on the first mount
-    // when default/save flags are true, it's a common pattern in hooks, but technically
-    // a violation. It's often ignored if the function guarantees it only runs once,
-    // but the safest approach is to use useEffect.
-    // However, to strictly adhere to the original logic structure while acknowledging
-    // its purpose: it's initializing storage based on initial state.
-    if (storageValues.default || searchParams.save) {
-        updateStorageValues({
-            username: searchParams.user,
-            gender: searchParams.gender,
-            dob: DateTime.fromISO(`${searchParams.date}T${searchParams.time}`, {
-                zone: searchParams.tznm,
-            }) as DateTime<true>,
-            tz_name: searchParams.tznm,
-            city: searchParams.city,
-            lat: searchParams.lat,
-            lon: searchParams.lon,
-            default: false,
-        });
-    }
+    // Save search params to storage on first mount (default) or after Settings save.
+    // Must run inside useEffect — calling setState directly during render causes
+    // "Too many re-renders" because it synchronously queues another render.
+    useEffect(() => {
+        if (storageValues.default || searchParams.save) {
+            updateStorageValues({
+                username: searchParams.user,
+                gender: searchParams.gender,
+                dob: DateTime.fromISO(
+                    `${searchParams.date}T${searchParams.time}`,
+                    { zone: searchParams.tznm }
+                ) as DateTime<true>,
+                tz_name: searchParams.tznm,
+                city: searchParams.city,
+                lat: searchParams.lat,
+                lon: searchParams.lon,
+                default: false,
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // run once on mount with initial URL/storage snapshot
 
     // Handle browser navigation (back/forward buttons)
     useEffect(() => {

@@ -20,7 +20,9 @@ export default function App() {
     const session = useSessionState();
     return (
         <SessionContext value={session}>
-            <div className="min-h-screen" style={{ background: "var(--c-bg)", color: "var(--c-text)" }}>
+            <div
+                className="min-h-screen"
+                style={{ background: "var(--c-bg)", color: "var(--c-text)" }}>
                 <Header />
                 <div
                     onClick={() => session.setNav(false)}

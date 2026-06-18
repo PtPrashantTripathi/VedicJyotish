@@ -7,10 +7,11 @@ export default function Home() {
             <div
                 className="mb-5 overflow-hidden rounded-2xl px-5 py-5"
                 style={{
-                    background: "linear-gradient(135deg, #D4480A 0%, #7D1B2E 100%)",
+                    background:
+                        "linear-gradient(135deg, #D4480A 0%, #7D1B2E 100%)",
                     boxShadow: "0 4px 20px rgba(212,72,10,0.3)",
                 }}>
-                <p className="text-xs font-semibold uppercase tracking-widest text-white/70">
+                <p className="text-xs font-semibold tracking-widest text-white/70 uppercase">
                     ॐ श्री गणेशाय नमः
                 </p>
                 <h2 className="mt-1 text-2xl font-bold text-white">
@@ -38,21 +39,42 @@ export default function Home() {
                                     boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
                                 }}
                                 onMouseEnter={e => {
-                                    (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(212,72,10,0.18)";
-                                    (e.currentTarget as HTMLDivElement).style.borderColor = "var(--c-primary)";
-                                    (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
+                                    (
+                                        e.currentTarget as HTMLDivElement
+                                    ).style.boxShadow =
+                                        "0 4px 16px rgba(212,72,10,0.18)";
+                                    (
+                                        e.currentTarget as HTMLDivElement
+                                    ).style.borderColor = "var(--c-primary)";
+                                    (
+                                        e.currentTarget as HTMLDivElement
+                                    ).style.transform = "translateY(-2px)";
                                 }}
                                 onMouseLeave={e => {
-                                    (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.06)";
-                                    (e.currentTarget as HTMLDivElement).style.borderColor = "var(--c-border)";
-                                    (e.currentTarget as HTMLDivElement).style.transform = "none";
+                                    (
+                                        e.currentTarget as HTMLDivElement
+                                    ).style.boxShadow =
+                                        "0 1px 4px rgba(0,0,0,0.06)";
+                                    (
+                                        e.currentTarget as HTMLDivElement
+                                    ).style.borderColor = "var(--c-border)";
+                                    (
+                                        e.currentTarget as HTMLDivElement
+                                    ).style.transform = "none";
                                 }}>
                                 {/* Icon */}
                                 <div
                                     className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
-                                    style={{ background: "rgba(212,72,10,0.08)", border: "1px solid rgba(212,72,10,0.2)" }}>
+                                    style={{
+                                        background: "rgba(212,72,10,0.08)",
+                                        border: "1px solid rgba(212,72,10,0.2)",
+                                    }}>
                                     <detail.icon
-                                        className={detail.icon.name?.startsWith("Svg") ? "h-8 w-8" : "h-6 w-6"}
+                                        className={
+                                            detail.icon.name?.startsWith("Svg")
+                                                ? "h-8 w-8"
+                                                : "h-6 w-6"
+                                        }
                                         color="var(--c-primary)"
                                     />
                                 </div>
@@ -64,7 +86,9 @@ export default function Home() {
                                         style={{ color: "var(--c-text)" }}>
                                         {detail.title}
                                     </h3>
-                                    <p className="mt-0.5 text-xs leading-relaxed" style={{ color: "var(--c-text-m)" }}>
+                                    <p
+                                        className="mt-0.5 text-xs leading-relaxed"
+                                        style={{ color: "var(--c-text-m)" }}>
                                         {detail.description}
                                     </p>
                                     <span

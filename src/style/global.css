@@ -5,24 +5,24 @@
 
 :root {
     /* Traditional Indian color palette */
-    --c-primary:     #D4480A;   /* saffron orange */
-    --c-primary-dk:  #A33507;   /* dark saffron */
-    --c-primary-lt:  #F2641A;   /* light saffron */
-    --c-maroon:      #7D1B2E;   /* deep maroon */
-    --c-maroon-dk:   #4A0F1C;   /* darker maroon */
-    --c-gold:        #C49A0A;   /* golden accent */
-    --c-bg:          #FDF6EC;   /* warm cream background */
-    --c-surface:     #FFFFFF;
-    --c-warm:        #FFF8F0;   /* warm white surface */
-    --c-border:      #E8D5C0;   /* warm border */
-    --c-border-s:    #C8A88C;   /* strong border */
-    --c-text:        #1A1208;   /* near-black warm */
-    --c-text-2:      #5C4033;   /* secondary text */
-    --c-text-m:      #8B7355;   /* muted text */
-    --c-green:       #1A6E3B;   /* current dasha green */
-    --c-green-bg:    #EDFBF3;
-    --c-header-h:    52px;
-    --c-bottom-h:    60px;
+    --c-primary: #d4480a; /* saffron orange */
+    --c-primary-dk: #a33507; /* dark saffron */
+    --c-primary-lt: #f2641a; /* light saffron */
+    --c-maroon: #7d1b2e; /* deep maroon */
+    --c-maroon-dk: #4a0f1c; /* darker maroon */
+    --c-gold: #c49a0a; /* golden accent */
+    --c-bg: #fdf6ec; /* warm cream background */
+    --c-surface: #ffffff;
+    --c-warm: #fff8f0; /* warm white surface */
+    --c-border: #e8d5c0; /* warm border */
+    --c-border-s: #c8a88c; /* strong border */
+    --c-text: #1a1208; /* near-black warm */
+    --c-text-2: #5c4033; /* secondary text */
+    --c-text-m: #8b7355; /* muted text */
+    --c-green: #1a6e3b; /* current dasha green */
+    --c-green-bg: #edfbf3;
+    --c-header-h: 52px;
+    --c-bottom-h: 60px;
 }
 
 @layer base {
@@ -168,8 +168,12 @@
     #phaladesh-page thead th {
         padding: 0.6rem 0.75rem;
         border-bottom: 2px solid var(--c-border-s);
-        background: linear-gradient(180deg, var(--c-maroon) 0%, var(--c-maroon-dk) 100%);
-        color: #FFF8F0;
+        background: linear-gradient(
+            180deg,
+            var(--c-maroon) 0%,
+            var(--c-maroon-dk) 100%
+        );
+        color: #fff8f0;
         font-size: 0.72rem;
         font-weight: 600;
         text-transform: uppercase;
@@ -194,7 +198,7 @@
     }
 
     #phaladesh-page tbody tr:hover {
-        background: #FFF0E4;
+        background: #fff0e4;
     }
 
     #phaladesh-page .prose p {

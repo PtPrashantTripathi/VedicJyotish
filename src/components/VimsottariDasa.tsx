@@ -1,6 +1,9 @@
 import { DateTime } from "luxon";
 import { useState } from "react";
-import { calcVimsottariDasa, type Dasha } from "src/services/calcVimsottariDasa";
+import {
+    calcVimsottariDasa,
+    type Dasha,
+} from "src/services/calcVimsottariDasa";
 import type { NavagrahaEn } from "src/services/constants/Planet";
 import type { KundliData } from "src/services/Kundli";
 import { fmtDate, fmtDateRange, fmtDuration } from "src/utils/formatDate";
@@ -61,12 +64,22 @@ function getProgress(d: Dasha, now: DateTime): number {
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-function PlanetBadge({ lord, size = "sm" }: { lord: NavagrahaEn; size?: "sm" | "xs" }) {
+function PlanetBadge({
+    lord,
+    size = "sm",
+}: {
+    lord: NavagrahaEn;
+    size?: "sm" | "xs";
+}) {
     const color = PLANET_COLOR[lord];
     return (
         <span
             className={`inline-flex shrink-0 items-center justify-center rounded-full font-bold ${size === "sm" ? "h-7 w-7 text-sm" : "h-5 w-5 text-xs"}`}
-            style={{ background: `${color}22`, color, border: `1.5px solid ${color}55` }}
+            style={{
+                background: `${color}22`,
+                color,
+                border: `1.5px solid ${color}55`,
+            }}
             title={lord}>
             {PLANET_SYMBOL[lord]}
         </span>
@@ -75,8 +88,13 @@ function PlanetBadge({ lord, size = "sm" }: { lord: NavagrahaEn; size?: "sm" | "
 
 function ProgressBar({ pct, color }: { pct: number; color: string }) {
     return (
-        <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full" style={{ background: `${color}22` }}>
-            <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
+        <div
+            className="mt-1.5 h-1 w-full overflow-hidden rounded-full"
+            style={{ background: `${color}22` }}>
+            <div
+                className="h-full rounded-full"
+                style={{ width: `${pct}%`, background: color }}
+            />
         </div>
     );
 }
@@ -96,19 +114,29 @@ function PratyantarRow({ dasha, now }: { dasha: Dasha; now: DateTime }) {
                 border: current ? "1px solid #BBF7D0" : "1px solid transparent",
                 opacity: past && !current ? 0.5 : 1,
             }}>
-            <span className="mt-0.5 shrink-0 text-xs font-bold" style={{ color, fontFamily: "monospace" }}>
+            <span
+                className="mt-0.5 shrink-0 text-xs font-bold"
+                style={{ color, fontFamily: "monospace" }}>
                 {PLANET_SYMBOL[dasha.Lord]}
             </span>
             <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-xs font-semibold" style={{ color: current ? "#1A6E3B" : "var(--c-text)" }}>
+                    <span
+                        className="text-xs font-semibold"
+                        style={{
+                            color: current ? "#1A6E3B" : "var(--c-text)",
+                        }}>
                         {dasha.Lord}
                     </span>
-                    <span className="text-[10px]" style={{ color: "var(--c-text-m)" }}>
+                    <span
+                        className="text-[10px]"
+                        style={{ color: "var(--c-text-m)" }}>
                         {PLANET_HINDI[dasha.Lord]}
                     </span>
                     {current && (
-                        <span className="rounded-sm px-1 text-[9px] font-bold" style={{ background: "#BBF7D0", color: "#1A6E3B" }}>
+                        <span
+                            className="rounded-sm px-1 text-[9px] font-bold"
+                            style={{ background: "#BBF7D0", color: "#1A6E3B" }}>
                             ★ चालू
                         </span>
                     )}
@@ -117,7 +145,12 @@ function PratyantarRow({ dasha, now }: { dasha: Dasha; now: DateTime }) {
                     {fmtDate(dasha.StartDate)} → {fmtDate(dasha.EndDate)}&ensp;
                     <span>({fmtDuration(dasha.StartDate, dasha.EndDate)})</span>
                 </p>
-                {current && <ProgressBar pct={getProgress(dasha, now)} color="#16A34A" />}
+                {current && (
+                    <ProgressBar
+                        pct={getProgress(dasha, now)}
+                        color="#16A34A"
+                    />
+                )}
             </div>
         </div>
     );
@@ -126,9 +159,15 @@ function PratyantarRow({ dasha, now }: { dasha: Dasha; now: DateTime }) {
 // ── Antar Dasha Row ───────────────────────────────────────────────────────────
 
 function AntarRow({
-    dasha, now, isExpanded, onToggle,
+    dasha,
+    now,
+    isExpanded,
+    onToggle,
 }: {
-    dasha: Dasha; now: DateTime; isExpanded: boolean; onToggle: () => void;
+    dasha: Dasha;
+    now: DateTime;
+    isExpanded: boolean;
+    onToggle: () => void;
 }) {
     const current = isCurrent(dasha, now);
     const past = isPast(dasha, now);
@@ -141,36 +180,67 @@ function AntarRow({
                 onClick={onToggle}
                 className="w-full rounded-lg px-3 py-2 text-left"
                 style={{
-                    background: current ? "#EDFBF3" : isExpanded ? "rgba(212,72,10,0.06)" : "transparent",
-                    border: current ? "1px solid #BBF7D0" : "1px solid transparent",
+                    background: current
+                        ? "#EDFBF3"
+                        : isExpanded
+                          ? "rgba(212,72,10,0.06)"
+                          : "transparent",
+                    border: current
+                        ? "1px solid #BBF7D0"
+                        : "1px solid transparent",
                     opacity: past && !current ? 0.6 : 1,
                 }}>
                 <div className="flex items-center gap-2">
                     <PlanetBadge lord={dasha.Lord} size="xs" />
                     <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5">
-                            <span className="text-xs font-bold" style={{ color: current ? "#1A6E3B" : color }}>
+                            <span
+                                className="text-xs font-bold"
+                                style={{ color: current ? "#1A6E3B" : color }}>
                                 {dasha.Lord}
                             </span>
-                            <span className="text-[10px]" style={{ color: "var(--c-text-m)" }}>
+                            <span
+                                className="text-[10px]"
+                                style={{ color: "var(--c-text-m)" }}>
                                 {PLANET_HINDI[dasha.Lord]}
                             </span>
                             {current && (
-                                <span className="rounded-sm px-1 text-[9px] font-bold" style={{ background: "#BBF7D0", color: "#1A6E3B" }}>
+                                <span
+                                    className="rounded-sm px-1 text-[9px] font-bold"
+                                    style={{
+                                        background: "#BBF7D0",
+                                        color: "#1A6E3B",
+                                    }}>
                                     ★ चालू
                                 </span>
                             )}
                         </div>
-                        <p className="text-[10px]" style={{ color: "var(--c-text-m)" }}>
+                        <p
+                            className="text-[10px]"
+                            style={{ color: "var(--c-text-m)" }}>
                             {fmtDateRange(dasha.StartDate, dasha.EndDate)}&ensp;
-                            <span>({fmtDuration(dasha.StartDate, dasha.EndDate)})</span>
+                            <span>
+                                ({fmtDuration(dasha.StartDate, dasha.EndDate)})
+                            </span>
                         </p>
-                        {(current || isExpanded) && <ProgressBar pct={pct} color={current ? "#16A34A" : color} />}
+                        {(current || isExpanded) && (
+                            <ProgressBar
+                                pct={pct}
+                                color={current ? "#16A34A" : color}
+                            />
+                        )}
                     </div>
                     {dasha.ChildDasha.length > 0 && (
                         <span
                             className="shrink-0 text-[10px] font-bold"
-                            style={{ color: "var(--c-text-m)", display: "inline-block", transform: isExpanded ? "rotate(90deg)" : "none", transition: "transform 0.2s" }}>
+                            style={{
+                                color: "var(--c-text-m)",
+                                display: "inline-block",
+                                transform: isExpanded
+                                    ? "rotate(90deg)"
+                                    : "none",
+                                transition: "transform 0.2s",
+                            }}>
                             ▶
                         </span>
                     )}
@@ -179,9 +249,14 @@ function AntarRow({
 
             {isExpanded && dasha.ChildDasha.length > 0 && (
                 <div
-                    className="ml-4 mt-0.5 space-y-0.5 rounded-lg py-1.5 pr-1 pl-2"
-                    style={{ borderLeft: `2px solid ${color}44`, background: "rgba(255,255,255,0.55)" }}>
-                    <p className="pb-0.5 text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--c-text-m)" }}>
+                    className="mt-0.5 ml-4 space-y-0.5 rounded-lg py-1.5 pr-1 pl-2"
+                    style={{
+                        borderLeft: `2px solid ${color}44`,
+                        background: "rgba(255,255,255,0.55)",
+                    }}>
+                    <p
+                        className="pb-0.5 text-[10px] font-semibold tracking-wider uppercase"
+                        style={{ color: "var(--c-text-m)" }}>
                         प्रत्यंतर्दशा
                     </p>
                     {dasha.ChildDasha.map((child, i) => (
@@ -196,10 +271,19 @@ function AntarRow({
 // ── Maha Dasha Row ────────────────────────────────────────────────────────────
 
 function MahaRow({
-    dasha, now, isExpanded, expandedAntarIdx, onToggle, onAntarToggle,
+    dasha,
+    now,
+    isExpanded,
+    expandedAntarIdx,
+    onToggle,
+    onAntarToggle,
 }: {
-    dasha: Dasha; now: DateTime; isExpanded: boolean; expandedAntarIdx: number;
-    onToggle: () => void; onAntarToggle: (idx: number) => void;
+    dasha: Dasha;
+    now: DateTime;
+    isExpanded: boolean;
+    expandedAntarIdx: number;
+    onToggle: () => void;
+    onAntarToggle: (idx: number) => void;
 }) {
     const current = isCurrent(dasha, now);
     const past = isPast(dasha, now);
@@ -210,50 +294,98 @@ function MahaRow({
         <div
             className="mb-2 overflow-hidden rounded-xl"
             style={{
-                border: current ? "2px solid #16A34A" : isExpanded ? `2px solid ${color}66` : "1px solid var(--c-border)",
-                background: current ? "#FBFFF9" : isExpanded ? "rgba(255,255,255,0.92)" : "var(--c-surface)",
+                border: current
+                    ? "2px solid #16A34A"
+                    : isExpanded
+                      ? `2px solid ${color}66`
+                      : "1px solid var(--c-border)",
+                background: current
+                    ? "#FBFFF9"
+                    : isExpanded
+                      ? "rgba(255,255,255,0.92)"
+                      : "var(--c-surface)",
                 opacity: past && !current ? 0.72 : 1,
-                boxShadow: current ? "0 2px 12px rgba(26,110,59,0.15)" : isExpanded ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
+                boxShadow: current
+                    ? "0 2px 12px rgba(26,110,59,0.15)"
+                    : isExpanded
+                      ? "0 2px 8px rgba(0,0,0,0.08)"
+                      : "none",
             }}>
             <button onClick={onToggle} className="w-full px-3 py-3 text-left">
                 <div className="flex items-center gap-3">
                     <PlanetBadge lord={dasha.Lord} size="sm" />
                     <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm font-bold" style={{ color: current ? "#1A6E3B" : color }}>
+                            <span
+                                className="text-sm font-bold"
+                                style={{ color: current ? "#1A6E3B" : color }}>
                                 {dasha.Lord}
                             </span>
-                            <span className="text-xs" style={{ color: "var(--c-text-2)" }}>
+                            <span
+                                className="text-xs"
+                                style={{ color: "var(--c-text-2)" }}>
                                 {PLANET_HINDI[dasha.Lord]}
                             </span>
                             {current && (
-                                <span className="rounded-full px-2 py-0.5 text-[10px] font-bold" style={{ background: "#16A34A", color: "#fff" }}>
+                                <span
+                                    className="rounded-full px-2 py-0.5 text-[10px] font-bold"
+                                    style={{
+                                        background: "#16A34A",
+                                        color: "#fff",
+                                    }}>
                                     ★ महादशा चालू
                                 </span>
                             )}
                             {past && !current && (
-                                <span className="rounded-full px-2 py-0.5 text-[10px]" style={{ background: "var(--c-warm)", color: "var(--c-text-m)" }}>
+                                <span
+                                    className="rounded-full px-2 py-0.5 text-[10px]"
+                                    style={{
+                                        background: "var(--c-warm)",
+                                        color: "var(--c-text-m)",
+                                    }}>
                                     समाप्त
                                 </span>
                             )}
                         </div>
-                        <p className="mt-0.5 text-[11px]" style={{ color: "var(--c-text-m)" }}>
+                        <p
+                            className="mt-0.5 text-[11px]"
+                            style={{ color: "var(--c-text-m)" }}>
                             {fmtDateRange(dasha.StartDate, dasha.EndDate)}&ensp;
-                            <span style={{ color: "var(--c-primary)", fontWeight: 600 }}>({fmtDuration(dasha.StartDate, dasha.EndDate)})</span>
+                            <span
+                                style={{
+                                    color: "var(--c-primary)",
+                                    fontWeight: 600,
+                                }}>
+                                ({fmtDuration(dasha.StartDate, dasha.EndDate)})
+                            </span>
                         </p>
-                        <ProgressBar pct={pct} color={current ? "#16A34A" : past ? "#9CA3AF" : color} />
+                        <ProgressBar
+                            pct={pct}
+                            color={
+                                current ? "#16A34A" : past ? "#9CA3AF" : color
+                            }
+                        />
                     </div>
                     <span
                         className="shrink-0 text-xs font-bold"
-                        style={{ color: "var(--c-text-m)", display: "inline-block", transform: isExpanded ? "rotate(90deg)" : "none", transition: "transform 0.2s" }}>
+                        style={{
+                            color: "var(--c-text-m)",
+                            display: "inline-block",
+                            transform: isExpanded ? "rotate(90deg)" : "none",
+                            transition: "transform 0.2s",
+                        }}>
                         ▶
                     </span>
                 </div>
             </button>
 
             {isExpanded && dasha.ChildDasha.length > 0 && (
-                <div className="space-y-0.5 px-3 pb-3" style={{ borderTop: `1px solid ${color}33` }}>
-                    <p className="pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--c-text-m)" }}>
+                <div
+                    className="space-y-0.5 px-3 pb-3"
+                    style={{ borderTop: `1px solid ${color}33` }}>
+                    <p
+                        className="pt-2 pb-1 text-[10px] font-semibold tracking-wider uppercase"
+                        style={{ color: "var(--c-text-m)" }}>
                         अंतर्दशा (Antar Dasha)
                     </p>
                     {dasha.ChildDasha.map((antar, i) => (
@@ -273,7 +405,13 @@ function MahaRow({
 
 // ── Current Dasha Status Banner ───────────────────────────────────────────────
 
-function CurrentStatusBanner({ dasaData, now }: { dasaData: Dasha[]; now: DateTime }) {
+function CurrentStatusBanner({
+    dasaData,
+    now,
+}: {
+    dasaData: Dasha[];
+    now: DateTime;
+}) {
     const maha = dasaData.find(d => isCurrent(d, now));
     const antar = maha?.ChildDasha.find(d => isCurrent(d, now));
     const pratyantar = antar?.ChildDasha.find(d => isCurrent(d, now));
@@ -287,32 +425,80 @@ function CurrentStatusBanner({ dasaData, now }: { dasaData: Dasha[]; now: DateTi
     ].filter(Boolean) as { label: string; dasha: Dasha }[];
 
     return (
-        <div className="mb-5 overflow-hidden rounded-xl" style={{ border: "1px solid var(--c-border-s)", background: "var(--c-surface)" }}>
-            <div className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white"
-                style={{ background: "linear-gradient(90deg, var(--c-maroon) 0%, var(--c-primary) 100%)" }}>
+        <div
+            className="mb-5 overflow-hidden rounded-xl"
+            style={{
+                border: "1px solid var(--c-border-s)",
+                background: "var(--c-surface)",
+            }}>
+            <div
+                className="px-4 py-2 text-xs font-semibold tracking-wider text-white uppercase"
+                style={{
+                    background:
+                        "linear-gradient(90deg, var(--c-maroon) 0%, var(--c-primary) 100%)",
+                }}>
                 वर्तमान दशा स्थिति — Current Dasha Status
             </div>
-            <div className="divide-y" style={{ borderColor: "var(--c-border)" }}>
+            <div
+                className="divide-y"
+                style={{ borderColor: "var(--c-border)" }}>
                 {rows.map(({ label, dasha }) => {
                     const color = PLANET_COLOR[dasha.Lord];
                     const pct = getProgress(dasha, now);
                     return (
-                        <div key={label} className="flex items-center gap-3 px-4 py-2.5">
+                        <div
+                            key={label}
+                            className="flex items-center gap-3 px-4 py-2.5">
                             <PlanetBadge lord={dasha.Lord} size="sm" />
                             <div className="min-w-0 flex-1">
                                 <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-[10px] font-semibold" style={{ color: "var(--c-text-m)" }}>{label}</span>
-                                    <span className="text-sm font-bold" style={{ color }}>{dasha.Lord}</span>
-                                    <span className="text-xs" style={{ color: "var(--c-text-2)" }}>{PLANET_HINDI[dasha.Lord]}</span>
+                                    <span
+                                        className="text-[10px] font-semibold"
+                                        style={{ color: "var(--c-text-m)" }}>
+                                        {label}
+                                    </span>
+                                    <span
+                                        className="text-sm font-bold"
+                                        style={{ color }}>
+                                        {dasha.Lord}
+                                    </span>
+                                    <span
+                                        className="text-xs"
+                                        style={{ color: "var(--c-text-2)" }}>
+                                        {PLANET_HINDI[dasha.Lord]}
+                                    </span>
                                 </div>
-                                <p className="text-[10px]" style={{ color: "var(--c-text-m)" }}>
-                                    {fmtDateRange(dasha.StartDate, dasha.EndDate)}&ensp;({fmtDuration(dasha.StartDate, dasha.EndDate)})
+                                <p
+                                    className="text-[10px]"
+                                    style={{ color: "var(--c-text-m)" }}>
+                                    {fmtDateRange(
+                                        dasha.StartDate,
+                                        dasha.EndDate
+                                    )}
+                                    &ensp;(
+                                    {fmtDuration(
+                                        dasha.StartDate,
+                                        dasha.EndDate
+                                    )}
+                                    )
                                 </p>
                                 <div className="mt-1 flex items-center gap-2">
-                                    <div className="h-1.5 flex-1 overflow-hidden rounded-full" style={{ background: `${color}22` }}>
-                                        <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
+                                    <div
+                                        className="h-1.5 flex-1 overflow-hidden rounded-full"
+                                        style={{ background: `${color}22` }}>
+                                        <div
+                                            className="h-full rounded-full"
+                                            style={{
+                                                width: `${pct}%`,
+                                                background: color,
+                                            }}
+                                        />
                                     </div>
-                                    <span className="text-[10px] font-medium" style={{ color: "var(--c-text-m)" }}>{Math.round(pct)}%</span>
+                                    <span
+                                        className="text-[10px] font-medium"
+                                        style={{ color: "var(--c-text-m)" }}>
+                                        {Math.round(pct)}%
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -325,7 +511,11 @@ function CurrentStatusBanner({ dasaData, now }: { dasaData: Dasha[]; now: DateTi
 
 // ── Main Component ────────────────────────────────────────────────────────────
 
-export default function VimsottariDasa({ kundliData }: { kundliData: KundliData }) {
+export default function VimsottariDasa({
+    kundliData,
+}: {
+    kundliData: KundliData;
+}) {
     const now = DateTime.now();
     const dasaData = calcVimsottariDasa(
         kundliData.panchanga.tjd_ut,
@@ -359,16 +549,25 @@ export default function VimsottariDasa({ kundliData }: { kundliData: KundliData 
     return (
         <section id="phaladesh-page">
             <div className="mb-4 flex items-center gap-2">
-                <h1 style={{ margin: 0, color: "var(--c-maroon)" }}>विंशोत्तरी दशा चक्र</h1>
-                <span className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
-                    style={{ background: "var(--c-warm)", color: "var(--c-text-m)", border: "1px solid var(--c-border)" }}>
+                <h1 style={{ margin: 0, color: "var(--c-maroon)" }}>
+                    विंशोत्तरी दशा चक्र
+                </h1>
+                <span
+                    className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                    style={{
+                        background: "var(--c-warm)",
+                        color: "var(--c-text-m)",
+                        border: "1px solid var(--c-border)",
+                    }}>
                     120 वर्ष
                 </span>
             </div>
 
             <CurrentStatusBanner dasaData={dasaData} now={now} />
 
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider" style={{ color: "var(--c-text-m)" }}>
+            <p
+                className="mb-3 text-[11px] font-semibold tracking-wider uppercase"
+                style={{ color: "var(--c-text-m)" }}>
                 सभी महादशा — All Maha Dashas
             </p>
 
