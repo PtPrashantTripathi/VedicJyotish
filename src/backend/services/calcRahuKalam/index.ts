@@ -1,4 +1,4 @@
-import type { TimeSpan } from "src/types";
+import type { TimeSpan } from "src/backend/types";
 
 /**
  * Rahu Kalam portion indices for each day of the week. Index corresponds to

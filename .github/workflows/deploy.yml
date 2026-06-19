@@ -58,20 +58,24 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: "latest"
+                  node-version: "22"
+
+            # Setup pnpm (reads version from packageManager field in package.json)
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
 
             # Install Node.js project dependencies
-            - name: Install Node dependencies
-              run: npm install
+            - name: Install dependencies
+              run: pnpm install
 
-            # Build the project (assumes a build script is defined in package.json)
+            # Build the project
             - name: Build
-              run: npm run build  
+              run: pnpm run build
 
             # Configure GitHub Pages
             - name: Setup GitHub Pages
               uses: actions/configure-pages@v5
-            
+
             # Upload the build output (dist/) as an artifact for Pages
             - name: Upload Build Artifact
               uses: actions/upload-pages-artifact@v3

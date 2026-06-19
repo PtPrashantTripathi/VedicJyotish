@@ -38,6 +38,6 @@
     "build": {
         "minify": true
     },
-    "include": ["src", "*.ts"],
-    "exclude": ["node_modules"]
+    "include": ["src"],
+    "exclude": ["node_modules", "vite.config.ts"]
 }
