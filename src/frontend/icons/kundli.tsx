@@ -1,0 +1,26 @@
+import type { SVGProps } from "react";
+
+export default function KundliIcon(props: SVGProps<SVGSVGElement>) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            {...props}>
+            {/* Outer square */}
+            <rect x="2" y="2" width="20" height="20" rx="1.5" />
+            {/* Diagonals — corner to corner */}
+            <line x1="2" y1="2" x2="22" y2="22" />
+            <line x1="22" y1="2" x2="2" y2="22" />
+            {/* Mid-point lines — North Indian chart (12 houses) */}
+            <line x1="12" y1="2" x2="2"  y2="12" />
+            <line x1="2"  y1="12" x2="12" y2="22" />
+            <line x1="12" y1="22" x2="22" y2="12" />
+            <line x1="22" y1="12" x2="12" y2="2"  />
+        </svg>
+    );
+}

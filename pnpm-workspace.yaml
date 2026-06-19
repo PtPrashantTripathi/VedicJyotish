@@ -1,7 +1,2 @@
-packages:
-    - "sub_modules/fixed-len-array"
-    - "sub_modules/wasp-lib"
-    - "sub_modules/sweph-wasm"
-
 onlyBuiltDependencies:
     - esbuild

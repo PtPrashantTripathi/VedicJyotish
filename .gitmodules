@@ -1,9 +1,0 @@
-[submodule "sub_modules/wasp-lib"]
-	path = sub_modules/wasp-lib
-	url = git@github.com:PtPrashantTripathi/wasp-lib.git
-[submodule "sub_modules/sweph-wasm"]
-	path = sub_modules/sweph-wasm
-	url = git@github.com:PtPrashantTripathi/sweph-wasm.git
-[submodule "sub_modules/fixed-len-array"]
-	path = sub_modules/fixed-len-array
-	url = git@github.com:PtPrashantTripathi/fixed-len-array.git

@@ -1,105 +1,59 @@
-# Workflow: Build and Deploy to GitHub Pages
 name: Deploy GitHub Pages
 
 on:
-    # Trigger on push to main branch
     push:
         branches:
             - main
-
-    # Allow manual trigger via GitHub Actions UI
     workflow_dispatch:
-        inputs:
-            build_env:
-                description: "Build environment"
-                required: false
-                default: "prod"
-            verbose:
-                description: "Enable verbose logging"
-                required: false
-                default: "true"
-            download_source_files:
-                description: "Download source files"
-                required: false
-                default: "false"
 
-# Set required permissions for GitHub Pages
 permissions:
-    contents: read # Read access to repository
-    pages: write # Write access to GitHub Pages
-    id-token: write # Required for OIDC authentication
+    contents: read
+    pages: write
+    id-token: write
 
-# Prevent overlapping deployments
 concurrency:
     group: pages-deployments
     cancel-in-progress: false
 
 jobs:
     deploy:
-        # Target deployment environment
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
         runs-on: ubuntu-latest
-        env:
-            build_env: ${{ github.event.inputs.env || 'prod' }}
-            verbose: ${{ github.event.inputs.verbose || 'false' }}
-            download_source_files:
-                ${{ github.event.inputs.download_source_files || 'false' }}
 
         steps:
-            # Checkout the repository
             - name: Checkout Repository
               uses: actions/checkout@v4
               with:
-                  fetch-depth: 1 # Faster checkout with shallow clone
+                  submodules: false
+                  fetch-depth: 1
 
-            # Configure GitHub Pages
-            - name: Setup GitHub Pages
-              uses: actions/configure-pages@v5
-
-            # Set up Node.js for building the project
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: "latest"
+                  node-version: "22"
 
-            # Install Node.js project dependencies
-            - name: Install Node dependencies
-              run: npm install
-
-            # Set up Python for tasks
-            - name: Setup Python
-              uses: actions/setup-python@v5
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
               with:
-                  python-version: "3.x"
+                  version: 10
 
-            # Install Node.js project dependencies
-            - name: Install Python packages
-              run: pip install requests pandas
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
 
-            # Install and activate Emscripten SDK
-            - name: Install and Activate Emscripten SDK
-              run: |
-                  git clone https://github.com/emscripten-core/emsdk.git ~/emsdk
-                  ~/emsdk/emsdk install latest
-                  ~/emsdk/emsdk activate latest
-              shell: bash
+            - name: Build
+              run: pnpm run build
 
-            # Build the project using npm and EMSDK
-            - name: Build Project
-              run: |
-                  source ~/emsdk/emsdk_env.sh
-                  npm run build
+            - name: Setup GitHub Pages
+              uses: actions/configure-pages@v5
 
-            # Upload the build output (dist/) as an artifact for Pages
             - name: Upload Build Artifact
               uses: actions/upload-pages-artifact@v3
               with:
                   path: ./dist
                   retention-days: 5
 
-            # Deploy the uploaded artifact to GitHub Pages
             - name: Deploy to GitHub Pages
               id: deployment
               uses: actions/deploy-pages@v4
