@@ -3,8 +3,8 @@
     "configurations": [
         {
             "name": "vedicjyotish-dev",
-            "runtimeExecutable": "pnpm",
-            "runtimeArgs": ["run", "dev"],
+            "runtimeExecutable": "node_modules/.bin/vite",
+            "runtimeArgs": [],
             "port": 5173,
             "autoPort": true
         }

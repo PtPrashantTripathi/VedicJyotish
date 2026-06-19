@@ -602,11 +602,11 @@ export default function Panchang() {
                             {[
                                 {
                                     name: "Rahu Kalam",
-                                    time: `${panchanga.rahu_kalam.start} – ${panchanga.rahu_kalam.end}`,
+                                    time: `${panchanga.datetime.plus({ days: panchanga.rahu_kalam.start - panchanga.tjd_ut }).toFormat("hh:mm a")} – ${panchanga.datetime.plus({ days: panchanga.rahu_kalam.end - panchanga.tjd_ut }).toFormat("hh:mm a")}`,
                                 },
                                 {
                                     name: "Yamaganda Kalam",
-                                    time: "09:00 AM – 10:30 AM",
+                                    time: `${panchanga.datetime.plus({ days: panchanga.kalavelas.day_kalavelas.Yamaghantaka.start - panchanga.tjd_ut }).toFormat("hh:mm a")} – ${panchanga.datetime.plus({ days: panchanga.kalavelas.day_kalavelas.Yamaghantaka.end - panchanga.tjd_ut }).toFormat("hh:mm a")}`,
                                 },
                             ].map(m => (
                                 <div

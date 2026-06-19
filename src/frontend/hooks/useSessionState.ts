@@ -145,8 +145,6 @@ export function useSessionState() {
         return () => window.removeEventListener("popstate", handlePopState);
     }, []);
 
-    console.log("session:", JSON.stringify(session, null, 4));
-    console.log(getShortURLString(session.searchParams));
     return {
         ...session,
         setSession,
