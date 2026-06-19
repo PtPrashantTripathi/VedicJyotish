@@ -22,15 +22,12 @@
     "scripts": {
         "build": "tsc -b && vite build",
         "build:database": "python3 tools/generate_database.py",
-        "build:dev": "npm run build && npm run build:devtool",
-        "build:devtool": "python3 tools/gen_devtools_json.py",
         "dev": "vite",
-        "format": "npm run format:prettier && npm run format:python",
+        "format": "pnpm run format:prettier && pnpm run format:python",
         "format:prettier": "prettier . --write",
         "format:python": "isort . && black .",
         "lint": "eslint . --fix",
         "preview": "vite preview",
-        "start": "vite start",
         "typecheck": "tsc --noEmit --incremental false"
     },
     "dependencies": {
@@ -48,29 +45,26 @@
         "eslint-plugin-react-refresh": "latest",
         "eslint-plugin-simple-import-sort": "latest",
         "eslint-plugin-unused-imports": "latest",
-        "fixed-len-array": "latest",
         "globals": "latest",
         "luxon": "latest",
         "pako": "latest",
         "prettier": "latest",
+        "prettier-plugin-jsdoc": "^1.8.1",
         "prettier-plugin-tailwindcss": "latest",
         "react": "latest",
         "react-dom": "latest",
         "react-icons": "latest",
-        "sweph-wasm": "latest",
         "tailwindcss": "latest",
         "tw-animate-css": "latest",
         "typescript": "latest",
         "typescript-eslint": "latest",
-        "vite": "latest",
-        "wasp-lib": "latest"
+        "vite": "latest"
     },
-    "packageManager": "pnpm@10.15.1",
+    "packageManager": "pnpm@11.8.0",
     "engines": {
         "node": ">=22",
         "pnpm": ">=10"
     },
-    "typeScriptVersion": "latest",
     "devDependencies": {
         "esbuild": "^0.28.0"
     }

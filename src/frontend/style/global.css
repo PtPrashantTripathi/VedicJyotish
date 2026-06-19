@@ -1,0 +1,170 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+    /* ── Vedic Ethereal Palette ─────────────────────────────────────── */
+    --c-primary: #D4A373;       /* Faded Marigold — CTAs, accents, active borders */
+    --c-primary-dk: #B8895A;    /* darker marigold */
+    --c-primary-lt: #E8C099;    /* lighter marigold */
+    --c-maroon: #4A3B32;        /* Cardamom Pod — headings, strong text */
+    --c-maroon-dk: #2E2520;     /* deep cardamom */
+    --c-gold: #D4A373;          /* same as primary for gold accents */
+    --c-bg: #FDFBF7;            /* Jasmine White — page background */
+    --c-surface: #F7F0E6;       /* warm card surface */
+    --c-warm: #EED9C4;          /* Sandalwood Paste — section backgrounds */
+    --c-border: #E0C9A8;        /* warm golden border */
+    --c-border-s: #D4A373;      /* Faded Marigold border */
+    --c-text: #4A3B32;          /* Cardamom Pod — primary text */
+    --c-text-2: #6B5245;        /* secondary text */
+    --c-text-m: #8B9A8F;        /* Sacred Tulsi — muted text */
+    --c-green: #8B9A8F;         /* Sacred Tulsi — current/active state */
+    --c-green-bg: #EDF2EE;      /* light tulsi background */
+    --c-header-h: 52px;
+    --c-bottom-h: 60px;
+}
+
+@layer base {
+    html {
+        font-family:
+            "Lora", "Noto Sans Devanagari", ui-serif, Georgia, serif;
+        background-color: var(--c-bg);
+    }
+
+    body {
+        background-color: var(--c-bg);
+        color: var(--c-text);
+        /* Subtle paper grain texture */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeBlend in='SourceGraphic' mode='multiply'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* Serif heading font for English headings */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: "Cinzel", "Noto Sans Devanagari", ui-serif, Georgia, serif;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font: inherit;
+    }
+
+    .pulse-animation {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%,
+        100% { opacity: 1; }
+        50%  { opacity: 0.7; }
+    }
+
+    @keyframes slide-in {
+        from { opacity: 0; transform: translateX(-100%); }
+        to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .animate-slide-in {
+        animation: slide-in 0.3s ease-out;
+    }
+
+    @keyframes progress-bar-full-to-zero {
+        from { width: 100%; }
+        to   { width: 0%; }
+    }
+
+    .animate-progress-bar {
+        animation: progress-bar-full-to-zero 5000ms linear forwards;
+    }
+
+    @keyframes dismiss {
+        0%       { opacity: 1; }
+        90%, 100% { opacity: 0; transform: scale(0); font-size: 0.1px; }
+    }
+
+    @keyframes hide {
+        100% {
+            height: 0px; width: 0px; overflow: hidden;
+            margin: 0px; padding: 0px; border: 0px;
+        }
+    }
+
+    @keyframes loader {
+        0%, 5% { top: 2.25rem; left: 2.25rem; width: 0.5rem; height: 0.5rem; opacity: 1; }
+        100%    { top: 0; left: 0; width: 5rem; height: 5rem; opacity: 0; }
+    }
+
+    #phaladesh-page h1 {
+        margin-bottom: 0.8rem;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--c-text);
+        font-family: "Cinzel", ui-serif, serif;
+    }
+
+    #phaladesh-page h3 {
+        margin-top: 0.7rem;
+        margin-bottom: 0.6rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--c-maroon);
+        font-family: "Cinzel", ui-serif, serif;
+    }
+
+    #phaladesh-page section.container {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #phaladesh-page table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid var(--c-border);
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background: var(--c-surface);
+    }
+
+    #phaladesh-page thead th {
+        padding: 0.6rem 0.75rem;
+        border-bottom: 2px solid var(--c-border-s);
+        background: linear-gradient(180deg, var(--c-maroon) 0%, var(--c-maroon-dk) 100%);
+        color: #FDFBF7;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        text-align: left;
+        font-family: "Cinzel", ui-serif, serif;
+    }
+
+    #phaladesh-page tbody td {
+        padding: 0.6rem 0.75rem;
+        border-bottom: 1px solid var(--c-border);
+        color: var(--c-text);
+        font-size: 0.875rem;
+        vertical-align: top;
+    }
+
+    #phaladesh-page tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    #phaladesh-page tbody tr:nth-child(even) {
+        background: var(--c-warm);
+    }
+
+    #phaladesh-page tbody tr:hover {
+        background: #EDD5B5;
+    }
+
+    #phaladesh-page .prose p {
+        border-left: 3px solid var(--c-primary);
+        padding-left: 0.75rem;
+        margin-bottom: 0.9rem;
+    }
+}

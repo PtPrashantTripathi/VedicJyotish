@@ -1,0 +1,12 @@
+{
+    "version": "0.0.1",
+    "configurations": [
+        {
+            "name": "vedicjyotish-dev",
+            "runtimeExecutable": "node_modules/.bin/vite",
+            "runtimeArgs": [],
+            "port": 5173,
+            "autoPort": true
+        }
+    ]
+}

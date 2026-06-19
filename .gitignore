@@ -132,5 +132,3 @@ node_modules/
 # pnpm virtual store (if configured locally)
 .pnpm/
 
-# pnpm lockfile (if not committed)
-pnpm-workspace.yaml

@@ -11,6 +11,7 @@ export default defineConfig({
         // Enable native path resolution from tsconfig.json
         tsconfigPaths: true,
     },
+    
     build: {
         target: "esnext",
         outDir: "dist",
